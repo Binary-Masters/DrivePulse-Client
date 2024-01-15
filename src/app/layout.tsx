@@ -5,7 +5,7 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Create Next App',
+  title: 'Drive Puls | Home',
   description: 'Generated  by create next apps',
 }
 
