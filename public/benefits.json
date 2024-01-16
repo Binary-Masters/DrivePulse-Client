@@ -1,33 +1,43 @@
 [
     {
-      "icon": "icon1.png",
-      "name": "First Icon",
-      "description": "This is the first icon with a brief description."
+      "title": "Business and Corporate Sector",
+      "description": "Effortlessly share files within your organization, enhancing collaboration and boosting productivity.",
+      "icon": "BsBriefcaseFill" 
     },
     {
-      "icon": "icon2.png",
-      "name": "Second Icon",
-      "description": "Here's the second icon along with its description."
+      "title": "Education",
+      "description": "Simplify file sharing for educators and students, facilitating seamless document exchange and resource distribution.",
+      "icon": "BsBook" 
     },
     {
-      "icon": "icon3.png",
-      "name": "Third Icon",
-      "description": "The third icon has its own unique description for reference."
+      "title": "Health Care",
+      "description": "Securely share sensitive medical files and information among healthcare professionals, ensuring efficient communication.",
+      "icon": "BsHeart" 
     },
     {
-      "icon": "icon4.png",
-      "name": "Fourth Icon",
-      "description": "Check out the fourth icon and its corresponding description."
+      "title": "Creative Industries",
+      "description": "Collaborate on multimedia projects by easily sharing large files such as images, videos, and design assets.",
+      "icon": "BsBrush" 
     },
     {
-      "icon": "icon5.png",
-      "name": "Fifth Icon",
-      "description": "Explore the fifth icon with its brief yet informative description."
+      "title": "Media and Entertainment",
+      "description": "Streamline file sharing for media production, allowing quick exchange of media files and project collaboration.",
+      "icon": "BsFilm" 
     },
     {
-      "icon": "icon6.png",
-      "name": "Sixth Icon",
-      "description": "Last but not least, the sixth icon comes with its own description."
+      "title": "Government and Public Sector",
+      "description": "Enhance government workflows by securely sharing documents, fostering efficient interdepartmental communication.",
+      "icon": "BsBuilding" 
+    },
+    {
+      "title": "Event Management",
+      "description": "Facilitate seamless event planning by sharing event-related files, ensuring all stakeholders stay informed and organized.",
+      "icon": "BsCalendar" 
+    },
+    {
+      "title": "Personal Use",
+      "description": "Simplify personal file sharing, allowing users to effortlessly share documents, photos, and more with friends and family.",
+      "icon": "BsPerson" 
     }
   ]
   
