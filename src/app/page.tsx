@@ -1,9 +1,11 @@
 import Image from 'next/image'
 import Footer from './component/Footer/Footer'
+import Button from '@/Utils/Button/Button'
 
 export default function Home() {
   return (
-   <>hi
+   <>
+   <Button buttonName={"Primary"}/>
    <Footer></Footer>
    </>
    
