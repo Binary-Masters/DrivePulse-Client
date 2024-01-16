@@ -51,5 +51,22 @@ export default function Navbar() {
 			<Link href="/login">Login</Link>
 		</div>
 		
+		{/* Sidebar */}
+		<div className="debug absolute top-0 left-0 min-w-[280px] backdrop-blur-2xl bg-opacity-10 bg-neutral w-[60%]">
+			<ul>
+			{
+				routes.map((route, i) => <>
+					<li>
+						<Link 
+							key={ route.path + route.label } 
+							href={ route.path }
+						>
+							{ route.label }
+						</Link>
+					</li>
+				</>)
+			}
+			</ul>
+		</div>
 	</div>
 }
