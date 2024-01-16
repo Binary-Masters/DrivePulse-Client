@@ -3,6 +3,7 @@
 import Link from "next/link"
 import {useState} from "react";
 import { FaBars } from "react-icons/fa6";
+import { FaArrowLeft } from "react-icons/fa6";
 
 
 export default function Navbar() {
@@ -19,7 +20,7 @@ export default function Navbar() {
 	
 	return <div className="navbar px-4 md:px-14">
 		<div className="navbar-start gap-2 text-2xl md:text-3xl">
-			<p><FaBars className="text-xl md:hidden min-w-1"/></p>
+			<p onClick={ () => setToggleSidebar(true) }><FaBars className="text-xl md:hidden cursor-pointer min-w-1"/></p>
 			<h1>DrivePulse</h1>
 		</div>
 		
@@ -52,8 +53,11 @@ export default function Navbar() {
 		</div>
 		
 		{/* Sidebar */}
-		<div className="debug absolute top-0 left-0 min-w-[280px] backdrop-blur-2xl bg-opacity-10 bg-neutral w-[60%]">
-			<ul>
+		<div className={`absolute ${toggleSidebar ? "block" : "hidden"} gap-6 flex p-4 glass h-screen flex-col top-0 left-0 min-w-[280px] backdrop-blur-2xl bg-opacity-10 bg-neutral w-[60%]`}>
+			<div className="self-end cursor-pointer" onClick={ () => setToggleSidebar(false) }>
+				<p className="flex gap-2 items-center">Back <FaArrowLeft className="text-xl block"/></p>
+			</div>
+			<ul className="w-full">
 			{
 				routes.map((route, i) => <>
 					<li>
@@ -63,6 +67,9 @@ export default function Navbar() {
 						>
 							{ route.label }
 						</Link>
+						{
+							(routes.length -1 !== i) && <div className="divider my-2"></div>
+						}
 					</li>
 				</>)
 			}
