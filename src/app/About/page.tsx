@@ -1,4 +1,4 @@
-import HandelButton from "../Button/HandelButton";
+import HandelButton from "../../Components/Button/HandelButton";
 
 const AboutPage = () => {
   return (
