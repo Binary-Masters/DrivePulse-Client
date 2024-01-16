@@ -1,6 +1,6 @@
 // "use client"
 import Image from 'next/image'
-import '../../globals.css'
+import '../../../app/globals.css'
 
 import { FaRegStar } from "react-icons/fa6";
 import { MdMarkEmailRead } from "react-icons/md";
