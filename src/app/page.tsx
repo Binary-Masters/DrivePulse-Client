@@ -1,13 +1,10 @@
-import Image from 'next/image'
-import Footer from './component/Footer/Footer'
-import Button from '@/Utils/Button/Button'
+// import Footer from "../Components/Footer/Footer";
 
 export default function Home() {
   return (
-   <>
-   <Button buttonName={"Primary"}/>
-   <Footer></Footer>
-   </>
-   
-  )
+    <>
+     <h1>this is home page</h1>
+     
+    </>
+  );
 }
