@@ -22,7 +22,7 @@ export default function Navbar() {
 	return (
 		<div className="px-4 navbar md:px-14">
 			<div className="text-2xl navbar-start gap-2 md:text-3xl">
-				<p onClick={() => setToggleSidebar(true)}>
+				<p onClick={() => setToggleSidebar(true) }>
 					<FaBars className="text-xl cursor-pointer md:hidden min-w-1" />
 				</p>
 				<h1>DrivePulse</h1>
