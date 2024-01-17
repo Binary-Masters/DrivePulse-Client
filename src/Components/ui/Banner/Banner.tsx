@@ -2,7 +2,7 @@ import Image from "next/image";
 import bannerbg from "../../../../public/file_share.jpg";
 import { FaUpload } from "react-icons/fa";
 import TypeWriter from "@/Utils/TypeWriter/TypeWriter";
-const Banner = () => {
+const Banner: React.FC = () => {
   return (
     <div className="hero h-[100vh] relative">
       <Image
