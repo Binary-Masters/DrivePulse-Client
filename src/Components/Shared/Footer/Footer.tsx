@@ -15,7 +15,7 @@ const Footer = () => {
       <footer className="  w-full bgColour h-full lg:h-[300px] ">
         {/* main div */}
         <div className='  '>
-        <div className='flex flex-col   md:gird md:grid-cols-2 lg:flex-row  lg:gap-60 lg:justify-evenly w-full overflow-hidden px-20 '>
+        <div className='flex flex-col   md:gird md:grid-cols-2 lg:flex-row  lg:gap-60 lg:justify-evenly w-auto flex-shrink-0 overflow-hidden gap-auto lg:px-auto px-20 '>
           {/* 1st div */}
       <div className='' >
         <p className='text-3xl '>DrivePulse</p>
