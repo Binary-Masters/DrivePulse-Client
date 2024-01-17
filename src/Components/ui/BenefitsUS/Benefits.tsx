@@ -33,7 +33,7 @@ const Benefits = () => {
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 px-5'>
                 {
                     benefits.map((item, index) => (
-                        <div key={index} className="rounded-md bg-base-100 shadow-inherit hover:shadow-md hover:shadow-blue-300">
+                        <div key={index} className="rounded-md bg-base-100 shadow-inner hover:shadow-md hover:shadow-blue-300">
 
                             <figure className="px-10 pt-10">
                                 <div className="flex justify-center text-5xl">{getIcon(item.icon)}</div>
