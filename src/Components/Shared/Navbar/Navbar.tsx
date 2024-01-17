@@ -10,13 +10,14 @@ export default function Navbar() {
 	const [toggleSidebar, setToggleSidebar] = useState(false);
 	const pathname = usePathname();
 	const dividerPosition = 3;
+	// added just id for unique value and ?   abu bokor siddik
 	const routes = [
-		{ path: "/", label: "Home" },
-		{ path: "/about", label: "About" },
-		{ path: "/pricing", label: "Pricing" },
-		{ path: "/developers", label: "Developers" },
-		{ path: "/register", label: "Register" },
-		{ path: "/login", label: "Login" },
+		{ path: "/", label: "Home" ,id:1},
+		{ path: "/about", label: "About" ,id:2},
+		{ path: "/pricing", label: "Pricing",id:3 },
+		{ path: "/developers", label: "Developers",id:4 },
+		{ path: "/register", label: "Register",id:5 },
+		{ path: "/login", label: "Login",id:6 },
 	];
 
 	return (
@@ -30,10 +31,12 @@ export default function Navbar() {
 
 			{/* visible for larger devices */}
 			<div className="hidden navbar-end gap-6 md:flex">
-				{routes.map((route, i) => (
+				{routes?.map((route, i,) => (
 					<>
 						<Link
 							key={route.path + route.label}
+							// key={route?.id}
+							
 							href={route.path}
 							className={`group  ${
 								pathname === route.path && "font-bold"
@@ -76,11 +79,13 @@ export default function Navbar() {
 					</p>
 				</div>
 				<ul className="w-full">
-					{routes.map((route, i) => (
+					{routes?.map((route, i) => (
 						<>
 							<li>
 								<Link
 									key={route.path + route.label}
+									// key={i}
+									// key={route?.id}
 									href={route.path}
 								>
 									{route.label}

@@ -25,7 +25,7 @@ form input{
   outline: none;
 }
 .underline{
-  width: 100%;
+  width: 80px;
   height: 5px;
   background: #767676;
   border-radius: 3px;

@@ -1,18 +1,14 @@
-"use client";
-import Button from "@/Utils/Button/Button";
-import HandelButton from "../../Components/Button/HandelButton";
-
-const AboutPage = () => {
-  const handleEvent = ()=>{
-    console.log('click');
-  }
+import type { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "About | DrivePulse",
+  description: "This Is About Page ,It Is A File Sharing Website",
+};
+const Aboutpage = () => {
   return (
     <div>
-      <h1>This Is About Page</h1>
-      <HandelButton />
-      <Button buttonName={"Primary"} event={handleEvent}/>
+      <h1>this is about page</h1>
     </div>
   );
 };
 
-export default AboutPage;
+export default Aboutpage;
