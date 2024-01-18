@@ -1,4 +1,5 @@
 
+
 import NotFoundAnimation from '@/Components/Animation/NotFoundAnimation/NotFoundAnimation';
 import Link from 'next/link';
 import { TiArrowBack } from "react-icons/ti";
@@ -11,8 +12,9 @@ const NotFound = () => {
             <div className='flex justify-center'>
             <Link style={{letterSpacing:'1px'}} className=" btn text-xl hover:bg-[#11009E] transition-all duration-300 bg-[#1640D6] px-4 py-2 rounded-md text-white font-medium" href={"/"}><TiArrowBack/> Back to Home</Link>
             </div>
-        </div>
-    );
-};
-
+            </div>
+    )
+        
+}
 export default NotFound;
+
