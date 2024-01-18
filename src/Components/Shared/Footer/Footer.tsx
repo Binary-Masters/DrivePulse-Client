@@ -1,6 +1,6 @@
 // "use client"
 import Image from 'next/image'
-import '../../../app/globals.css'
+import './styles.css'
 
 import { FaRegStar } from "react-icons/fa6";
 import { MdMarkEmailRead } from "react-icons/md";
@@ -12,10 +12,10 @@ import { FaFacebookF } from "react-icons/fa";
 const Footer = () => {
   return (
     <div>
-      <footer className="  w-full bgColour h-full lg:h-[300px] ">
+      <footer className="  w-full bgColour h-full lg:h-[300px] mx-auto  ">
         {/* main div */}
         <div className='  '>
-        <div className='flex flex-col   md:gird md:grid-cols-2 lg:flex-row  lg:gap-60 lg:justify-evenly w-auto flex-shrink-0 overflow-hidden gap-auto lg:px-auto px-20 '>
+        <div className='grid grid-cols-1 md:gird md:grid-cols-2 lg:grid-cols-4 md:justify-between md:mx-auto md:gap-x-56 md:items-center  lg:gap-60 lg:justify-evenly w-auto flex-shrink-0 overflow-hidden    px-20  '>
           {/* 1st div */}
       <div className='' >
         <p className='text-3xl '>DrivePulse</p>
@@ -23,8 +23,8 @@ const Footer = () => {
       {/* <FaRegStar className='animate-spin'></FaRegStar> */}
 
       {/* form  i will update this form todo */}
-      <form className='flex items-center justify-between my-5'>
-        <MdMarkEmailRead className='h-5 w-5 mr-2' ></MdMarkEmailRead>
+      <form className='flex items-center justify-between  my-5'>
+        <MdMarkEmailRead className='h-5 w-5  ' ></MdMarkEmailRead>
         <input className='bg-transparent cursor-pointer' type="email" placeholder='Enter your Email ' />
         <p className='cursor-pointer'><FaArrowRight></FaArrowRight></p>
       </form>
@@ -63,7 +63,7 @@ const Footer = () => {
       </div>
     {/* 4th */}
       <div>
-      SUPPORTS <div className="underline -mt-5"><span></span></div>
+      SUPPORTS <div className="underline  -mt-5"><span ></span></div>
 
       <div className='my-8 flex flex-col gap-4'>
         <p className='cursor-pointer hover:underline'>Help Center</p>
