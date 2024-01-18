@@ -65,7 +65,7 @@ export default function Navbar() {
 			<div
 				className={`absolute ${
 					toggleSidebar ? "block" : "hidden"
-				} gap-6 flex p-4 glass h-screen flex-col top-0 left-0 min-w-[280px] backdrop-blur-2xl bg-opacity-10 bg-neutral w-[60%]`}
+				} gap-6 flex p-4 glass z-[9999] h-screen flex-col top-0 left-0 min-w-[280px] backdrop-blur-2xl bg-opacity-10 bg-neutral w-[60%]`}
 			>
 				<div
 					className="self-end cursor-pointer"
@@ -82,6 +82,7 @@ export default function Navbar() {
 								<Link
 									key={route.path + route.label}
 									href={route.path}
+									className={`${pathname === route.path && "font-bold"}`}
 								>
 									{route.label}
 								</Link>
