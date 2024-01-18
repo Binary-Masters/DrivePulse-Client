@@ -1,10 +1,10 @@
+import LoadingAnimation from "@/Components/Animation/LoadingAnimation/LoadingAnimation";
+
 
 const Loading = () => {
-    return (
-        <div className="flex justify-center items-center">
-            <h2 className="text-3xl">Loading...</h2>
-        </div>
-    );
+    return <>
+    <LoadingAnimation/>
+    </>
 };
 
 export default Loading;
