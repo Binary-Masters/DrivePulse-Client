@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
+import Cover from "./ui/Cover";
 export const metadata: Metadata = {
 	title: "About | DrivePulse",
 	description: "This Is About Page ,It Is A File Sharing Website",
 };
+
 const Aboutpage = () => {
 	return (
 		<div>
-			<h1>this is about page</h1>
+			<Cover/>
 		</div>
 	);
 };
