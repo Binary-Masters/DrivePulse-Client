@@ -26,7 +26,7 @@ const Contact = () => {
           <MdPhone className="text-2xl"/>
             <div>
               <h2 className="text-xl font-semibold uppercase">Phone number</h2>
-              <p className="font-medium text-gray-400">Mobile: 01739 859756</p>
+              <p className="font-medium text-gray-400">Mobile: 01739 ******</p>
             </div>
           </div>
           <div className="flex items-center gap-5">
