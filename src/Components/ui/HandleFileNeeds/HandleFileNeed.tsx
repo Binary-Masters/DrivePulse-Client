@@ -26,7 +26,7 @@ const data = [
 
 const HandleFileNeed = () => {
     return (
-        <div className='py-20 relative bg-slate-100'>
+        <div className='py-20 relative bg-slate-200'>
              <Image
                 alt="Mountains"
                 src={bgImage}

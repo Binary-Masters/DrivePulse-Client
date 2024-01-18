@@ -10,16 +10,6 @@
       "icon": "BsBook" 
     },
     {
-      "title": "Health Care",
-      "description": "Securely share sensitive medical files and information among healthcare professionals, ensuring efficient communication.",
-      "icon": "BsHeart" 
-    },
-    {
-      "title": "Creative Industries",
-      "description": "Collaborate on multimedia projects by easily sharing large files such as images, videos, and design assets.",
-      "icon": "BsBrush" 
-    },
-    {
       "title": "Media and Entertainment",
       "description": "Streamline file sharing for media production, allowing quick exchange of media files and project collaboration.",
       "icon": "BsFilm" 
