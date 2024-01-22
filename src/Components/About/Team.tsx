@@ -3,7 +3,7 @@ import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
-import "swiper/css";
+import 'swiper/css';
 import "swiper/css/navigation";
 // import required modules
 import { Navigation, Pagination } from "swiper/modules";
@@ -58,8 +58,7 @@ const Team = () => {
         //   }}
         centeredSlides={true}
         modules={[Navigation, Pagination]}
-        className="mySwiper"
-      >
+        className="mySwiper">
         {members?.map((member) => (
           <SwiperSlide key={member?.id}>
             <div className="card w-96 mx-auto bg-base-100 shadow-xl my-6">

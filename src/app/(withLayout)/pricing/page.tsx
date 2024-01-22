@@ -1,11 +1,14 @@
-import React from 'react';
+import PricingCard from "@/Components/PricingCard/PricingCard";
+import PageCover from "@/Components/Shared/PageCover/PageCover";
+import img from "../../../assests/images/pricing.jpg";
 
 const PricingPLan = () => {
-    return (
-        <div>
-            <h2>Pricing plan is coming soon...</h2>
-        </div>
-    );
+  return (
+    <div>
+      <PageCover img={img} text={"Ultimate Offers"} />
+      <PricingCard />
+    </div>
+  );
 };
 
 export default PricingPLan;
