@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Cover from "./ui/Cover";
-import Goals from "./ui/Goals";
-import Team from "./ui/Team";
+import Cover from "../../../Components/About/Cover";
+import Goals from "../../../Components/About/Goals";
+import Team from "../../../Components/About/Team";
 export const metadata: Metadata = {
 	title: "About | DrivePulse",
 	description: "This Is About Page ,It Is A File Sharing Website",
