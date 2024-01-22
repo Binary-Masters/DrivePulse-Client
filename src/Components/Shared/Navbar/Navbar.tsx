@@ -1,6 +1,8 @@
 "use client";
 
+import logo from "@/../public/logo.png";
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { FaBars } from "react-icons/fa6";
 import { FaArrowLeft } from "react-icons/fa6";
@@ -9,7 +11,7 @@ import { usePathname } from "next/navigation";
 export default function Navbar() {
 	const [toggleSidebar, setToggleSidebar] = useState(false);
 	const pathname = usePathname();
-	const dividerPosition = 3;
+	const dividerPosition = 2;
 	const routes = [
 		{ path: "/", label: "Home" },
 		{ path: "/about", label: "About" },
@@ -26,7 +28,12 @@ export default function Navbar() {
 				<p onClick={() => setToggleSidebar(true)}>
 					<FaBars className="text-xl cursor-pointer md:hidden min-w-1" />
 				</p>
-				<h1>DrivePulse</h1>
+				<Image
+					src={ logo }
+					height={ 80 }
+					width={ 130 }
+					alt="DrivePulse Logo"
+				/>
 			</div>
 
 			{/* visible for larger devices */}
@@ -66,7 +73,7 @@ export default function Navbar() {
 			<div
 				className={`absolute ${
 					toggleSidebar ? "block" : "hidden"
-				} gap-6 flex p-4 glass h-screen flex-col top-0 left-0 min-w-[280px] backdrop-blur-2xl bg-opacity-10 bg-neutral w-[60%]`}
+				} gap-6 flex p-4 glass z-[9999] h-screen flex-col top-0 left-0 min-w-[280px] backdrop-blur-2xl bg-opacity-10 bg-neutral w-[60%]`}
 			>
 				<div
 					className="self-end cursor-pointer"
@@ -83,6 +90,7 @@ export default function Navbar() {
 								<Link
 									key={route.path + route.label}
 									href={route.path}
+									className={`${pathname === route.path && "font-bold"}`}
 								>
 									{route.label}
 								</Link>

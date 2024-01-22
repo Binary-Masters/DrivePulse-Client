@@ -1,6 +1,6 @@
 import PageCover from "@/Components/Shared/PageCover/PageCover";
 import { Metadata } from "next";
-import contactImg from "../../assests/images/contact.jpg";
+import contactImg from "../../../assests/images/contact.jpg";
 import ContactForm from "@/Components/Shared/ContactForm/ContactForm";
 import { MdEmail, MdLocationOn, MdPhone } from "react-icons/md";
 export const metadata: Metadata = {

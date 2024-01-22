@@ -14,8 +14,11 @@ const TypeWriter = () => {
     deleteSpeed: 70,
   });
   return (
-    <h1 className="mb-5 text-5xl font-bold">
+    <h1 className="mb-5 text-3xl md:text-5xl font-bold">
       <span>{text}</span>
+      <span>
+            <Cursor/>
+          </span>
     </h1>
   );
 };
