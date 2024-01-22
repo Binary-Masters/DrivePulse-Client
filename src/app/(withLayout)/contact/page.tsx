@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 const Contact = () => {
   return (
     <div>
-      <PageCover img={contactImg} />
+      <PageCover img={contactImg} text={"Contact"}/>
       <h2 className="text-center text-3xl  md:text-4xl font-bold mt-10 border-b border-black w-fit mx-auto">Have a any Question ?</h2>
       <div className="grid items-center grid-cols-1 md:grid-cols-2 gap-5 mt-10 max-w-6xl mx-auto shadow-md p-4 rounded-md border mb-10">
         <div className=" space-y-10 px-5">
