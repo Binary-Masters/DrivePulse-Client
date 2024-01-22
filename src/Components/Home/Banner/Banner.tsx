@@ -1,5 +1,5 @@
 import Image from "next/image";
-import bannerbg from "../../../../public/file_share.jpg";
+import bannerbg from "@/assests/Banner/file_share.jpg";
 import { FaUpload } from "react-icons/fa";
 import TypeWriter from "@/Utils/TypeWriter/TypeWriter";
 const Banner: React.FC = () => {
