@@ -4,12 +4,77 @@ import regImg from '../../assests/Login-Registration/registration.png'
 import Image from "next/image";
 import Link from "next/link";
 import { FaFacebook, FaEye, FaEyeSlash } from "react-icons/fa";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "@/providers/AuthProvider";
+import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
 
+const image_hosting_key =  process.env.NEXT_PUBLIC_IMG_HOSTING_API_KEY;
+// console.log(process.env.NEXT_PUBLIC_IMG_HOSTING_API_KEY);
+const image_hosting_url = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const Registration = () => {
     const [showPass, setShowPass] = useState(false);
 
+    const { createUser, updateUser, loginByGoogle } = useContext(AuthContext);
+    const [imageUrl, setImageUrl] = useState('');
+
+    const handleRegistration = e => {
+        e.preventDefault();
+        const form = e.target;
+        const name = form.name.value;
+        const email = form.email.value;
+        const phoneNumber = form.phoneNumber.value;
+        const password = form.password.value;
+        // console.log(name,email,photoUrl,password,type,phoneNumber);
+        if (password.length < 6) {
+            console.log('password must be six character');
+        }
+        if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,32}$/.test(password)) {
+          console.log('password at least one Upper case one special character one number');
+        }
+        // console.log(name,email,photoUrl,password);
+        createUser(email, password)
+            .then(result => {
+                console.log(result);
+                updateUser(name, imageUrl)
+                    .then((res) => {
+                        console.log(res);
+                    })
+                    .catch(error => {
+                       console.log(error);
+                    })
+
+            })
+            .catch(error => {
+               console.log(error);
+            })
+    }
+
+
+    const handleLoginByGoogle = () => {
+        loginByGoogle()
+            .then(result => {
+                console.log(result);
+            })
+            .catch(error => {
+               console.log(error);
+            })
+    }
+
+    const handleUploadImageBB = async (e) => {
+        const image = e.target.files[0]
+        console.log(image);
+        const imageFile = { image: image }
+        console.log(imageFile);
+        const res = await axios.post(image_hosting_url, imageFile, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        console.log('Image url', res.data.data.display_url);
+        setImageUrl(res.data.data.display_url);
+    }
 
     return (
         <div className="w-11/12 mx-auto mt-20 text-center">
@@ -20,7 +85,7 @@ const Registration = () => {
                 <div className='w-full lg:w-1/2 mx-auto'>
                     <h1 className="text-5xl font-bold mb-4">Register now!</h1>
                     <div className="rounded-lg w-full shadow-2xl bg-base-100 px-4 py-6">
-                        <form>
+                        <form onSubmit={handleRegistration}>
                             <div>
                                 <label className="label">
                                     <span className="text-xl font-medium">Name</span>
@@ -44,7 +109,7 @@ const Registration = () => {
                                     <span className="text-xl font-medium">Your Photo</span>
                                 </label>
                                 <div>
-                                    <input type="file" name='photo' placeholder="Please give your photo url" className="rounded-md w-full" required />
+                                    <input type="file" onChange={handleUploadImageBB} name='image' placeholder="Please give your photo url" className="rounded-md w-full" required />
                                 </div>
                             </div>
 
@@ -69,12 +134,13 @@ const Registration = () => {
                         <div>
                             <div className="divider">OR Register With</div>
                             <div className="flex gap-2">
-                                <button className='btn btn-outline w-1/2 text-lg hover:bg-primary border-blue-600 capitalize'><FcGoogle className='text-3xl mr-4'></FcGoogle>Google</button>
+                                <button onClick={handleLoginByGoogle} className='btn btn-outline w-1/2 text-lg hover:bg-primary border-blue-600 capitalize'><FcGoogle className='text-3xl mr-4'></FcGoogle>Google</button>
                                 <button className='btn btn-outline  w-1/2 text-lg hover:bg-primary border-blue-600 capitalize'><FaFacebook className='text-3xl'></FaFacebook>Facebook</button>
                             </div>
                         </div>
                     </div>
                 </div>
+            <ToastContainer></ToastContainer>
             </div>
         </div>
     );

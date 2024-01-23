@@ -3,18 +3,40 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebook, FaEye, FaEyeSlash } from "react-icons/fa";
 import loginImg from '../../assests/Login-Registration/login4.jpg'
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "@/providers/AuthProvider";
+
 
 
 const Login = () => {
     const [showPass, setShowPass] = useState(false);
+    const {login,loginByGoogle} = useContext(AuthContext);
+
     const handleLogin = e => {
         e.preventDefault();
         const form = e.target;
         const email = form.email.value;
-        const pass = form.password.value;
-        console.log(pass,email);
+        const password = form.password.value;
+        console.log(email,password);
+        login(email, password)
+            .then(result => {
+                console.log(result);
+            })
+            .catch(error => {
+               console.log(error);
+            })
     }
+
+    const handleLoginByGoogle = () => {
+        loginByGoogle()
+            .then(result => {
+                console.log(result);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
 
     return (
         <div className="min-h-screen bg-cover bg-opacity-30" style={{ backgroundImage: `url(${loginImg.src})` }}>
@@ -51,7 +73,7 @@ const Login = () => {
                             <div>
                                 <div className="divider divider-primary text-indigo-600 font-bold">OR Login With</div>
                                 <div className="flex gap-2">
-                                    <button className='btn btn-outline text-white w-1/2 text-lg hover:bg-primary border-blue-600 capitalize'><FcGoogle className='text-3xl mr-4'></FcGoogle>Google</button>
+                                    <button onClick={handleLoginByGoogle} className='btn btn-outline text-white w-1/2 text-lg hover:bg-primary border-blue-600 capitalize'><FcGoogle className='text-3xl mr-4'></FcGoogle>Google</button>
                                     <button className='btn btn-outline text-white w-1/2 text-lg hover:bg-primary border-blue-600 capitalize'><FaFacebook className='text-3xl'></FaFacebook>Facebook</button>
                                 </div>
                             </div>

@@ -5,13 +5,11 @@ import AuthProvider from "@/providers/AuthProvider";
 
 const Layout = ({ children }) => {
     return (
-        <AuthProvider>
-            <div>
-                <Navbar />
-                {children}
-                <Footer />
-            </div>
-        </AuthProvider>
+        <div>
+            <Navbar />
+            {children}
+            <Footer />
+        </div>
     );
 };
 
