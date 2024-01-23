@@ -1,6 +1,5 @@
 [
     {
-        "id": 1,
         "recommended": "Basic",
         "price": 30,
         "benifit1": "free service",
@@ -10,7 +9,6 @@
         "btnColor":"warning"
     },
     {
-        "id": 2,
         "recommended": "Premiume",
         "price": 45,
         "benifit1": "free service",
@@ -21,7 +19,6 @@
         "badg":"Hot"
     },
     {
-        "id": 3,
         "recommended": "Ultimate",
         "price": 80,
         "benifit1": "free service",

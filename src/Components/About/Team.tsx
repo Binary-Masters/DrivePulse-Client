@@ -25,7 +25,7 @@ const Team = () => {
     },
     {
       id: 2,
-      name: "MD Morshed Alam",
+      name: "MD Morsed Alam",
       description: "Description for Object 2.",
     },
     { id: 3, name: "Zaib Khan", description: "Description for Object 3." },
