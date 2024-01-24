@@ -5,15 +5,6 @@ import AuthProvider from "@/providers/AuthProvider";
 
 const Layout = ({ children }) => {
     return (
-<<<<<<< HEAD
-        <div>
-            <Navbar/>
-            <div className="min-h-screen">
-            {children}
-            </div>
-            <Footer/>
-        </div>
-=======
         <AuthProvider>
             <div>
                 <Navbar />
@@ -21,7 +12,6 @@ const Layout = ({ children }) => {
                 <Footer />
             </div>
         </AuthProvider>
->>>>>>> 44ae0f58678650fba83946a553e8d06fae418430
     );
 };
 
