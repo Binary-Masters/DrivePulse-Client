@@ -25,13 +25,13 @@ const DashboardNav = () => {
 			<button onClick={() => setIsToggle(!isToggle)}>
 				<Menu className="md:hidden" />
 			</button>
-			<Image
+			{/* <Image
 				width={100}
 				height={50}
 				src={logo}
 				alt="logo"
-				className="md:hidden"
-			/>
+				className="hidden"
+			/> */}
 
 			<div className="relative">
 				<label htmlFor="Search" className="sr-only">
