@@ -12,18 +12,25 @@ import {
   BsPerson,
 } from "react-icons/bs";
 import bg from "@/assests/mesh-309.png";
+// import useBenifites from "@/Hooks/useBenifites";
 interface benifitesData {
   id: string;
   title: string;
   description: string;
   icon: string;
 }
+// interface benefitesData {
+//   benefits: Array<string>;
+//   loading: boolean;
+//   refetch:any;
+// }
 const Benefits = () => {
+  // const [benefits, loading] = useBenifites<benefitesData[]>();
   const [benefits, setBenefits] = useState<benifitesData[]>([]);
   useEffect(() => {
     const getData = async () => {
       const res = await axios.get(
-        "https://drive-pulse-server.vercel.app/benifites"
+        "http://localhost:2727/benifites"
       );
       setBenefits(res?.data);
     };
@@ -52,6 +59,9 @@ const Benefits = () => {
         return null;
     }
   };
+  // if (loading) {
+  //   return <h1>Loading....</h1>;
+  // }
   return (
     <div
       className="bg-blue-200-900/40 bg-cover py-16 "

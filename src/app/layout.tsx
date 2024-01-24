@@ -5,11 +5,9 @@ import { Inter } from "next/font/google";
 import { ReactNode } from "react"; // Import ReactNode
 import AuthProvider from "@/providers/AuthProvider";
 import "./globals.css";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ReactTanstackProvider from "./ReactTanstackProvider";
 
 const inter = Inter({ subsets: ["latin"] });
-
-const queryClient = new QueryClient();
 
 export const metadata: Metadata = {
   title: "DrivePulse",
@@ -22,12 +20,17 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" data-theme="light">
+   
+          <ReactTanstackProvider>
+          <html lang="en" data-theme="light">
       <body className={inter.className}>
         <div className="min-h-screen">
-          <AuthProvider>{children}</AuthProvider>
+            <AuthProvider>{children}</AuthProvider>
+        
         </div>
       </body>
     </html>
+          </ReactTanstackProvider>
+       
   );
 }
