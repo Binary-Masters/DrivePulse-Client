@@ -6,6 +6,7 @@ const axiosPublic = axios.create({
 });
 
 // http://localhost:2727
+// https://drive-pulse-server.vercel.app/pricing
 
 const useAxiosPublic = () => {
   return axiosPublic;
