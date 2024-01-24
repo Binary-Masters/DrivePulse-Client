@@ -5,7 +5,7 @@ import React from 'react';
 const layout = ({children}) => {
     return (
         <div>
-            <div className=' hidden md:flex md:w-64 h-full flex-col fixed inset-y-0 z-50'>
+            <div className='fixed inset-y-0 z-50 flex-col hidden h-full md:flex md:w-64'>
                 <SideNave/>
             </div>
              <div className='md:ml-64'>
