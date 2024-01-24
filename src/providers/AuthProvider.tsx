@@ -9,9 +9,20 @@ import {
 	signOut,
 	updateProfile,
 	User,
+	UserCredential,
 } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../firebase/firebase.config";
+export interface AuthInfo {
+	user: any;
+	loading: boolean;
+	createUser: (email: string, password: string) => Promise<UserCredential>;
+	login: (email: string, password: string) => Promise<UserCredential>;
+	loginByGoogle: () => Promise<UserCredential>;
+	logout: () => Promise<void>;
+	setLoading: (value: boolean) => void;
+	updateUser: (name: string, photoURL: string) => Promise<void> | undefined;
+}
 
 export const AuthContext = createContext({});
 
@@ -64,7 +75,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 		};
 	}, []);
 
-	const authInfo = {
+	const authInfo: AuthInfo = {
 		user,
 		loading,
 		createUser,
