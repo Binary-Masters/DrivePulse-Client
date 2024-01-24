@@ -17,6 +17,7 @@ export default function Navbar() {
 		{ path: "/about", label: "About" },
 		{ path: "/pricing", label: "Pricing" },
 		{ path: "/developers", label: "Developers" },
+		{ path: "/dashboard", label: "Dashboard" },
 		{ path: "/contact", label: "Contact" },
 		{ path: "/register", label: "Register" },
 		{ path: "/login", label: "Login" },
