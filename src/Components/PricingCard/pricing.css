@@ -1,0 +1,9 @@
+.cards{
+    animation: load89234 2s infinite;
+}
+
+@keyframes load89234 {
+    100% {
+      background-position: -100% 0;
+    }
+  }
