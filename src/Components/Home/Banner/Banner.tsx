@@ -1,12 +1,12 @@
-"use client"
-import Image from "next/image";
-import bannerbg from "../../../assests/images/banner.jpg";
-import { FaUpload } from "react-icons/fa";
-import TypeWriter from "@/Utils/TypeWriter/TypeWriter";
-import animation from "../../../assests/lottie-animation/banner.json"
-import Lottie from "lottie-react";
+
 import Link from "next/link";
-const Banner: React.FC = () => {
+// import Image from "next/image";
+// import bannerbg from "../../../assests/images/banner.jpg";
+// import { FaUpload } from "react-icons/fa";
+// import TypeWriter from "@/Utils/TypeWriter/TypeWriter";
+// import animation from "../../../assests/lottie-animation/banner.json"
+// import Lottie from "lottie-react";
+const Banner = () => {
   return (
     <div className="hero  relative ">
      <section className=" ">
