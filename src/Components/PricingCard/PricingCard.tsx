@@ -17,7 +17,9 @@ const PricingCard = () => {
   const [cards, setCards] = useState<PricingCardData[]>([]);
   useEffect(() => {
     const getData = async () => {
-      const res = await axios.get("http://localhost:2727/pricing");
+      const res = await axios.get(
+        "https://drive-pulse-server.vercel.app/pricing"
+      );
       setCards(res?.data);
     };
     getData();
