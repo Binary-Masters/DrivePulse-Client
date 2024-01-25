@@ -22,7 +22,7 @@ const Benefits = () => {
   const [benefits, setBenefits] = useState<benifitesData[]>([]);
   useEffect(() => {
     const getData = async () => {
-      const res = await axios.get("http://localhost:2727/benifites");
+      const res = await axios.get("https://drive-pulse-server.vercel.app/benifites");
       setBenefits(res?.data);
     };
     getData();
