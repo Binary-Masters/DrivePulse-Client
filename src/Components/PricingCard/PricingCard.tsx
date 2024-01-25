@@ -40,7 +40,7 @@ const PricingCard = () => {
   }
   return (
     <div className="max-w-7xl my-20 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 ">
-      {pricings?.map((card) => (
+      {(pricings as PricingCardData[])?.map((card) => (
         <div
           style={{
             backdropFilter: "blur(30px)",
