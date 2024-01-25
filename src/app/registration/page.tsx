@@ -9,6 +9,7 @@ import { AuthContext } from "@/providers/AuthProvider";
 import axios from "axios";
 import useAuth from "@/Hooks/useAuth";
 import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 const image_hosting_key = process.env.NEXT_PUBLIC_IMG_HOSTING_API_KEY;
 // console.log(process.env.NEXT_PUBLIC_IMG_HOSTING_API_KEY);
@@ -16,6 +17,7 @@ const image_hosting_url = `https://api.imgbb.com/1/upload?key=${image_hosting_ke
 
 const Registration = () => {
 	const [showPass, setShowPass] = useState(false);
+	const router = useRouter();
 
 	const { createUser, updateUser, loginByGoogle } = useContext<any | null>(
 		AuthContext
@@ -42,15 +44,16 @@ const Registration = () => {
 		// console.log(name,email,photoUrl,password);
 		createUser(email, password)
 			.then(() => {
-				updateUser(name, imageUrl)
-					.then(() => {
-						Swal.fire({
-							title: "Congratulations!",
-							text: "You've been registered successfully",
-							icon: "success",
-							confirmButtonText: "OK",
-						});
-					})
+				updateUser(name, imageUrl).then(() => {
+					Swal.fire({
+						title: "Congratulations!",
+						text: "You've been registered successfully",
+						icon: "success",
+						confirmButtonText: "OK",
+					}).then(() => {
+						router.push("/dashboard");
+					});
+				});
 			})
 			.catch((error) => {
 				Swal.fire({
@@ -58,14 +61,21 @@ const Registration = () => {
 					text: error,
 					icon: "error",
 					confirmButtonText: "Close",
-				})
-			})
+				});
+			});
 	};
 
 	const handleLoginByGoogle = () => {
 		loginByGoogle()
-			.then((result) => {
-				console.log(result);
+			.then(() => {
+				Swal.fire({
+					title: "Congratulations!",
+					text: "You've been registered successfully",
+					icon: "success",
+					confirmButtonText: "OK",
+				}).then(() => {
+					router.push("/dashboard");
+				});
 			})
 			.catch((error) => {
 				console.log(error);
@@ -227,4 +237,3 @@ const Registration = () => {
 };
 
 export default Registration;
-
