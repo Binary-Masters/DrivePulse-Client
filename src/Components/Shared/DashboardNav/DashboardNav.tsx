@@ -12,7 +12,6 @@ const DashboardNav = () => {
 	// Modifies sidebar position with navbar height
 	const navbarRef = useRef<HTMLDivElement | null>(null)
 	const [ navbarHeight, setNavbarHeight ] = useState(navbarRef.current?.scrollHeight || 0);
-	console.log(navbarHeight);
 	useEffect(() => {
 		const scrollHeight = navbarRef.current?.scrollHeight
 		if(scrollHeight) {
