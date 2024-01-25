@@ -40,9 +40,11 @@ const Registration = () => {
                 updateUser(name, imageUrl)
                     .then((res) => {
                         console.log(res);
+                        alert('Registration Successful');
                     })
                     .catch(error => {
                        console.log(error);
+                       alert(error);
                     })
 
             })
@@ -56,9 +58,11 @@ const Registration = () => {
         loginByGoogle()
             .then(result => {
                 console.log(result);
+                alert('Registration Successful');
             })
             .catch(error => {
                console.log(error);
+               alert(error);
             })
     }
 

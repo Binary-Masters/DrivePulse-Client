@@ -5,10 +5,7 @@ import loginImg from "../../assests/Login-Registration/login4.jpg";
 import Link from "next/link";
 import { useContext, useState } from "react";
 import { AuthContext } from "@/providers/AuthProvider";
-// interface authData {
-//     login: () => void;
-//     loginByGoogle: () => void;
-//   }
+
 
 const Login = () => {
   const [showPass, setShowPass] = useState(false);
@@ -23,9 +20,11 @@ const Login = () => {
     login(email, password)
       .then((result) => {
         console.log(result);
+        alert('login sucessful')
       })
       .catch((error) => {
         console.log(error);
+        alert(error);
       });
   };
 
