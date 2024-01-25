@@ -5,10 +5,13 @@ import loginImg from "../../assests/Login-Registration/login4.jpg";
 import Link from "next/link";
 import { useContext, useState } from "react";
 import { AuthContext } from "@/providers/AuthProvider";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
 	const [showPass, setShowPass] = useState(false);
 	const { login, loginByGoogle } = useContext<any>(AuthContext);
+	const router = useRouter();
 
 	const handleLogin = (e) => {
 		e.preventDefault();
@@ -17,21 +20,45 @@ const Login = () => {
 		const password = form.password.value;
 		console.log(email, password);
 		login(email, password)
-			.then((result) => {
-				console.log(result);
+			.then(() => {
+				Swal.fire({
+					title: "Congratulations!",
+					text: "Logged in successfully",
+					icon: "success",
+					confirmButtonText: "OK",
+				}).then(() => {
+					router.push("/dashboard");
+				});
 			})
 			.catch((error) => {
-				console.log(error);
+				Swal.fire({
+					title: "Error",
+					text: error,
+					icon: "error",
+					confirmButtonText: "Close",
+				});
 			});
 	};
 
 	const handleLoginByGoogle = () => {
 		loginByGoogle()
-			.then((result) => {
-				console.log(result);
+			.then(() => {
+				Swal.fire({
+					title: "Congratulations!",
+					text: "Logged in successfully",
+					icon: "success",
+					confirmButtonText: "OK",
+				}).then(() => {
+					router.push("/dashboard");
+				});
 			})
 			.catch((error) => {
-				console.log(error);
+				Swal.fire({
+					title: "Error",
+					text: error,
+					icon: "error",
+					confirmButtonText: "Close",
+				});
 			});
 	};
 
