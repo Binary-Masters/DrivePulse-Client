@@ -1,6 +1,7 @@
 'use client'
+
 import { createContext, ReactNode, useEffect, useState } from 'react';
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, User } from 'firebase/auth';
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile, User } from 'firebase/auth';
 import { GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../firebase/firebase.config';
 
@@ -26,6 +27,18 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         setLoading(true);
         return signInWithPopup(auth, provider);
     };
+
+    const updateUser = (name: string, photoURL: string) => {
+        setLoading(true);
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+            return updateProfile(currentUser, {
+                displayName: name, photoURL: photoURL
+            })
+        }
+
+    }
+
 
     const logout = () => {
         setLoading(true);
@@ -53,6 +66,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         loginByGoogle,
         logout,
         setLoading,
+        updateUser
     };
 
     return <AuthContext.Provider value={authInfo}>

@@ -1,7 +1,10 @@
+// RootLayout.tsx
+
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { ReactNode } from "react"; // Import ReactNode
+import AuthProvider from "@/providers/AuthProvider";
 import "./globals.css";
-
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -10,17 +13,17 @@ export const metadata: Metadata = {
   description: "This Is A File Sharing Website",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+interface RootLayoutProps {
+  children: ReactNode;
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" data-theme="light">
       <body className={inter.className}>
-       <div className="min-h-screen">
-       {children}
-       </div>
+        <div className="min-h-screen">
+          <AuthProvider>{children}</AuthProvider>
+        </div>
       </body>
     </html>
   );

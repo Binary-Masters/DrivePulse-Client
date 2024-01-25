@@ -3,6 +3,7 @@ import Navbar from "@/Components/Shared/Navbar/Navbar";
 import AuthProvider from "@/providers/AuthProvider";
 
 
+
 const Layout = ({ children }) => {
     return (
         <AuthProvider>
@@ -12,6 +13,7 @@ const Layout = ({ children }) => {
                 <Footer />
             </div>
         </AuthProvider>
+        
     );
 };
 
