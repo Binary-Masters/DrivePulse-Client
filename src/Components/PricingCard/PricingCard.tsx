@@ -1,30 +1,45 @@
 "use client";
-import axios from "axios";
-import { useEffect, useState } from "react";
+// import axios from "axios";
+// import { useEffect, useState } from "react";
+import usePricings from "@/Hooks/usePricings";
 import "./pricing.css";
-interface PricingCardData {
-  id: string;
-  benifit1: string;
-  benifit2: string;
-  benifit3: string;
-  benifit4: string;
-  price: number;
-  recommended: string;
-  btnColor: string;
-  badg: string;
+import LoadingAnimation from "../Animation/LoadingAnimation/LoadingAnimation";
+// interface PricingCardData {
+//   id: string;
+//   benifit1: string;
+//   benifit2: string;
+//   benifit3: string;
+//   benifit4: string;
+//   price: number;
+//   recommended: string;
+//   btnColor: string;
+//   badg: string;
+// }
+
+interface pricingsData {
+  benefits: void;
+  loading: any;
+  refetch: void;
 }
 const PricingCard = () => {
-  const [cards, setCards] = useState<PricingCardData[]>([]);
-  useEffect(() => {
-    const getData = async () => {
-      const res = await axios.get("http://localhost:2727/pricing");
-      setCards(res?.data);
-    };
-    getData();
-  }, []);
+  const [pricings, loading] = usePricings<pricingsData[]>();
+  // const [cards, setCards] = useState<PricingCardData[]>([]);
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     const res = await axios.get(
+  //       "https://drive-pulse-server.vercel.app/pricing"
+  //     );
+  //     setCards(res?.data);
+  //   };
+  //   getData();
+  // }, []);
+
+  if (loading) {
+    return <LoadingAnimation/>
+  }
   return (
     <div className="max-w-7xl my-20 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 ">
-      {cards?.map((card) => (
+      {pricings?.map((card) => (
         <div
           style={{
             backdropFilter: "blur(30px)",

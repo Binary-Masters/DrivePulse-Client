@@ -1,6 +1,6 @@
 "use client";
-import axios from "axios";
-import { useEffect, useState } from "react";
+// import axios from "axios";
+// import { useEffect, useState } from "react";
 import {
   BsBook,
   BsBriefcaseFill,
@@ -12,21 +12,31 @@ import {
   BsPerson,
 } from "react-icons/bs";
 import bg from "@/assests/mesh-309.png";
-interface benifitesData {
-  id: string;
-  title: string;
-  description: string;
-  icon: string;
+import useBenifites from "@/Hooks/useBenifites";
+import LoadingAnimation from "@/Components/Animation/LoadingAnimation/LoadingAnimation";
+// interface benifitesData {
+//   id: string;
+//   title: string;
+//   description: string;
+//   icon: string;
+// }
+interface benefitesData {
+  benefits: void;
+  loading: any;
+  refetch: void;
 }
 const Benefits = () => {
-  const [benefits, setBenefits] = useState<benifitesData[]>([]);
-  useEffect(() => {
-    const getData = async () => {
-      const res = await axios.get("http://localhost:2727/benifites");
-      setBenefits(res?.data);
-    };
-    getData();
-  }, []);
+  const [benefits, loading] = useBenifites<benefitesData[]>();
+  // const [benefits, setBenefits] = useState<benifitesData[]>([]);
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     const res = await axios.get(
+  //       " https://drive-pulse-server.vercel.app/benifites"
+  //     );
+  //     setBenefits(res?.data);
+  //   };
+  //   getData();
+  // }, []);
 
   const getIcon = (icon) => {
     switch (icon) {
@@ -50,6 +60,9 @@ const Benefits = () => {
         return null;
     }
   };
+  if (loading) {
+    return <LoadingAnimation/>
+  }
   return (
     <div
       className="bg-blue-200-900/40 bg-cover py-16 "
