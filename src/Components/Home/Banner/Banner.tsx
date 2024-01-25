@@ -1,31 +1,48 @@
-import Image from "next/image";
-import bannerbg from "../../../../public/file_share.jpg";
-import { FaUpload } from "react-icons/fa";
-import TypeWriter from "@/Utils/TypeWriter/TypeWriter";
-const Banner: React.FC = () => {
+
+import Link from "next/link";
+// import Image from "next/image";
+// import bannerbg from "../../../assests/images/banner.jpg";
+// import { FaUpload } from "react-icons/fa";
+// import TypeWriter from "@/Utils/TypeWriter/TypeWriter";
+// import animation from "../../../assests/lottie-animation/banner.json"
+// import Lottie from "lottie-react";
+const Banner = () => {
   return (
-    <div className="hero h-[400px] md:h-[100vh] relative">
-      <Image
-        src={bannerbg}
-        alt="Description of your image"
-        className="w-[100vw] h-[400px] md:h-[100vh]"
-        placeholder="blur"
-      />
-      <div className="hero-overlay absolute bg-[#0101019c] bg-opacity-40">
-        <div className="hero-content w-full h-full flex justify-center alignItems-center text-center text-neutral-content">
-          <div className="max-w-xl">
-            <h1 className="mb-5 text-3xl md:text-5xl font-bold">Hi There,</h1>
-            <TypeWriter />
-            <p className="mb-5">
-              This Is File Sharing Platform ,You Can Store Your File And Share
-              With Anyone With Valid Link...
-            </p>
-            <button className="btn btn-accent">
-              <FaUpload /> Upload File
-            </button>
-          </div>
-        </div>
+    <div className="hero  relative ">
+     <section className=" ">
+  <div className=" px-5 py-20 lg:flex lg:h-screen lg:items-center">
+    <div className=" text-center">
+      <h1
+        className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-5xl md:text-7xl font-extrabold text-transparent"
+      >
+        Most Populer Cloud <br />
+
+        <span className="sm:block">Platform ! </span>
+      </h1>
+
+      <p className="mx-auto max-w-3xl text-gray-400 mt-4  sm:text-xl/relaxed">
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nesciunt illo tenetur fuga ducimus
+        numquam ea!
+      </p>
+
+      <div className="mt-8 flex flex-wrap justify-center gap-4">
+        <Link
+          className="block w-full rounded border border-blue-600 bg-primary px-12 py-3 text-xl font-medium text-white hover:bg-blue-500 hover:text-white focus:outline-none focus:ring active:text-opacity-75 sm:w-auto"
+          href="/dashboard/upload-file"
+        >
+          Get Started
+        </Link>
+
+        <Link
+          className="block w-full rounded border border-blue-600 px-12 py-3 text-xl font-medium text-gray-600 hover:text-white hover:bg-primary focus:outline-none focus:ring active:bg-blue-500 sm:w-auto"
+          href="/about"
+        >
+          Learn More
+        </Link>
       </div>
+    </div>
+  </div>
+</section>
     </div>
   );
 };
