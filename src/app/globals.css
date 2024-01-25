@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.debug {
+	border: 1px solid red;
+}
+
+.debug > * {
+	border: 1px solid green;
+}
+
+.debug > * > * {
+	border: 1px solid blue;
+}
