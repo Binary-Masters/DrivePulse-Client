@@ -20,11 +20,11 @@ import LoadingAnimation from "@/Components/Animation/LoadingAnimation/LoadingAni
 //   description: string;
 //   icon: string;
 // }
-interface benefitesData {
-  benefits: void;
-  loading: any;
-  refetch: void;
-}
+// interface benefitesData {
+//   benefits: void;
+//   loading: any;
+//   refetch: void;
+// }
 const Benefits = () => {
   const [benefits, loading] = useBenifites<benefitesData[]>();
   // const [benefits, setBenefits] = useState<benifitesData[]>([]);
