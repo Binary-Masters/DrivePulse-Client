@@ -4,25 +4,23 @@ import useStorage from "@/Hooks/useStorage";
 import { File } from "lucide-react";
 import { useState } from "react";
 import { MdClose } from "react-icons/md";
-
-interface CustomFile {
-	name: string,
-	size: number,
-	type: string,
-}
+import Swal from "sweetalert2";
 
 const UploadForm: React.FC = () => {
-	const [fileInfo, setFileInfo] = useState<CustomFile | null>(null);
+	const [file, setFile] = useState<File | null>(null);
 	const { uploadFile } = useStorage();
 
-	const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const file = e.target.files?.[0];
-		console.log(file);
+	const handleFileUpload = () => {
 		try {
 			if(file) {
 				uploadFile(file)
 				.then((snapshot) => {
-					console.log("File uploaded successfully!");
+					Swal.fire({
+						title: "Success",
+						text: "File uplaoded successfully",
+						icon: "success",
+						confirmButtonText: "OK",
+					})
 					console.log(snapshot);
 				})
 			}
@@ -52,9 +50,9 @@ const UploadForm: React.FC = () => {
 						>
 							<path
 								stroke="currentColor"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								strokeWidth="2"
 								d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
 							/>
 						</svg>
@@ -79,7 +77,7 @@ const UploadForm: React.FC = () => {
 						id="dropzone-file"
 						type="file"
 						className="hidden"
-						onChange={handleFileUpload}
+						onChange={e => e.target.files && setFile(e.target.files[0])}
 					/>
 				</label>
 			</div>
@@ -87,15 +85,15 @@ const UploadForm: React.FC = () => {
 				<div className="flex items-center gap-1">
 					<File className="text-3xl text-primary" />{" "}
 					<h2 className="font-medium text-gray-500">
-						{fileInfo?.name}
+						{file?.name}
 					</h2>
 				</div>{" "}
 				<h3 className="mr-10 font-medium text-gray-500">
-					{fileInfo?.type} /{" "}
-					{fileInfo && (fileInfo.size / 1024 / 1024).toFixed(2)} MB
+					{file?.type} /{" "}
+					{file && (file.size / 1024 / 1024).toFixed(2)} MB
 				</h3>
 				<button
-					onClick={() => setFileInfo(null)}
+					onClick={() => setFile(null)}
 					className="absolute right-1 top-[14px] btn-sm btn btn-circle text-xl"
 				>
 					<MdClose />
@@ -103,7 +101,8 @@ const UploadForm: React.FC = () => {
 			</div>
 			<div className="flex justify-center mt-4">
 				<button
-					disabled={!fileInfo}
+					disabled={!file}
+					onClick={handleFileUpload}
 					className="px-6 py-2 text-xl text-center text-white rounded-full bg-primary text hover:bg-blue-600 transition-all duration-300 disabled:bg-gray-300"
 				>
 					Upload
