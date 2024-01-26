@@ -24,16 +24,16 @@ interface pricingsData {
 const PricingCard = () => {
   // const [pricings, loading] = usePricings<pricingsData[]>();
   const [pricings, loading] = usePricings();
-  const [cards, setCards] = useState<PricingCardData[]>([]);
-  useEffect(() => {
-    const getData = async () => {
-      const res = await axios.get(
-        "https://drive-pulse-server.vercel.app/pricing"
-      );
-      setCards(res?.data);
-    };
-    getData();
-  }, []);
+  // const [cards, setCards] = useState<PricingCardData[]>([]);
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     const res = await axios.get(
+  //       "https://drive-pulse-server.vercel.app/pricing"
+  //     );
+  //     setCards(res?.data);
+  //   };
+  //   getData();
+  // }, []);
 
   if (loading) {
     return <LoadingAnimation/>
