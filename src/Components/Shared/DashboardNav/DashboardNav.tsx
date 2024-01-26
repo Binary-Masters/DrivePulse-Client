@@ -28,6 +28,7 @@ const DashboardNav = () => {
 	const handleLogout = () => {
 		logout()
 		.then(() => {
+			console.log("Logged out user");
 			router.push("/");
 		})
 	}
@@ -86,13 +87,6 @@ const DashboardNav = () => {
 						</button>
 					</span>
 				</div>
-				{/* <div className="dropdown dropdown-right dropdown-end"> */}
-				{/* <div tabIndex={0} role="button" className="m-1 btn">Click</div> */}
-				{/* <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"> */}
-				{/* <li><a>Item 1</a></li> */}
-				{/* <li><a>Item 2</a></li> */}
-				{/* </ul> */}
-				{/* </div> */}
 				<div className="dropdown dropdown-end">
 					<div tabIndex={0} role="button">
 						<div className="flex items-center gap-2 btn btn-ghost">

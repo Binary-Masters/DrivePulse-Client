@@ -16,6 +16,7 @@ import { auth } from "../firebase/firebase.config";
 export interface AuthInfo {
 	user: any;
 	loading: boolean;
+	isAuthenticated: boolean;
 	createUser: (email: string, password: string) => Promise<UserCredential>;
 	login: (email: string, password: string) => Promise<UserCredential>;
 	loginByGoogle: () => Promise<UserCredential>;
@@ -28,7 +29,8 @@ export const AuthContext = createContext({});
 
 const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 	const [user, setUser] = useState<User | null>(null);
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState<boolean>(true);
+	const [ isAuthenticated, setIsAuthenticated ] = useState<boolean>(false)
 
 	const createUser = (email: string, password: string) => {
 		setLoading(true);
@@ -66,6 +68,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
 			if (user) {
 				setUser(user);
+				setIsAuthenticated(true);
 				setLoading(false);
 			}
 		});
@@ -77,6 +80,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
 	const authInfo: AuthInfo = {
 		user,
+		isAuthenticated,
 		loading,
 		createUser,
 		login,
