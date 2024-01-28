@@ -1,16 +1,15 @@
 
-footer {
+/* footer {
  width: 100%;
  height: 100%;
- /* color:red; */
  padding: 50px 0 30px;
  border-top-left-radius: 125px;
  font-size: 13px;
  background: linear-gradient(to right, #2b5876, #3B4371);
-}
-.bgColour {
+} */
+/* .bgColour {
  color: whitesmoke;
-}
+} */
 form{
 padding-bottom: 15px;
 border-bottom: 1px solid #ccc;
@@ -21,7 +20,7 @@ form input{
  outline: none;
 }
 .underline{
- width: 80px;
+ 
  height: 5px;
  background: #767676;
  border-radius: 3px;

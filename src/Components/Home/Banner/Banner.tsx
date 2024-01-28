@@ -1,49 +1,49 @@
-
+"use client"
+import Lottie from 'lottie-react';
+import img from '../../../assests/Banner/banner.png'
+import Image from "next/image";
 import Link from "next/link";
 // import Image from "next/image";
 // import bannerbg from "../../../assests/images/banner.jpg";
 // import { FaUpload } from "react-icons/fa";
 // import TypeWriter from "@/Utils/TypeWriter/TypeWriter";
-// import animation from "../../../assests/lottie-animation/banner.json"
+import animation from "../../../assests/lottie-animation/banner.json"
 // import Lottie from "lottie-react";
+import "./styles.css"
+import PlayVideoModal from '../PlayvideoModal/PlayVideoModal';
 const Banner = () => {
   return (
-    <div className="hero  relative ">
-     <section className=" ">
-  <div className=" px-5 py-20 lg:flex lg:h-screen lg:items-center">
-    <div className=" text-center">
-      <h1
-        className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-5xl md:text-7xl font-extrabold text-transparent"
-      >
-        Most Populer Cloud <br />
+   <>
+   <div className="banner h-[110vh] md:h-[100vh]">
+        <div className='flex flex-col-reverse md:flex-row items-center justify-between max-w-7xl mx-auto pt-10 px-5'>
+          {/* content */}
+          <div className='space-y-4 flex-1 relative'>
+          <div className="flex items-center gap-2">
+          <div className="w-10 h-[2px] bg-primary"></div>
+          <span className="uppercase font-semibold bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+            file sharing plateform
+          </span>
+        </div>
+            <h2 className='animate-text text-4xl md:text-5xl font-bold'>Share, Store, and Collaborate with Ease!</h2>
+            <p className='text-gray-300 font-medium'>Discover effortless file sharing at DrivePulse. Upload, share, and collaborate seamlessly with our intuitive platform. Enjoy secure storage, unlimited file uploads, and simplified sharing—all in one place. Join us today and experience hassle-free file sharing like never before!</p>
+            <Link href={"/dashboard/upload-file"}>
+            <button className="button absolute left-[90px] -bottom-20">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              Get Started
+            </button></Link>
+            <PlayVideoModal/>
+          </div>
+          {/* animation */}
+          <div className='flex-1 '>
+            <Lottie animationData={animation}/>
+          </div>
+        </div>
+   </div>
 
-        <span className="sm:block">Platform ! </span>
-      </h1>
-
-      <p className="mx-auto max-w-3xl text-gray-400 mt-4  sm:text-xl/relaxed">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nesciunt illo tenetur fuga ducimus
-        numquam ea!
-      </p>
-
-      <div className="mt-8 flex flex-wrap justify-center gap-4">
-        <Link
-          className="block w-full rounded border border-blue-600 bg-primary px-12 py-3 text-xl font-medium text-white hover:bg-blue-500 hover:text-white focus:outline-none focus:ring active:text-opacity-75 sm:w-auto"
-          href="/dashboard/upload-file"
-        >
-          Get Started
-        </Link>
-
-        <Link
-          className="block w-full rounded border border-blue-600 px-12 py-3 text-xl font-medium text-gray-600 hover:text-white hover:bg-primary focus:outline-none focus:ring active:bg-blue-500 sm:w-auto"
-          href="/about"
-        >
-          Learn More
-        </Link>
-      </div>
-    </div>
-  </div>
-</section>
-    </div>
+   </>
   );
 };
 
