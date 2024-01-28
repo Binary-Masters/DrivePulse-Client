@@ -1,20 +1,20 @@
 "use client";
-// import axios from "axios";
-// import { useEffect, useState } from "react";
 import usePricings from "@/Hooks/usePricings";
 import "./pricing.css";
 import LoadingAnimation from "../Animation/LoadingAnimation/LoadingAnimation";
-// interface PricingCardData {
-//   id: string;
-//   benifit1: string;
-//   benifit2: string;
-//   benifit3: string;
-//   benifit4: string;
-//   price: number;
-//   recommended: string;
-//   btnColor: string;
-//   badg: string;
-// }
+import axios from "axios";
+import { useEffect, useState } from "react";
+interface PricingCardData {
+  id: string;
+  benifit1: string;
+  benifit2: string;
+  benifit3: string;
+  benifit4: string;
+  price: number;
+  recommended: string;
+  btnColor: string;
+  badg: string;
+}
 
 interface pricingsData {
   benefits: void;
@@ -22,7 +22,8 @@ interface pricingsData {
   refetch: void;
 }
 const PricingCard = () => {
-  const [pricings, loading] = usePricings<pricingsData[]>();
+  // const [pricings, loading] = usePricings<pricingsData[]>();
+  const [pricings, loading] = usePricings();
   // const [cards, setCards] = useState<PricingCardData[]>([]);
   // useEffect(() => {
   //   const getData = async () => {
@@ -39,7 +40,7 @@ const PricingCard = () => {
   }
   return (
     <div className="max-w-7xl my-20 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 ">
-      {pricings?.map((card) => (
+      {(pricings as PricingCardData[])?.map((card) => (
         <div
           style={{
             backdropFilter: "blur(30px)",

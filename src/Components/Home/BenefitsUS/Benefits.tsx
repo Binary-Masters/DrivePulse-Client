@@ -1,6 +1,6 @@
 "use client";
-// import axios from "axios";
-// import { useEffect, useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import {
   BsBook,
   BsBriefcaseFill,
@@ -12,31 +12,21 @@ import {
   BsPerson,
 } from "react-icons/bs";
 import bg from "@/assests/mesh-309.png";
-import useBenifites from "@/Hooks/useBenifites";
-import LoadingAnimation from "@/Components/Animation/LoadingAnimation/LoadingAnimation";
-// interface benifitesData {
-//   id: string;
-//   title: string;
-//   description: string;
-//   icon: string;
-// }
-interface benefitesData {
-  benefits: void;
-  loading: any;
-  refetch: void;
+interface benifitesData {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
 }
 const Benefits = () => {
-  const [benefits, loading] = useBenifites<benefitesData[]>();
-  // const [benefits, setBenefits] = useState<benifitesData[]>([]);
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     const res = await axios.get(
-  //       " https://drive-pulse-server.vercel.app/benifites"
-  //     );
-  //     setBenefits(res?.data);
-  //   };
-  //   getData();
-  // }, []);
+  const [benefits, setBenefits] = useState<benifitesData[]>([]);
+  useEffect(() => {
+    const getData = async () => {
+      const res = await axios.get("https://drive-pulse-server.vercel.app/benifites");
+      setBenefits(res?.data);
+    };
+    getData();
+  }, []);
 
   const getIcon = (icon) => {
     switch (icon) {
@@ -60,22 +50,19 @@ const Benefits = () => {
         return null;
     }
   };
-  if (loading) {
-    return <LoadingAnimation/>
-  }
   return (
     <div
-      className="bg-blue-200-900/40 bg-cover py-16 "
+      className="py-16 bg-cover bg-blue-200-900/40 "
       style={{
         backgroundImage: `url(${bg.src})`,
         width: "100%",
         height: "100%",
       }}
     >
-      <h2 className="text-4xl font-bold py-10 text-center">
+      <h2 className="py-10 text-4xl font-bold text-center">
         Who Benefits from <span className="text-[#5757f4]">DrivePulse</span>
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 px-5">
+      <div className="px-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {benefits.map((item, index) => (
           <div
             key={index}
@@ -86,7 +73,7 @@ const Benefits = () => {
                 {getIcon(item.icon)}
               </div>
             </figure>
-            <div className="card-body items-center text-center">
+            <div className="items-center text-center card-body">
               <h3 className="text-2xl font-bold">{item.title}</h3>
               <p>{item.description}</p>
             </div>

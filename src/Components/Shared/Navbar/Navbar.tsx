@@ -7,9 +7,11 @@ import { useState } from "react";
 import { FaBars } from "react-icons/fa6";
 import { FaArrowLeft } from "react-icons/fa6";
 import { usePathname } from "next/navigation";
+import useAuth from "@/Hooks/useAuth";
 
 export default function Navbar() {
 	const [toggleSidebar, setToggleSidebar] = useState(false);
+	const { isAuthenticated } = useAuth();
 	const pathname = usePathname();
 	const dividerPosition = 2;
 	const routes = [
@@ -17,7 +19,6 @@ export default function Navbar() {
 		{ path: "/about", label: "About" },
 		{ path: "/pricing", label: "Pricing" },
 		{ path: "/contact", label: "Contact" },
-		{ path: "/registration", label: "Register" },
 		{ path: "/login", label: "Login" },
 	];
 
@@ -41,12 +42,13 @@ export default function Navbar() {
 					<>
 						<Link
 							key={route.path + route.label}
-							href={route.path}
+							// Authenticated user can go to dashboard from homepage
+							href={(isAuthenticated && route.path === "/login") ? "/dashboard" : route.path}
 							className={`group  ${
 								pathname === route.path && "font-bold"
 							} `}
 						>
-							{route.label}
+							{(isAuthenticated && route.path === "/login") ? "Dashboard" : route.label}
 
 							{/* Underlay */}
 							<div
