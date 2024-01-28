@@ -26,7 +26,7 @@ const data = [
 
 const HandleFileNeed = () => {
     return (
-        <div className='py-20 relative bg-slate-200'>
+        <div className='py-10 relative bg-slate-200'>
 
              <Image
                 alt="Mountains"
@@ -42,20 +42,20 @@ const HandleFileNeed = () => {
             <h2 className='text-5xl text-center font-bold'>Handles all of your file needs</h2>
             <p className='text-lg w-2/3 mx-auto text-center py-5 text-gray-600'>File storage made easy – including powerful features you won’t find anywhere else. Whether you’re sharing photos, videos, audio, or docs, MediaFire can simplify your workflow.</p>
 
-            <div className='mx-5 md:mx-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 px-5'>
+            <div className='px-3 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5'>
                 {
                     data.map((item, index) => (
                         <div key={index} className="card rounded-md bg-slate-50 hover:shadow-md ">
 
-                            <figure className="px-10 pt-10 flex items-center justify-center">
+                            <figure className="px-10 pt-10 flex items-center justify-center z-10">
                                 <Image src={item.image}
                                     width={90}
                                     height={90}
                                     alt="icons image"></Image>
                             </figure>
                             <div className="card-body items-center text-center">
-                                <h3 className='text-2xl font-bold'>{item.title}</h3>
-                                <p className='text-gray-600'>{item.description}</p>
+                                <h3 className='text-2xl font-bold z-10'>{item.title}</h3>
+                                <p className='text-gray-600 z-10'>{item.description}</p>
                             </div>
 
                         </div>

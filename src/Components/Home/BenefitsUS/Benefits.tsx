@@ -1,5 +1,6 @@
 "use client";
 import axios from "axios";
+import { Tilt } from 'react-tilt'
 import { useEffect, useState } from "react";
 import {
   BsBook,
@@ -30,13 +31,14 @@ const Benefits = () => {
   useEffect(() => {
     const getData = async () => {
       const res = await axios.get(
-        "http://localhost:2727/benifites"
+        "https://drive-pulse-server.vercel.app/benifites"
       );
       setBenefits(res?.data);
+      // console.log(res);
     };
     getData();
   }, []);
-
+// console.log(benefits);
   const getIcon = (icon) => {
     switch (icon) {
       case "BsBriefcaseFill":
@@ -74,12 +76,14 @@ const Benefits = () => {
       <h2 className="text-4xl font-bold py-10 text-center">
         Who Benefits from <span className="text-[#5757f4]">DrivePulse</span>
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 px-5">
+      <div className="grid max-w-7xl mx-auto grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 px-3">
         {benefits.map((item, index) => (
           <div
             key={index}
-            className="rounded-md bg-base-100 shadow hover:shadow-md shadow-[#5757f49f]"
+            className="rounded-md  shadow-md hover:shadow-lg shadow-[#5757f49f] hover:shadow-blue-400"
           >
+            <Tilt
+              options={{ scale: 1, max: 25, speed: 400, perspective: 1000 }}>
             <figure className="px-10 pt-10">
               <div className="flex justify-center text-5xl">
                 {getIcon(item.icon)}
@@ -89,6 +93,7 @@ const Benefits = () => {
               <h3 className="text-2xl font-bold">{item.title}</h3>
               <p>{item.description}</p>
             </div>
+            </Tilt>
           </div>
         ))}
       </div>
