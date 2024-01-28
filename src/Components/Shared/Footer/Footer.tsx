@@ -14,8 +14,8 @@ const Footer = () => {
     <div>
       <footer className="  w-full h-full mx-auto  ">
         {/* main div */}
-        <div className=' bg-[#0c163b] '>
-        <div className='max-w-6xl mx-auto grid grid-cols-1 md:gird md:grid-cols-2 lg:grid-cols-4 md:justify-between md:mx-auto md:gap-x-56 md:items-center  lg:gap-60 lg:justify-evenly w-auto flex-shrink-0 overflow-hidden px-10 py-10'>
+        <div className=' bg-[#0c163b]  '>
+        <div className='lg:max-w-6xl mx-auto grid grid-cols-1 md:gird md:grid-cols-2 lg:grid-cols-4 md:justify-between md:mx-auto md:gap-x-56 md:items-center  lg:gap-60 lg:justify-evenly w-auto flex-shrink-0 overflow-hidden px-10 py-10'>
           {/* 1st div */}
       <div className='' >
         <p className='text-4xl text-white'>DrivePulse</p>
@@ -30,8 +30,8 @@ const Footer = () => {
       {/* end */}
       </div>
     {/* 2nd */}
-      <div className=''>
-     <div className='text-white'> FEATURES <div className="underline -mt-5 "><span></span></div></div>
+      <div className=' w-28'>
+     <div className='text-white'> FEATURES <div className="underline w-[86px] -mt-5 "><span></span></div></div>
      <div className='my-8 flex flex-col gap-4 text-gray-400 '>
         <p className='cursor-pointer text-balance hover:underline'>File Upload </p>
         <p className='cursor-pointer text-ellipsis hover:underline'>File Sharing </p>
@@ -42,8 +42,8 @@ const Footer = () => {
       
       </div>
       {/* 3rd */}
-      <div className='text-white'>
-      LEARN MORE <div className="underline -mt-5"><span></span></div>
+      <div className='text-white  w-28 '>
+      LEARN MORE <div className="underline w-[100px] -mt-5"><span></span></div>
       <div className='my-8 flex flex-col gap-4 text-gray-400'>
         <p className='cursor-pointer hover:underline'>About</p>
         <p className='cursor-pointer hover:underline'>Blog</p>
@@ -53,8 +53,8 @@ const Footer = () => {
       </div>
       </div>
     {/* 4th */}
-      <div className='text-white'>
-      SUPPORTS <div className="underline  -mt-5"><span ></span></div>
+      <div className='text-white  w-28'>
+      SUPPORTS <div className="underline w-[86px]  -mt-5"><span ></span></div>
 
       <div className='my-8 flex flex-col gap-4 text-gray-400'>
         <p className='cursor-pointer hover:underline'>Help Center</p>
