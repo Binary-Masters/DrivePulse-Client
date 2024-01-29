@@ -1,7 +1,7 @@
 "use client";
 import { FileUp, Home, LayoutDashboard, Settings, Upload } from "lucide-react";
 import Image from "next/image";
-import logo from "@/../../public/logo.png";
+import logo from "../../assests/icons/logo.png";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 interface Items {
@@ -49,9 +49,15 @@ const SideNave = () => {
 	];
 
 	return (
-		<div className="h-full border-r shadow-sm">
+		<div className="h-screen w-[60%] md:w-64 fixed z-50 shadow-sm bg-[#070c28] mt-20 md:mt-0">
 			<div className="hidden p-3 md:block">
-				<Image width={120} height={100} src={logo} alt="logo" />
+			<div className="flex items-center gap-1">
+        <Image src={logo} className="w-[30px] h-[30px] md:w-[40px] md:h-[50px]" alt="DrivePulse Logo" />
+        <div className="">
+          <h2 style={{letterSpacing:"2px"}} className="font-bold text-blue-400 text-[20px] md:text-2xl">DRIVE</h2>
+          <p style={{letterSpacing:"4px"}} className="text-[14px] md:text-[20px] font-medium md:-mt-2 -mt-3 text-slate-300">PULSE</p>
+        </div>
+        </div>
 			</div>
 			<div className="flex flex-col mt-5 gap-4">
 				{menuList.map((item, index) => (
@@ -59,14 +65,14 @@ const SideNave = () => {
 						href={item?.path}
 						key={item?.id}
 						className={`${
-							pathname === item.path && "text-primary"
+							pathname === item.path ? "text-primary" : "text-slate-200"
 						} `}
 					>
 						<button
-							className={`flex items-center gap-1 w-full hover:bg-gray-200 px-4 py-2 rounded-md  font-medium `}
+							className={`flex items-center gap-2 w-full hover:bg-gray-600 px-4 py-2 rounded-md  font-medium `}
 						>
-							{item?.icon}
-							<h2>{item?.name}</h2>
+							<h2 className="text-2xl bg-primary text-white p-2 rounded-xl">{item?.icon}</h2>
+							<h2 className="font-medium">{item?.name}</h2>
 						</button>
 					</Link>
 				))}
@@ -78,14 +84,14 @@ const SideNave = () => {
 						href={item?.path}
 						key={item?.id}
 						className={`${
-							pathname === item.path && "text-primary"
+							pathname === item.path ? "text-primary" : "text-slate-200"
 						} `}
 					>
 						<button
-							className={`flex items-center gap-1 w-full hover:bg-gray-200 px-4 py-2 rounded-md  font-medium `}
+							className={`flex items-center gap-2 w-full hover:bg-gray-600 px-4 py-2 rounded-md  font-medium `}
 						>
-							{item?.icon}
-							<h2>{item?.name}</h2>
+							<h2 className="text-2xl bg-primary text-white p-2 rounded-xl">{item?.icon}</h2>
+							<h2 className="font-medium">{item?.name}</h2>
 						</button>
 					</Link>
 				))}

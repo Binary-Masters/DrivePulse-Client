@@ -22,7 +22,7 @@ const FAQ = () => {
            <div className="md:w-[40%]">
                 <Lottie animationData={animation}/>
            </div>
-           <div className="space-y-4 md:w-[60%]">
+           <div className="space-y-4 w-full md:w-[60%]">
            <Accordion>
             <AccordionItem>
                 <AccordionItemHeading>
