@@ -16,13 +16,8 @@ interface PricingCardData {
   badg: string;
 }
 
-interface pricingsData {
-  benefits: void;
-  loading: any;
-  refetch: void;
-}
+
 const PricingCard = () => {
-  // const [pricings, loading] = usePricings<pricingsData[]>();
   const [pricings, loading] = usePricings();
   // const [cards, setCards] = useState<PricingCardData[]>([]);
   // useEffect(() => {

@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-import { Tilt } from 'react-tilt'
+import { Tilt } from "react-tilt";
 import { useEffect, useState } from "react";
 import {
   BsBook,
@@ -13,25 +13,28 @@ import {
   BsPerson,
 } from "react-icons/bs";
 import bg from "@/assests/mesh-309.png";
-interface benifitesData {
-  id: string;
-  title: string;
-  description: string;
-  icon: string;
-}
+import useBenifites from "@/Hooks/useBenifites";
+import LoadingAnimation from "@/Components/Animation/LoadingAnimation/LoadingAnimation";
+// interface benifitesData {
+//   id: string;
+//   title: string;
+//   description: string;
+//   icon: string;
+// }
 const Benefits = () => {
-  const [benefits, setBenefits] = useState<benifitesData[]>([]);
-  useEffect(() => {
-    const getData = async () => {
-      const res = await axios.get(
-        "https://drive-pulse-server.vercel.app/benifites"
-      );
-      setBenefits(res?.data);
-      // console.log(res);
-    };
-    getData();
-  }, []);
-// console.log(benefits);
+  const [benefits, loading] = useBenifites();
+  // const [benefits, setBenefits] = useState<benifitesData[]>([]);
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     const res = await axios.get(
+  //       "https://drive-pulse-server.vercel.app/benifites"
+  //     );
+  //     setBenefits(res?.data);
+  //     // console.log(res);
+  //   };
+  //   getData();
+  // }, []);
+  // console.log(benefits);
   const getIcon = (icon) => {
     switch (icon) {
       case "BsBriefcaseFill":
@@ -54,6 +57,9 @@ const Benefits = () => {
         return null;
     }
   };
+  if (loading) {
+    return <LoadingAnimation />;
+  }
   return (
     <div
       className="py-16 bg-cover bg-blue-200-900/40 "
@@ -73,16 +79,17 @@ const Benefits = () => {
             className="rounded-md  shadow-md hover:shadow-lg shadow-[#5757f49f] hover:shadow-blue-400"
           >
             <Tilt
-              options={{ scale: 1, max: 25, speed: 400, perspective: 1000 }}>
-            <figure className="px-10 pt-10">
-              <div className="flex justify-center text-5xl">
-                {getIcon(item.icon)}
+              options={{ scale: 1, max: 30, speed: 300, perspective: 2000 }}
+            >
+              <figure className="px-10 pt-10">
+                <div className="flex justify-center text-5xl">
+                  {getIcon(item.icon)}
+                </div>
+              </figure>
+              <div className="items-center text-center card-body">
+                <h3 className="text-2xl font-bold">{item.title}</h3>
+                <p>{item.description}</p>
               </div>
-            </figure>
-            <div className="items-center text-center card-body">
-              <h3 className="text-2xl font-bold">{item.title}</h3>
-              <p>{item.description}</p>
-            </div>
             </Tilt>
           </div>
         ))}

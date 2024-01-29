@@ -14,13 +14,13 @@ import PlayVideoModal from '../PlayvideoModal/PlayVideoModal';
 const Banner = () => {
   return (
    <>
-   <div className="banner h-[110vh] md:h-[100vh]">
+   <div className="banner h-[105vh] md:h-[100vh]">
         <div className='flex flex-col-reverse md:flex-row items-center justify-between max-w-7xl mx-auto pt-10 px-5'>
           {/* content */}
           <div className='space-y-4 flex-1 relative'>
           <div className="flex items-center gap-2">
           <div className="w-10 h-[2px] bg-primary"></div>
-          <span className="uppercase font-semibold bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+          <span className="uppercase font-semibold text-gray-300">
             file sharing plateform
           </span>
         </div>

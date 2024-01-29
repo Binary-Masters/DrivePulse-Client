@@ -17,7 +17,7 @@ const PlayVideoModal: React.FC = () => {
   return (
     <div>
       <button
-        className="btn bg-primary text-white hover:bg-blue-600 btn-circle text-xl animate-bounce absolute right-[40%] md:right-0 hover:animate-none -bottom-24 z-20"
+        className="btn bg-primary text-white hover:bg-blue-600 btn-circle text-xl absolute right-[40%] md:right-0  -bottom-24 z-20"
         onClick={openModal}
       >
         <FaPlay />

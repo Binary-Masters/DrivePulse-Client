@@ -28,28 +28,20 @@ const DashboardNav = () => {
 	const handleLogout = () => {
 		logout()
 		.then(() => {
-			console.log("Logged out user");
+			// console.log("Logged out user");
 			router.push("/");
 		})
 	}
 
 	return (
 		<>
-			<div
+			<div 
 				ref={navbarRef}
-				className="flex items-center justify-between px-4 py-3 border-b shadow gap-2 "
+				className="flex z-50  w-full max-w-5xl mx-auto fixed top-2 items-center justify-between px-4 py-2 glass shadow gap-2 rounded-lg ml-5"
 			>
 				<button onClick={() => setIsToggle(!isToggle)}>
-					<Menu className="md:hidden" />
+					<Menu className="md:hidden text-white" />
 				</button>
-				{/* <Image */}
-				{/* 	width={100} */}
-				{/* 	height={50} */}
-				{/* 	src={logo} */}
-				{/* 	alt="logo" */}
-				{/* 	className="hidden" */}
-				{/* /> */}
-
 				<div className="relative">
 					<label htmlFor="Search" className="sr-only">
 						{" "}
@@ -59,14 +51,14 @@ const DashboardNav = () => {
 					<input
 						type="text"
 						id="Search"
-						placeholder="Search for..."
-						className="w-full pl-2 rounded-md border-gray-200 py-2.5 pe-10 shadow-sm sm:text-sm"
+						placeholder="Search files..."
+						className="w-full pl-2 rounded-md  py-2.5 pe-10 shadow-lg sm:text-sm bg-transparent outline-none placeholder:text-gray-300 focus:border-gray-300 text-gray-300"
 					/>
 
 					<span className="absolute inset-y-0 w-10 end-0 grid place-content-center">
 						<button
 							type="button"
-							className="text-gray-600 hover:text-gray-700"
+							className="text-gray-300 hover:text-gray-400"
 						>
 							<span className="sr-only">Search</span>
 
@@ -130,9 +122,9 @@ const DashboardNav = () => {
 
 			{/* Sidebar */}
 			<div
-				className={`absolute top-[${navbarHeight}] z-50 ${
+				className={`absolute transition-all duration-500 top-[${navbarHeight}]  ${
 					isToggle ? "block" : "hidden"
-				} flex-col w-[60%] min-w-[280px] debug h-full bg-white md:hidden`}
+				} flex-col w-[60%] min-w-[280px] h-full  md:hidden`}
 			>
 				<SideNave />
 			</div>
