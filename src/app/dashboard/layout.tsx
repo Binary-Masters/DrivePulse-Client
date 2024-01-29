@@ -7,7 +7,7 @@ const layout = ({ children }) => {
 	return (
 		<PrivateRoute>
 			<div>
-				<div className="fixed inset-y-0 z-50 flex-col hidden h-full md:flex md:w-64">
+				<div className="inset-y-0 flex-col hidden md:flex">
 					<SideNave />
 				</div>
 				<div className="md:ml-64">

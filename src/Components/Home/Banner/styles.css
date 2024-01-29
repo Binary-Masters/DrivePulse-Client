@@ -11,7 +11,7 @@
 }
 
 .animate-text{
-    background: linear-gradient(90deg, rgb(11, 214, 241), #efebee , rgb(13, 152, 211),rgb(15, 153, 239), #1741d9 , #09a8e7);
+    background: linear-gradient(90deg, rgb(11, 214, 241), rgb(13, 152, 211),rgb(15, 153, 239), #1741d9 , #09a8e7);
    background-size: 400%;
    background-clip: text;
     color: transparent;

@@ -1,10 +1,11 @@
-import React from 'react';
+import DashboardHome from '@/Components/Dashboard/DashboardHome/DashboardHome';
+
 
 const Dashboard = () => {
     return (
-        <div>
-            <h2>Dashboard home Comming soon...</h2>
-        </div>
+        <>
+        <DashboardHome/>
+        </>
     );
 };
 

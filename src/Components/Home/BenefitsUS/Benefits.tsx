@@ -73,7 +73,7 @@ const Benefits = () => {
             className="rounded-md  shadow-md hover:shadow-lg shadow-[#5757f49f] hover:shadow-blue-400"
           >
             <Tilt
-              options={{ scale: 1, max: 25, speed: 400, perspective: 1000 }}>
+              options={{ scale: 1, max: 30, speed: 300, perspective: 2000 }}>
             <figure className="px-10 pt-10">
               <div className="flex justify-center text-5xl">
                 {getIcon(item.icon)}

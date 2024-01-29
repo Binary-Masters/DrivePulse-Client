@@ -4,7 +4,7 @@ import "./styles.css"
 const SignUpToFree = () => {
     return (
         <div className='sign-up-box w-full h-fit md:h-[400px] bg-fixed py-20 px-3'>
-           <div className='max-w-6xl mx-auto flex items-center flex-col-reverse md:flex-row gap-5'>
+           <div className='max-w-6xl mx-auto flex md:items-center flex-col-reverse md:flex-row gap-5'>
             <div className='flex-1 space-y-4'>
             <h4 className='flex items-center gap-1 text-white '><GiConfirmed className='text-green-500'/>Get 500 MB storage for free</h4>
             <h4 className='flex items-center gap-1 text-white'><GiConfirmed className='text-green-500'/>Secure file</h4>
