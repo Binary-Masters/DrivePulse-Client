@@ -17,8 +17,11 @@ form input[type="submit"]{
 
 @keyframes blink{
     0%{opacity: 1;}
-    50%{opacity: 0.3;}
+    50%{opacity: 0.3; color:white;}
     100%{opacity: 1;}
 }
 
-
+.blink-text:hover{
+    transform: none;
+    animation: none;
+}

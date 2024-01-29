@@ -26,6 +26,7 @@ export interface AuthInfo {
 }
 
 export const AuthContext = createContext({});
+const provider = new GoogleAuthProvider();
 
 const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 	const [user, setUser] = useState<User | null>(null);
@@ -43,7 +44,6 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 	};
 
 	const loginByGoogle = () => {
-		const provider = new GoogleAuthProvider();
 		setLoading(true);
 		return signInWithPopup(auth, provider);
 	};
