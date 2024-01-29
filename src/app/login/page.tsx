@@ -7,6 +7,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "@/providers/AuthProvider";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+import './style.css'
 
 const Login = () => {
 	const [showPass, setShowPass] = useState(false);
@@ -81,13 +82,7 @@ const Login = () => {
 											Email
 										</span>
 									</label>
-									<input
-										type="email"
-										name="email"
-										placeholder="email"
-										className="w-full h-6 px-2 bg-transparent border-b-2 outline-none focus:h-8 rounded-md"
-										required
-									/>
+									<input type="email" name='email' placeholder="email" className="h-6 focus:h-8 rounded-md px-2 outline-none w-full border-b-2 bg-transparent" required />
 								</div>
 								<div>
 									<label className="label">
@@ -99,7 +94,7 @@ const Login = () => {
 										type={showPass ? "text" : "password"}
 										name="password"
 										placeholder="password"
-										className="relative w-full h-6 px-2 bg-transparent border-b-2 outline-none focus:h-8 rounded-md"
+										className="relative w-full h-6 px-2 bg-transparent border-b-2 border-white focus:outline-none focus:h-8 rounded-md"
 										required
 									/>
 									<span
@@ -121,16 +116,16 @@ const Login = () => {
 										Do not have account ? Please{" "}
 										<Link
 											href="/registration"
-											className="ml-2 font-medium text-gray-300 hover:underline hover:text-white"
+											className="ml-2 font-medium"
 										>
-											Create an account
+											<span className="blink-text hover:text-yellow-400">Create an account</span>
 										</Link>
 									</p>
 								</div>
 							</form>
 							<div>
 								<div className="font-bold text-indigo-600 divider divider-primary">
-									OR Login With
+									OR Continue With
 								</div>
 								<div className="flex gap-2">
 									<button

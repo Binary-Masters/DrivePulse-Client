@@ -1,0 +1,24 @@
+
+form input[required]{
+    background: transparent;
+    border-bottom: 2px solid white;
+}
+
+form input[type="submit"]{
+  border:1px solid blue;   
+}
+
+.blink-text{
+    transform: translate(-50% -50%);
+    animation: blink 5s linear infinite;
+    color: aqua;
+    text-decoration: underline;
+}
+
+@keyframes blink{
+    0%{opacity: 1;}
+    50%{opacity: 0.3;}
+    100%{opacity: 1;}
+}
+
+
