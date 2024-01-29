@@ -18,10 +18,6 @@ interface PricingCardData {
 
 
 const PricingCard = () => {
-<<<<<<< HEAD
-=======
-  // const [pricings, loading] = usePricings<pricingsData[]>();
->>>>>>> 024775b94601583f63eec5c8f6a999e833575869
   const [pricings, loading] = usePricings();
   // const [cards, setCards] = useState<PricingCardData[]>([]);
   // useEffect(() => {
