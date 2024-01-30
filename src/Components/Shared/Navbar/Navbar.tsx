@@ -42,7 +42,7 @@ export default function Navbar() {
     <div
       className={`px-4 navbar md:px-14 fixed top-0  z-50 ${
         sroll ?
-        "bg-white text-black shadow-md border-b py-3 transition-all duration-300" : "text-white"
+        "glass text-white shadow-md border-b py-2 transition-all duration-300" : "text-white"
       }`}>
       <div className="text-2xl navbar-start gap-2 md:text-3xl">
         <p onClick={() => setToggleSidebar(true)}>

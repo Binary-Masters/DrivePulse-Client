@@ -20,7 +20,7 @@ const HomeAbout = () => {
           placeholder="blur"
           className="w-[200px] md:w-[300px] h-[300px] md:h-[400px] object-cover rounded absolute right-0 md:right-10 -bottom-5 shadow-xl"
         />
-        <div className="absolute bottom-10 card w-[300px] md:w-[350px]  left-10 border shadow-md rounded-md bg-white p-2">
+        <div className="absolute bottom-10 w-[300px] md:w-[350px] left-5  md:left-10 border shadow-md rounded-md bg-white p-2">
             <div className="flex items-center gap-2">
                 <Image src={secureImg} alt="img" className="w-14 h-14 z-10"/>
                 <h2 className="text-xl md:text-2xl font-semibold z-10">Secure <span className="text-primary">File</span> Hosting!</h2>
@@ -31,14 +31,14 @@ const HomeAbout = () => {
       <div className="flex-1 space-y-7">
         <div className="flex items-center gap-2">
           <div className="w-16 h-1 bg-primary"></div>
-          <span className="uppercase font-semibold text-slate-900">
+          <span className="uppercase font-semibold text-slate-300">
             About Us
           </span>
         </div>
-        <h2 className="text-4xl md:text-6xl font-bold">
+        <h2 className="text-4xl md:text-6xl font-bold text-slate-300">
           What is <span className="bg-gradient-to-r from-blue-400 via-blue-800 to-purple-600 bg-clip-text text-transparent">DrivePulse</span>?
         </h2>
-        <p className="text-gray-400 font-medium">
+        <p className="text-slate-400 font-medium">
           Working with coworkers, customers and partners has never been simpler.
           With CloudMe, not only can you securely share files, you can also
           create, edit and review documents with others in real time from
@@ -46,7 +46,7 @@ const HomeAbout = () => {
           content to empowering global teams, Box helps you work smarter than
           ever before.
         </p>
-        <Link href={"/about"} className="relative inline-flex items-center px-12 py-3 overflow-hidden text-lg font-medium text-primary border-2 border-primary rounded-md hover:text-white group hover:bg-gray-50">
+        <Link href={"/about"} className="relative inline-flex items-center px-12 py-3 overflow-hidden text-lg font-medium text-primary border-2 border-primary rounded-md hover:text-white group ">
           <span className="absolute left-0 block w-full h-0 transition-all bg-primary opacity-100 group-hover:h-full top-1/2 group-hover:top-0 duration-400 ease"></span>
           <span className="absolute right-0 flex items-center justify-start w-10 h-10 duration-300 transform translate-x-full group-hover:translate-x-0 ease">
             <svg
