@@ -5,7 +5,7 @@ import { Inter } from "next/font/google";
 import { ReactNode } from "react"; // Import ReactNode
 import AuthProvider from "@/providers/AuthProvider";
 import "./globals.css";
-import ReactTanstackProvider from "./ReactTanstackProvider";
+import ReactTanstackProvider from "../providers/ReactTanstackProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 

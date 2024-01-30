@@ -1,12 +1,12 @@
 // "use client";
 import useAxiosPublic from "./useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
-interface benifitesData {
-  id: string;
-  title: string;
-  description: string;
-  icon: string;
-}
+// interface benifitesData {
+//   id: string;
+//   title: string;
+//   description: string;
+//   icon: string;
+// }
 
 const useBenifites = () => {
   const axiosPublic = useAxiosPublic();
@@ -14,7 +14,7 @@ const useBenifites = () => {
     data: benefits = [],
     isLoading: loading,
     refetch,
-  } = useQuery<benifitesData[]>({
+  } = useQuery({
     queryKey: ["benifites"],
     queryFn: async () => {
       const res = await axiosPublic("/benifites");
