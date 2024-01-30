@@ -123,22 +123,19 @@ export default function Navbar() {
 				</div>
 				<ul className="w-full">
 					{routes.map((route, i) => (
-						<>
-							<li>
-								<Link
-									key={route.path + route.label}
-									href={route.path}
-									className={`${
-										pathname === route.path && "font-bold"
-									}`}
-								>
-									{route.label}
-								</Link>
-								{routes.length - 1 !== i && (
-									<div className="my-2 divider"></div>
-								)}
-							</li>
-						</>
+						<li key={route.path + route.label}>
+							<Link
+								href={route.path}
+								className={`${
+									pathname === route.path && "font-bold"
+								}`}
+							>
+								{route.label}
+							</Link>
+							{routes.length - 1 !== i && (
+								<div className="my-2 divider"></div>
+							)}
+						</li>
 					))}
 				</ul>
 			</div>
