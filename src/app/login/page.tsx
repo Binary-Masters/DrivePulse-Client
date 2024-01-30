@@ -7,11 +7,13 @@ import { useContext, useState } from "react";
 import { AuthContext } from "@/providers/AuthProvider";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+import useAuth from "@/Hooks/useAuth";
 import './style.css'
 
 const Login = () => {
 	const [showPass, setShowPass] = useState(false);
 	const { login, loginByGoogle,loginByFacebook } = useContext<any>(AuthContext);
+	const { setLoading } = useAuth();
 	const router = useRouter();
 
 	const handleLogin = (e) => {
@@ -19,7 +21,6 @@ const Login = () => {
 		const form = e.target;
 		const email = form.email.value;
 		const password = form.password.value;
-		console.log(email, password);
 		login(email, password)
 			.then(() => {
 				Swal.fire({
@@ -29,6 +30,7 @@ const Login = () => {
 					confirmButtonText: "OK",
 				}).then(() => {
 					router.push("/dashboard");
+					setLoading(false);
 				});
 			})
 			.catch((error) => {
@@ -51,6 +53,7 @@ const Login = () => {
 					confirmButtonText: "OK",
 				}).then(() => {
 					router.push("/dashboard");
+					setLoading(false);
 				});
 			})
 			.catch((error) => {
@@ -72,6 +75,7 @@ const Login = () => {
 					confirmButtonText: "OK",
 				}).then(() => {
 					router.push("/dashboard");
+					setLoading(false);
 				});
 			})
 			.catch((error) => {
