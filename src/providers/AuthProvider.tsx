@@ -12,6 +12,7 @@ import {
 	UserCredential,
 } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
+import { FacebookAuthProvider } from "firebase/auth";
 import { auth } from "../firebase/firebase.config";
 export interface AuthInfo {
 	user: any;
@@ -20,6 +21,7 @@ export interface AuthInfo {
 	createUser: (email: string, password: string) => Promise<UserCredential>;
 	login: (email: string, password: string) => Promise<UserCredential>;
 	loginByGoogle: () => Promise<UserCredential>;
+	loginByFacebook: () => Promise<UserCredential>;
 	logout: () => Promise<void>;
 	setLoading: (value: boolean) => void;
 	updateUser: (name: string, photoURL: string) => Promise<void> | undefined;
@@ -27,6 +29,7 @@ export interface AuthInfo {
 
 export const AuthContext = createContext({});
 const provider = new GoogleAuthProvider();
+const FB_Provider = new FacebookAuthProvider();
 
 const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 	const [user, setUser] = useState<User | null>(null);
@@ -47,6 +50,11 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 		setLoading(true);
 		return signInWithPopup(auth, provider);
 	};
+	
+	const loginByFacebook = ()=> {
+		setLoading(true);
+		return signInWithPopup(auth,FB_Provider);
+	}
 
 	const updateUser = (name: string, photoURL: string) => {
 		setLoading(true);
@@ -88,6 +96,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 		logout,
 		setLoading,
 		updateUser,
+		loginByFacebook
 	};
 
 	return (

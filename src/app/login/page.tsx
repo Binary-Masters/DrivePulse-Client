@@ -11,7 +11,7 @@ import './style.css'
 
 const Login = () => {
 	const [showPass, setShowPass] = useState(false);
-	const { login, loginByGoogle } = useContext<any>(AuthContext);
+	const { login, loginByGoogle,loginByFacebook } = useContext<any>(AuthContext);
 	const router = useRouter();
 
 	const handleLogin = (e) => {
@@ -43,6 +43,27 @@ const Login = () => {
 
 	const handleLoginByGoogle = () => {
 		loginByGoogle()
+			.then(() => {
+				Swal.fire({
+					title: "Congratulations!",
+					text: "Logged in successfully",
+					icon: "success",
+					confirmButtonText: "OK",
+				}).then(() => {
+					router.push("/dashboard");
+				});
+			})
+			.catch((error) => {
+				Swal.fire({
+					title: "Error",
+					text: error,
+					icon: "error",
+					confirmButtonText: "Close",
+				});
+			});
+	};
+	const handleLoginByFacebook = () => {
+		loginByFacebook()
 			.then(() => {
 				Swal.fire({
 					title: "Congratulations!",
@@ -135,7 +156,7 @@ const Login = () => {
 										<FcGoogle className="mr-4 text-3xl"></FcGoogle>
 										Google
 									</button>
-									<button className="w-1/2 text-lg text-white capitalize border-blue-600 btn btn-outline hover:bg-primary">
+									<button onClick={handleLoginByFacebook} className="w-1/2 text-lg text-white capitalize border-blue-600 btn btn-outline hover:bg-primary">
 										<FaFacebook className="text-3xl"></FaFacebook>
 										Facebook
 									</button>
