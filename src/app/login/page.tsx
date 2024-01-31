@@ -1,6 +1,6 @@
 "use client";
 import { FcGoogle } from "react-icons/fc";
-import { FaFacebook, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaGithub } from "react-icons/fa";
 import loginImg from "../../assests/Login-Registration/login4.jpg";
 import Link from "next/link";
 import { useContext, useState } from "react";
@@ -12,7 +12,7 @@ import "./style.css";
 
 const Login = () => {
   const [showPass, setShowPass] = useState(false);
-  const { login, loginByGoogle, resetPassword, logout, loginByFacebook } =
+  const { login, loginByGoogle, resetPassword, logout, loginByGithub } =
     useContext<any>(AuthContext);
   const { setLoading } = useAuth();
   const router = useRouter();
@@ -65,8 +65,8 @@ const Login = () => {
         });
       });
   };
-  const handleLoginByFacebook = () => {
-    loginByFacebook()
+  const handleLoginByGithub = () => {
+    loginByGithub()
       .then(() => {
         Swal.fire({
           title: "Congratulations!",
@@ -88,30 +88,6 @@ const Login = () => {
       });
   };
 
-  const handelPasswordSubmit = (e) => {
-    e.preventDefault();
-    const email = e.target.email.value;
-    resetPassword(email)
-      .then(() => {
-        Swal.fire({
-          title: "Well Done",
-          text: "Please Check Your Email",
-          icon: "success",
-          confirmButtonText: "OK",
-        }).then(() => {
-          logout().then().catch();
-        });
-      })
-      .catch(() => {
-        Swal.fire({
-          title: "Opps!!",
-          text: "Your Email Doesn't Match",
-          icon: "error",
-          confirmButtonText: "Close",
-        });
-      });
-  };
-
   return (
     <div
       className="min-h-screen bg-cover bg-opacity-30"
@@ -120,14 +96,9 @@ const Login = () => {
       <div className="w-11/12 mx-auto">
         <div className="mx-auto w-fit">
           <div className="pt-16">
-            <button
-              className="mb-4 text-5xl font-bold text-center text-white"
-              onClick={() => document.getElementById("my_modal_3").showModal()}
-            >
-              Login now!
-            </button>
+            <p className="text-white text-5xl font-bold mb-4 text-center">Login now!</p>
             <div className="px-4 py-6 text-white bg-transparent border-2 border-indigo-600 rounded-lg shadow-2xl backdrop-blur-sm">
-              <form onSubmit={handleLogin}>
+              <form onSubmit={handleLogin} className="relative">
                 <div>
                   <label className="label">
                     <span className="text-xl font-medium">Email</span>
@@ -165,7 +136,8 @@ const Login = () => {
                     value="Login"
                   />
                 </div>
-                <div className="mt-4 text-center">
+                <div className="mt-4">
+                  <Link href='/forget-pass' className="text-red-600 text-center">Forget Password ?</Link>
                   <p>
                     Do not have account ? Please{" "}
                     <Link href="/registration" className="ml-2 font-medium">
@@ -189,11 +161,11 @@ const Login = () => {
                     Google
                   </button>
                   <button
-                    onClick={handleLoginByFacebook}
+                    onClick={handleLoginByGithub}
                     className="w-1/2 text-lg text-white capitalize border-blue-600 btn btn-outline hover:bg-primary"
                   >
-                    <FaFacebook className="text-3xl"></FaFacebook>
-                    Facebook
+                    <FaGithub className="text-3xl"></FaGithub>
+                    Github
                   </button>
                 </div>
               </div>
@@ -201,34 +173,6 @@ const Login = () => {
           </div>
         </div>
       </div>
-      {/* Modal For Reset Password */}
-      <dialog id="my_modal_3" className="modal">
-        <div className="modal-box">
-          <form method="dialog">
-            {/* if there is a button in form, it will close the modal */}
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-              ✕
-            </button>
-          </form>
-
-          <h3 className="font-bold mb-3 text-lg text-center">
-            Forget Password
-          </h3>
-          <form className="flex flex-col gap-3" onSubmit={handelPasswordSubmit}>
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              className="input input-accent"
-            />
-            <input
-              className="btn btn-accent"
-              type="submit"
-              value="Reset Password"
-            />
-          </form>
-        </div>
-      </dialog>
     </div>
   );
 };
