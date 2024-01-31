@@ -23,7 +23,7 @@ const Registration = () => {
 		AuthContext
 	);
 	const [imageUrl, setImageUrl] = useState("");
-	const { user } = useAuth();
+	const { user, setLoading } = useAuth();
 	console.log(user);
 
 	const handleRegistration = (e) => {
@@ -52,6 +52,7 @@ const Registration = () => {
 						confirmButtonText: "OK",
 					}).then(() => {
 						router.push("/dashboard");
+						setLoading(false);
 					});
 				});
 			})
@@ -75,6 +76,7 @@ const Registration = () => {
 					confirmButtonText: "OK",
 				}).then(() => {
 					router.push("/dashboard");
+					setLoading(false);
 				});
 			})
 			.catch((error) => {

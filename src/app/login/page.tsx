@@ -7,10 +7,13 @@ import { useContext, useState } from "react";
 import { AuthContext } from "@/providers/AuthProvider";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+import useAuth from "@/Hooks/useAuth";
+import './style.css'
 
 const Login = () => {
 	const [showPass, setShowPass] = useState(false);
-	const { login, loginByGoogle } = useContext<any>(AuthContext);
+	const { login, loginByGoogle,loginByFacebook } = useContext<any>(AuthContext);
+	const { setLoading } = useAuth();
 	const router = useRouter();
 
 	const handleLogin = (e) => {
@@ -18,7 +21,6 @@ const Login = () => {
 		const form = e.target;
 		const email = form.email.value;
 		const password = form.password.value;
-		console.log(email, password);
 		login(email, password)
 			.then(() => {
 				Swal.fire({
@@ -28,6 +30,7 @@ const Login = () => {
 					confirmButtonText: "OK",
 				}).then(() => {
 					router.push("/dashboard");
+					setLoading(false);
 				});
 			})
 			.catch((error) => {
@@ -50,6 +53,29 @@ const Login = () => {
 					confirmButtonText: "OK",
 				}).then(() => {
 					router.push("/dashboard");
+					setLoading(false);
+				});
+			})
+			.catch((error) => {
+				Swal.fire({
+					title: "Error",
+					text: error,
+					icon: "error",
+					confirmButtonText: "Close",
+				});
+			});
+	};
+	const handleLoginByFacebook = () => {
+		loginByFacebook()
+			.then(() => {
+				Swal.fire({
+					title: "Congratulations!",
+					text: "Logged in successfully",
+					icon: "success",
+					confirmButtonText: "OK",
+				}).then(() => {
+					router.push("/dashboard");
+					setLoading(false);
 				});
 			})
 			.catch((error) => {
@@ -81,13 +107,7 @@ const Login = () => {
 											Email
 										</span>
 									</label>
-									<input
-										type="email"
-										name="email"
-										placeholder="email"
-										className="w-full h-6 px-2 bg-transparent border-b-2 outline-none focus:h-8 rounded-md"
-										required
-									/>
+									<input type="email" name='email' placeholder="email" className="h-6 focus:h-8 rounded-md px-2 outline-none w-full border-b-2 bg-transparent" required />
 								</div>
 								<div>
 									<label className="label">
@@ -99,7 +119,7 @@ const Login = () => {
 										type={showPass ? "text" : "password"}
 										name="password"
 										placeholder="password"
-										className="relative w-full h-6 px-2 bg-transparent border-b-2 outline-none focus:h-8 rounded-md"
+										className="relative w-full h-6 px-2 bg-transparent border-b-2 border-white focus:outline-none focus:h-8 rounded-md"
 										required
 									/>
 									<span
@@ -121,16 +141,16 @@ const Login = () => {
 										Do not have account ? Please{" "}
 										<Link
 											href="/registration"
-											className="ml-2 font-medium text-gray-300 hover:underline hover:text-white"
+											className="ml-2 font-medium"
 										>
-											Create an account
+											<span className="blink-text hover:text-yellow-400">Create an account</span>
 										</Link>
 									</p>
 								</div>
 							</form>
 							<div>
 								<div className="font-bold text-indigo-600 divider divider-primary">
-									OR Login With
+									OR Continue With
 								</div>
 								<div className="flex gap-2">
 									<button
@@ -140,7 +160,7 @@ const Login = () => {
 										<FcGoogle className="mr-4 text-3xl"></FcGoogle>
 										Google
 									</button>
-									<button className="w-1/2 text-lg text-white capitalize border-blue-600 btn btn-outline hover:bg-primary">
+									<button onClick={handleLoginByFacebook} className="w-1/2 text-lg text-white capitalize border-blue-600 btn btn-outline hover:bg-primary">
 										<FaFacebook className="text-3xl"></FaFacebook>
 										Facebook
 									</button>
