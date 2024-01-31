@@ -10,30 +10,30 @@ export const metadata: Metadata = {
 //   console.log(contactImg);
 const Contact = () => {
   return (
-    <div>
-      <PageCover img={contactImg} text={"Contact"}/>
-      <h2 className="text-center text-3xl  md:text-4xl font-bold mt-10 border-b border-black w-fit mx-auto">Have a any Question ?</h2>
-      <div className="grid items-center grid-cols-1 md:grid-cols-2 gap-5 mt-10 max-w-6xl mx-auto shadow-md p-4 rounded-md border mb-10">
+    <div className="gradient1-bg pb-10">
+      <PageCover img={contactImg} text={"Contact Us"}/>
+      <h2 className="text-center text-3xl  md:text-4xl font-bold mt-10 border-b border-primary w-fit mx-auto text-slate-300">Have a any <span className="text-primary">Question</span>?</h2>
+      <div style={{backdropFilter:"blur(10px)"}} className="grid items-center grid-cols-1 md:grid-cols-2 gap-5 mt-10 max-w-6xl md:mx-auto shadow-md p-4 rounded-md border mx-3">
         <div className=" space-y-10 px-5">
-          <div className="flex items-center gap-5">
-            <MdLocationOn  className="text-2xl"/>
+          <div className="flex items-center gap-1">
+            <MdLocationOn  className="text-5xl text-primary"/>
             <div>
-              <h2 className="text-xl font-semibold uppercase">Our Address</h2>
-              <p className="font-medium text-gray-400">Dhaka</p>
+              <h2 className="text-xl text-slate-300 font-bold uppercase">Our Address</h2>
+              <p className="font-medium text-gray-300">Dhaka</p>
             </div>
           </div>
-          <div className="flex items-center gap-5">
-          <MdPhone className="text-2xl"/>
+          <div className="flex items-center gap-2">
+          <MdPhone className="text-4xl text-primary"/>
             <div>
-              <h2 className="text-xl font-semibold uppercase">Phone number</h2>
-              <p className="font-medium text-gray-400">Mobile: 01739 ******</p>
+              <h2 className="text-xl text-slate-300 font-bold uppercase">Phone number</h2>
+              <p className="font-medium text-gray-300">Mobile: 01739 ******</p>
             </div>
           </div>
-          <div className="flex items-center gap-5">
-            <MdEmail className="text-2xl" />
+          <div className="flex items-center gap-2">
+            <MdEmail className="text-4xl text-primary" />
             <div>
-              <h2 className="text-xl font-semibold uppercase">Email</h2>
-              <p className="font-medium text-gray-400">binarymasters810@gmail.com</p>
+              <h2 className="text-xl text-slate-300 font-bold uppercase">Email</h2>
+              <p className="font-medium text-gray-300">binarymasters810@gmail.com</p>
             </div>
           </div>
         </div>

@@ -62,33 +62,25 @@ const Benefits = () => {
   }
   return (
     <div
-      className="py-16 bg-cover bg-blue-200-900/40 "
-      style={{
-        backgroundImage: `url(${bg.src})`,
-        width: "100%",
-        height: "100%",
-      }}
-    >
-      <h2 className="py-10 text-4xl font-bold text-center">
-        Who Benefits from <span className="text-[#5757f4]">DrivePulse</span>
+      className="py-16 ">
+      <h2 className="py-10 text-4xl font-bold text-center text-slate-300">
+        Who Benefits from <span className="text-primary">DrivePulse?</span>
       </h2>
       <div className="grid max-w-7xl mx-auto grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 px-3">
         {benefits.map((item, index) => (
           <div
             key={index}
-            className="rounded-md  shadow-md hover:shadow-lg shadow-[#5757f49f] hover:shadow-blue-400"
-          >
+            className="rounded-md  shadow-md hover:shadow-lg shadow-[#5757f49f] hover:shadow-primary cursor-pointer">
             <Tilt
-              options={{ scale: 1, max: 30, speed: 300, perspective: 2000 }}
-            >
+              options={{ scale: 1, max: 30, speed: 300, perspective: 2000 }}>
               <figure className="px-10 pt-10">
-                <div className="flex justify-center text-5xl">
+                <div className="flex justify-center text-5xl text-slate-200">
                   {getIcon(item.icon)}
                 </div>
               </figure>
               <div className="items-center text-center card-body">
-                <h3 className="text-2xl font-bold">{item.title}</h3>
-                <p>{item.description}</p>
+                <h3 className="text-2xl font-bold text-slate-300">{item.title}</h3>
+                <p className="text-slate-400">{item.description}</p>
               </div>
             </Tilt>
           </div>
