@@ -5,9 +5,11 @@ import { Dispatch, SetStateAction, useState } from "react";
 import React from 'react';
 import { MdArrowDropDownCircle, MdDriveFileRenameOutline } from "react-icons/md";
 import { IconType } from "react-icons";
-import ShareModal from "../ShareModal";
+import ShareModal from "./ShareModal";
 import RenameModal from "./RenameModal";
 import CopyLink from "./Copy";
+import Link from "next/link";
+import Download from "./Download";
 
 
 
@@ -65,9 +67,9 @@ const MoreDropDrown = () => {
 
 
           <motion.li
-            onClick={() => setOpen(true)}
+            onClick={() => setOpen(false)}
             className="flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
-          > <FiDownload/> Download
+          > <FiDownload/> <Download/>
           </motion.li>
 
           <motion.li
@@ -80,29 +82,6 @@ const MoreDropDrown = () => {
         </motion.ul>
       </motion.div>
     </div>
-  );
-};
-
-const Option = ({
-  text,
-  Icon,
-  setOpen,
-}: {
-  text: string;
-  Icon: IconType;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-}) => {
-  return (
-    <motion.li
-      variants={itemVariants}
-      onClick={() => setOpen(true)}
-      className="flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
-    >
-      <motion.span variants={actionIconVariants}>
-        <Icon />
-      </motion.span>
-      <span>{text}</span>
-    </motion.li>
   );
 };
 
