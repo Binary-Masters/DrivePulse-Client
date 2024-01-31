@@ -5,8 +5,11 @@ import { Dispatch, SetStateAction, useState } from "react";
 import React from 'react';
 import { MdArrowDropDownCircle, MdDriveFileRenameOutline } from "react-icons/md";
 import { IconType } from "react-icons";
-import ShareModal from "../ShareModal";
+import ShareModal from "./ShareModal";
 import RenameModal from "./RenameModal";
+import CopyLink from "./Copy";
+import Link from "next/link";
+import Download from "./Download";
 
 
 
@@ -49,7 +52,11 @@ const MoreDropDrown = () => {
           style={{ originY: "top", translateX: "-50%" }}
           className="flex flex-col gap-2 p-2 pr-4 rounded-lg bg-white text-black shadow-xl absolute top-[120%] left-[50%] w-auto z-10"
         >
-          <Option setOpen={setOpen} Icon={FiCopy} text="Copy" />
+          <motion.li
+            onClick={() => setOpen(true)}
+            className="flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
+          > <FiCopy/> <CopyLink/>
+          </motion.li>
 
           <motion.li
             onClick={() => setOpen(true)}
@@ -59,7 +66,11 @@ const MoreDropDrown = () => {
           </motion.li>
 
 
-          <Option setOpen={setOpen} Icon={FiDownload} text="Download" />
+          <motion.li
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
+          > <FiDownload/> <Download/>
+          </motion.li>
 
           <motion.li
             onClick={() => setOpen(true)}
@@ -71,29 +82,6 @@ const MoreDropDrown = () => {
         </motion.ul>
       </motion.div>
     </div>
-  );
-};
-
-const Option = ({
-  text,
-  Icon,
-  setOpen,
-}: {
-  text: string;
-  Icon: IconType;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-}) => {
-  return (
-    <motion.li
-      variants={itemVariants}
-      onClick={() => setOpen(true)}
-      className="flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
-    >
-      <motion.span variants={actionIconVariants}>
-        <Icon />
-      </motion.span>
-      <span>{text}</span>
-    </motion.li>
   );
 };
 

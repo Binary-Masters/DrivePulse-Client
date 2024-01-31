@@ -1,5 +1,6 @@
 "use client";
 import { FileUp, Home, LayoutDashboard, Settings, Upload } from "lucide-react";
+import { CgProfile } from "react-icons/cg";
 import Image from "next/image";
 import logo from "../../assests/icons/logo.png";
 import Link from "next/link";
@@ -42,6 +43,12 @@ const SideNave = () => {
 		},
 		{
 			id: 2,
+			name: "Profile",
+			icon: <CgProfile />,
+			path: "/dashboard/profile",
+		},
+		{
+			id: 3,
 			name: "Setting",
 			icon: <Settings />,
 			path: "/dashboard/settings",
