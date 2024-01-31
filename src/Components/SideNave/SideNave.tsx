@@ -5,6 +5,7 @@ import Image from "next/image";
 import logo from "../../assests/icons/logo.png";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Profile from "@/app/dashboard/profile/page";
 interface Items {
   id: number;
   name: string;
@@ -43,6 +44,12 @@ const SideNave = () => {
     },
     {
       id: 2,
+      name: "Profile",
+      icon: <CgProfile/>,
+      path: "/dashboard/profile",
+    },
+    {
+      id: 3,
       name: "Setting",
       icon: <Settings />,
       path: "/dashboard/settings",
