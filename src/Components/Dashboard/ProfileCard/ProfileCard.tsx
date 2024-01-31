@@ -5,6 +5,8 @@ import React from 'react'
 import img1 from "../../../assests/images/about1.jpg";
 import useAuth from '@/Hooks/useAuth';
 import { FaRegEdit } from "react-icons/fa";
+import {  Settings } from "lucide-react";
+import Link from 'next/link';
 const ProfileCard = () => {
   const { user, logout } = useAuth();
   console.log(user,'user info')
@@ -26,9 +28,12 @@ const ProfileCard = () => {
     
     <p className='text-center my-2'>Number  : todo</p>
 
-    <button className='absolute top-0 right-0 p-3'><FaRegEdit className='w-5 h-5'/></button>
-    
-    
+    {/*dynamic path  */}
+    {/* /dashboard/profile/password */}
+    <Link href='/dashboard/profile/password'>
+    <button className='absolute top-0 right-0 p-4' title='Change Password'><Settings className='w-6 h-6'/></button>
+    </Link>
+     
   </div>
 </div>
 
