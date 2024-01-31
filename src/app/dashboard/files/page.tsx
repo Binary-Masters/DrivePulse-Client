@@ -1,7 +1,8 @@
+// import ChangePassword from "@/Components/ChangePassword/ChangePassword";
 import MoreDropDrown from "@/Components/Dashboard/Files/More";
 import Link from "next/link";
 import { MdArrowDropDownCircle, MdDelete } from "react-icons/md";
-import changePassword from "./../changePassword";
+
 
 const Files: React.FC = () => {
   return (
@@ -67,7 +68,6 @@ const Files: React.FC = () => {
           </tbody>
         </table>
       </div>
-      <changePassword />
     </div>
   );
 };

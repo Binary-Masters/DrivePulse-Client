@@ -11,7 +11,7 @@ import useAuth from "@/Hooks/useAuth";
 
 const Login = () => {
   const [showPass, setShowPass] = useState(false);
-  const { login, loginByGoogle } = useContext<any>(AuthContext);
+  const { login, loginByGoogle, resetPassword,logout } = useContext<any>(AuthContext);
   const { setLoading } = useAuth();
   const router = useRouter();
 
@@ -67,8 +67,28 @@ const Login = () => {
 
   const handelPasswordSubmit = (e) => {
     e.preventDefault();
-				const email=e.target.email.value;
-				console.log(email)
+    const email = e.target.email.value;
+    resetPassword(email)
+      .then(() => {
+        Swal.fire({
+          title: "Well Done",
+          text: "Please Check Your Email",
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then(() => {
+          logout()
+          .then()
+          .catch()
+        });
+      })
+      .catch(() => {
+        Swal.fire({
+          title: "Opps!!",
+          text: "Your Email Doesn't Match",
+          icon: "error",
+          confirmButtonText: "Close",
+        });
+      });
   };
 
   return (
@@ -168,10 +188,21 @@ const Login = () => {
             </button>
           </form>
 
-          <h3 className="font-bold mb-3 text-lg text-center">Forget Password</h3>
+          <h3 className="font-bold mb-3 text-lg text-center">
+            Forget Password
+          </h3>
           <form className="flex flex-col gap-3" onSubmit={handelPasswordSubmit}>
-            <input type="email" name="email" placeholder="Email" className="input input-accent" />
-            <input className="btn btn-accent" type="submit" value="Send" />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              className="input input-accent"
+            />
+            <input
+              className="btn btn-accent"
+              type="submit"
+              value="Reset Password"
+            />
           </form>
         </div>
       </dialog>
