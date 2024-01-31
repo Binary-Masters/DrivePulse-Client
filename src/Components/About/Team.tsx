@@ -63,9 +63,9 @@ const Team = () => {
         {members?.map((member) => (
           <SwiperSlide key={member?.id}>
             <div className=" rounded-md w-96 mx-auto bg-base-100 shadow-xl my-6">
-              <figure>
+              <figure className=" flex justify-center ">
                 <Image
-                  className="rounded-full z-10"
+                  className="rounded-full z-10 mt-8"
                   width={250}
                   height={500}
                   src={images}

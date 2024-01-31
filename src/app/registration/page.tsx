@@ -1,15 +1,17 @@
 "use client";
-import { FcGoogle } from "react-icons/fc";
 import regImg from "../../assests/Login-Registration/registration.png";
 import Image from "next/image";
 import Link from "next/link";
-import { FaFacebook, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useContext, useState } from "react";
 import { AuthContext } from "@/providers/AuthProvider";
 import axios from "axios";
 import useAuth from "@/Hooks/useAuth";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+import backgroundImg from '../../assests/Login-Registration/banner.jpg';
+import Lottie from "lottie-react";
+import animationData from '../../assests/lottie-animation/Registration.json'
 
 const image_hosting_key = process.env.NEXT_PUBLIC_IMG_HOSTING_API_KEY;
 // console.log(process.env.NEXT_PUBLIC_IMG_HOSTING_API_KEY);
@@ -19,7 +21,7 @@ const Registration = () => {
 	const [showPass, setShowPass] = useState(false);
 	const router = useRouter();
 
-	const { createUser, updateUser, loginByGoogle } = useContext<any | null>(
+	const { createUser, updateUser } = useContext<any | null>(
 		AuthContext
 	);
 	const [imageUrl, setImageUrl] = useState("");
@@ -66,24 +68,6 @@ const Registration = () => {
 			});
 	};
 
-	const handleLoginByGoogle = () => {
-		loginByGoogle()
-			.then(() => {
-				Swal.fire({
-					title: "Congratulations!",
-					text: "You've been registered successfully",
-					icon: "success",
-					confirmButtonText: "OK",
-				}).then(() => {
-					router.push("/dashboard");
-					setLoading(false);
-				});
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	};
-
 	const handleUploadImageBB = async (e) => {
 		const image = e.target.files[0];
 		console.log(image);
@@ -99,22 +83,20 @@ const Registration = () => {
 	};
 
 	return (
-		<>
-			<div className="w-11/12 mx-auto mt-20 text-center">
-				<div className="flex flex-col mx-auto gap-8 md:flex-row md:px-4">
-					<div className="w-full mx-auto mt-32 lg:w-1/2">
-						<Image
-							src={regImg}
-							width={500}
-							height={700}
-							alt="regImg"
-						/>
+		<div
+			className="min-h-screen bg-cover bg-opacity-30"
+			style={{ backgroundImage: `url(${backgroundImg.src})` }}
+		>
+			<div className="w-11/12 mx-auto pt-8 text-center">
+				<div className="flex flex-col mx-auto gap-8 md:flex-row-reverse md:px-4">
+					<div className="w-full mx-auto mt-20 lg:w-1/2">
+					<Lottie animationData={animationData}/>
 					</div>
 					<div className="w-full mx-auto lg:w-1/2">
-						<h1 className="mb-4 text-5xl font-bold">
+						<h1 className="mb-4 text-5xl font-bold text-white">
 							Register now!
 						</h1>
-						<div className="w-full px-4 py-6 rounded-lg shadow-2xl bg-base-100">
+						<div className="px-4 py-6 text-white bg-transparent border-2 border-indigo-600 rounded-lg shadow-2xl backdrop-blur-md">
 							<form onSubmit={handleRegistration}>
 								<div>
 									<label className="label">
@@ -126,7 +108,7 @@ const Registration = () => {
 										type="text"
 										name="name"
 										placeholder="Your name"
-										className="w-full border-blue-600 input rounded-md"
+										className="w-full border-blue-600 input rounded-md bg-transparent"
 										required
 									/>
 								</div>
@@ -140,21 +122,7 @@ const Registration = () => {
 										type="email"
 										name="email"
 										placeholder="Email"
-										className="w-full border-blue-600 input rounded-md"
-										required
-									/>
-								</div>
-								<div>
-									<label className="label">
-										<span className="text-xl font-medium">
-											Phone Number
-										</span>
-									</label>
-									<input
-										type="number"
-										name="phoneNumber"
-										placeholder="Your phone number"
-										className="w-full border-blue-600 input rounded-md"
+										className="w-full border-blue-600 input rounded-md bg-transparent"
 										required
 									/>
 								</div>
@@ -170,7 +138,7 @@ const Registration = () => {
 											onChange={handleUploadImageBB}
 											name="image"
 											placeholder="Please give your photo url"
-											className="w-full rounded-md"
+											className="w-full rounded-md border-2 border-blue-600 border-b-white bg-transparent"
 										/>
 									</div>
 								</div>
@@ -185,7 +153,7 @@ const Registration = () => {
 										type={showPass ? "text" : "password"}
 										name="password"
 										placeholder="password"
-										className="w-full border-blue-600 input rounded-md"
+										className="w-full border-blue-600 input rounded-md bg-transparent"
 										required
 									/>
 									<span
@@ -214,27 +182,11 @@ const Registration = () => {
 									</p>
 								</div>
 							</form>
-							<div>
-								<div className="divider">OR Register With</div>
-								<div className="flex gap-2">
-									<button
-										onClick={handleLoginByGoogle}
-										className="w-1/2 text-lg capitalize border-blue-600 btn btn-outline hover:bg-primary"
-									>
-										<FcGoogle className="mr-4 text-3xl"></FcGoogle>
-										Google
-									</button>
-									<button className="w-1/2 text-lg capitalize border-blue-600 btn btn-outline hover:bg-primary">
-										<FaFacebook className="text-3xl"></FaFacebook>
-										Facebook
-									</button>
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</>
+		</div>
 	);
 };
 
