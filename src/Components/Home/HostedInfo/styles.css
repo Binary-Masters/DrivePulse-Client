@@ -1,8 +1,14 @@
 .card {
   position: relative;
   overflow: hidden;
+  transition: all 0.5s;
+  box-shadow: 1px 1px 40px #0b3e5d;
 }
-
+.card:hover{
+ margin-top: -15px;
+ cursor: pointer;
+ box-shadow: 1px 1px 40px #0f6295;
+}
 .card::after {
   content: "";
   position: absolute;
@@ -10,9 +16,9 @@
   left: 0;
   width: 200%;
   height: 100%;
-  background: linear-gradient(120deg, white 30%, #f5f2f2 38%, #efecec 
-  40%, #fff 48%);
-  animation: gradientAnimation 3s infinite;
+  background: linear-gradient(120deg, #093551 20%, #08072f 38%, #08072f
+  40%, #08072f 48%);
+  animation: gradientAnimation 4s infinite;
 }
 
 @keyframes gradientAnimation {

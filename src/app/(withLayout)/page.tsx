@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
    
-    <>
+    <div className="gradient2-bg">
       <Banner />
       <HostedInfo/>
       <HomeAbout/>
@@ -22,6 +22,6 @@ export default function Home() {
       <HandleFileNeed/>
       <SignUpToFree/>
       <FAQ/>
-    </>
+    </div>
   );
 }
