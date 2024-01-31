@@ -33,21 +33,26 @@ const SideNave = () => {
       path: "/dashboard/files",
     },
   ];
-
-  const anotherMenu: Items[] = [
-    {
-      id: 1,
-      name: "Home",
-      icon: <Home />,
-      path: "/",
-    },
-    {
-      id: 2,
-      name: "Setting",
-      icon: <Settings />,
-      path: "/dashboard/settings",
-    },
-  ];
+	const anotherMenu: Items[] = [
+		{
+			id: 1,
+			name: "Home",
+			icon: <Home />,
+			path: "/",
+		},
+		{
+			id: 2,
+			name: "Profile",
+			icon: <CgProfile />,
+			path: "/dashboard/profile",
+		},
+		{
+			id: 3,
+			name: "Setting",
+			icon: <Settings />,
+			path: "/dashboard/settings",
+		},
+	];
 
   return (
     <div className="h-screen w-[60%] md:w-64 fixed z-50 shadow-sm bg-[#0e1642] mt-20 md:mt-0">
