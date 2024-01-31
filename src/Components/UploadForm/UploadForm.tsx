@@ -5,10 +5,12 @@ import { File } from "lucide-react";
 import { useState } from "react";
 import { MdClose } from "react-icons/md";
 import Swal from "sweetalert2";
+import useAxiosPublic from "@/Hooks/useAxiosPublic";
 
 const UploadForm: React.FC = () => {
 	const [file, setFile] = useState<File | null>(null);
 	const { uploadFile } = useStorage();
+	const axiosPublic = useAxiosPublic();
 
 	const handleFileUpload = () => {
 		try {
@@ -21,7 +23,9 @@ const UploadForm: React.FC = () => {
 						icon: "success",
 						confirmButtonText: "OK",
 					})
-					console.log(snapshot);
+					axiosPublic.post("/files", snapshot.metadata)
+					.then(response => console.log(response))
+					.catch(err => console.log(err));
 				})
 			}
 		} catch(error) {
