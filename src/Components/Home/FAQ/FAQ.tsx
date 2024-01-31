@@ -13,25 +13,25 @@ import {
 import 'react-accessible-accordion/dist/fancy-example.css';
 const FAQ = () => {
     return (
-           <>
-            <div className="text-center w-fit mx-auto mt-10">
-                <h1 className="text-4xl md:text-5xl font-semibold">FA<span className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-transparent">Qs</span></h1>
-                <p className="text-gray-400 font-medium">Have a any <span className="text-primary">question</span>?</p>
+           <div className="py-10">
+            <div className="text-center w-fit mx-auto">
+                <h1 className="text-4xl md:text-5xl font-semibold text-slate-300">FA<span className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-transparent">Qs</span></h1>
+                <p className="text-slate-400 font-medium">Have a any question?</p>
             </div>
-        <div className="mb-10 flex flex-col md:flex-row gap-5 max-w-6xl mx-auto items-center px-3">
+        <div className=" flex flex-col md:flex-row gap-5 max-w-6xl mx-auto items-center px-3">
            <div className="md:w-[40%]">
                 <Lottie animationData={animation}/>
            </div>
-           <div className="space-y-4 w-full md:w-[60%]">
-           <Accordion>
-            <AccordionItem>
+           <div className=" w-full md:w-[60%]">
+           <Accordion className="space-y-2">
+            <AccordionItem style={{backdropFilter:"blur(150px)"}} className="rounded-md">
                 <AccordionItemHeading>
-                    <AccordionItemButton>
+                    <AccordionItemButton className="bg-transparent text-xl font-bold text-slate-300 border border-slate-500 p-3 rounded-md">
                         Question-1?
                     </AccordionItemButton>
                 </AccordionItemHeading>
                 <AccordionItemPanel>
-                    <div className="text-gray-400">
+                    <div className="text-slate-300">
                         Exercitation in fugiat est ut ad ea cupidatat ut in
                         cupidatat occaecat ut occaecat consequat est minim minim
                         esse tempor laborum consequat esse adipisicing eu
@@ -39,9 +39,9 @@ const FAQ = () => {
                     </div>
                 </AccordionItemPanel>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem style={{backdropFilter:"blur(150px)"}} className="rounded-md">
                 <AccordionItemHeading>
-                    <AccordionItemButton>
+                    <AccordionItemButton className="bg-transparent text-xl font-bold text-slate-300 border border-slate-500 p-3 rounded-md">
                         Question-2?
                     </AccordionItemButton>
                 </AccordionItemHeading>
@@ -54,9 +54,9 @@ const FAQ = () => {
                     </div>
                 </AccordionItemPanel>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem style={{backdropFilter:"blur(150px)"}} className="rounded-md">
                 <AccordionItemHeading>
-                    <AccordionItemButton>
+                    <AccordionItemButton className="bg-transparent text-xl font-bold text-slate-300 border border-slate-500 p-3 rounded-md">
                         Question-3?
                     </AccordionItemButton>
                 </AccordionItemHeading>
@@ -68,10 +68,10 @@ const FAQ = () => {
                         reprehenderit enim.
                     </div>
                 </AccordionItemPanel>
-            </AccordionItem>
-            <AccordionItem>
+            </AccordionItem >
+            <AccordionItem style={{backdropFilter:"blur(150px)"}} className="rounded-md">
                 <AccordionItemHeading>
-                    <AccordionItemButton>
+                    <AccordionItemButton className="bg-transparent text-xl font-bold text-slate-300 border border-slate-500 p-3 rounded-md">
                         Question-4?
                     </AccordionItemButton>
                 </AccordionItemHeading>
@@ -89,7 +89,7 @@ const FAQ = () => {
 
             </div>
         </div>
-           </>
+           </div>
     );
 };
 

@@ -22,8 +22,9 @@ const PieChartContent = () => {
         </button>
       </div>
       <div className="w-full lg:w-[30%] progress-background rounded-md h-[250px] shadow-md p-6 relative">
-        <div className="w-[180px] absolute left-[30%] md:left-[35%] lg:left-16">
-          <CircularProgressbar
+        <div className=" flex justify-center">
+         <div className="w-[180px]">
+         <CircularProgressbar
             value={value}
             maxValue={1}
             text={`${value * 100}%`}
@@ -35,14 +36,18 @@ const PieChartContent = () => {
                 pathColor: `linear-gradient(90deg, #fff, #090d2b)`
             })}
           />
-          ;
+         </div>     
         </div>
-        <div style={{boxShadow:"1px 1px 30px #24207b"}} className="text-xl font-semibold text-slate-300 bg-[#090d2b]  py-3 px-10 rounded-md absolute bottom-5 left-[20%] md:left-[30%] lg:left-8 shadow-lg">
-            <h2  >Total file host 9+</h2>
+        <div className="flex w-full justify-center">
+            <div style={{boxShadow:"1px 1px 30px #24207b"}} className="text-xl w-[90%] font-semibold text-slate-300 bg-[#090d2b]  py-3 px-10 rounded-md  shadow-lg absolute bottom-3">
+            <h2  className="text-center">Total file host 9+</h2>
+            </div>
         </div>
+       
       </div>
       <div className="w-full lg:w-[30%] progress-background rounded-md h-[250px] shadow-md p-6 relative">
-      <div className="w-[180px] absolute left-[30%] md:left-[35%] lg:left-16">
+      <div className=" flex justify-center">
+          <div className="w-[180px]">
           <CircularProgressbar
             value={value2}
             maxValue={1}
@@ -55,10 +60,11 @@ const PieChartContent = () => {
                 pathColor: `#05ca98`
             })}
           />
+          </div>
           
         </div>
-        <div style={{boxShadow:"1px 1px 30px #24207b"}} className="text-xl font-semibold text-slate-300 bg-[#090d2b] py-3 px-2 rounded-md absolute bottom-5 left-[20%] md:left-[30%] lg:left-8 shadow-lg">
-            <h2  >Your account performance</h2>
+        <div className="flex justify-center">
+            <h2  style={{boxShadow:"1px 1px 30px #24207b"}} className="text-xl w-[90%] font-semibold text-slate-300 bg-[#090d2b] py-3 px-2 rounded-md absolute bottom-5  shadow-lg">Your account performance</h2>
         </div>
       </div>
     </div>
