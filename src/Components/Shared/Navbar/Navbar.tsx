@@ -35,7 +35,6 @@ export default function Navbar() {
 		};
 		window.addEventListener("scroll", handleScroll);
 
-<<<<<<< HEAD
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -58,46 +57,6 @@ export default function Navbar() {
         </div>
         </div>
       </div>
-=======
-		return () => {
-			window.removeEventListener("scroll", handleScroll);
-		};
-	}, []);
-	return (
-		<div
-			className={`px-4 navbar md:px-14 fixed top-0  z-50 ${
-				sroll
-					? "bg-white text-black shadow-md border-b py-3 transition-all duration-300"
-					: "text-white"
-			}`}
-		>
-			<div className="text-2xl navbar-start gap-2 md:text-3xl">
-				<p onClick={() => setToggleSidebar(true)}>
-					<FaBars className="text-xl cursor-pointer md:hidden min-w-1" />
-				</p>
-				<div className="flex items-center gap-1">
-					<Image
-						src={logo}
-						className="w-[30px] h-[30px] md:w-[60px] md:h-[70px]"
-						alt="DrivePulse Logo"
-					/>
-					<div className="">
-						<h2
-							style={{ letterSpacing: "2px" }}
-							className="font-bold text-blue-400 text-[20px] md:text-3xl"
-						>
-							DRIVE
-						</h2>
-						<p
-							style={{ letterSpacing: "7px" }}
-							className="text-[14px] md:text-[22px] font-medium md:-mt-2 -mt-3"
-						>
-							PULSE
-						</p>
-					</div>
-				</div>
-			</div>
->>>>>>> f0a78cc06d309a74a0f9fef2e494b1eaa4a50155
 
 			{/* visible for larger devices */}
 			<div className="hidden navbar-end gap-6 md:flex">
