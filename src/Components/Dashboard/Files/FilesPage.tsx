@@ -6,6 +6,10 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useState } from "react";
 import { MdArrowDropDownCircle, MdDelete } from "react-icons/md";
+import FolderButton from "./Folder/FolderButton";
+import NewFile from "./Folder/NewFile";
+import Upload from "./Folder/Upload";
+
 
 const FilesPage = () => {
 	const axiosPublic = useAxiosPublic();
@@ -28,6 +32,9 @@ const FilesPage = () => {
 
 	return (
 		<div className="mt-20">
+			<div className="flex gap-5 justify-end mr-5 pb-8 pt-2">
+				<FolderButton /> <NewFile/> <Upload/>
+			</div>
 			<div className="relative overflow-x-auto shadow-md sm:rounded-lg">
 				<table className="w-full text-sm text-left text-gray-500 rtl:text-right ">
 					<thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
@@ -47,13 +54,13 @@ const FilesPage = () => {
 							timeCreated,
 							size,
 						}, i) => (
-							<tr key={ _id }>
+							<tr key={_id}>
 								<td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-									{ i }
+									{i}
 								</td>
-								<td className="px-6 py-4 ">{ name }</td>
-								<td className="px-6 py-4">{ timeCreated }</td>
-								<td className="px-6 py-4">{ size }</td>
+								<td className="px-6 py-4 ">{name}</td>
+								<td className="px-6 py-4">{timeCreated}</td>
+								<td className="px-6 py-4">{size}</td>
 								<td className="px-6 py-4">
 									<Link
 										href="#"
