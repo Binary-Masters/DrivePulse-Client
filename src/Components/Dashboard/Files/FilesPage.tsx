@@ -31,6 +31,15 @@ const FilesPage = () => {
 		},
 	});
 
+	const nodeClickHandler = (type: string, fullPath: string) => {
+		if (type === "folder") {
+			setPath(fullPath);
+			refetch();
+			refetch();
+		}
+		else console.log("This is a file");
+	};
+
 	return (
 		<div className="mt-20">
 			<div className="flex justify-end pt-2 pb-8 mr-5 gap-5">
@@ -51,8 +60,12 @@ const FilesPage = () => {
 					</thead>
 					<tbody>
 						{files.map(
-							({ _id, name, timeCreated, size, type }, i) => (
-								<tr key={_id}>
+							({ _id, name, timeCreated, size, type, fullPath }, i) => (
+								<tr
+									key={_id}
+									onClick={() => nodeClickHandler(type, fullPath)}
+									className="cursor-pointer"
+								>
 									<td className="flex items-center justify-center px-6 py-4 text-2xl font-medium whitespace-nowrap">
 										{type === "folder" && <FaFolder />}
 									</td>
@@ -67,7 +80,7 @@ const FilesPage = () => {
 											<MdDelete />
 										</Link>
 									</td>
-									<td className="px-6 py-4">
+									<td className={`px-6 py-4 ${ type === "folder" && "hidden" }`}>
 										<Link href="#" className="text-2xl">
 											<MoreDropDrown></MoreDropDrown>
 										</Link>

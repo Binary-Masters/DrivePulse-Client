@@ -24,7 +24,7 @@ const FolderButton = ({ path, refetch }) => {
 		const folderMetadata = {
 			type: "folder",
 			bucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
-			fullPath: `${ user.email + path }`,
+			fullPath: `${ user.email + path + data.folderName + "/" }`,
 			name: data.folderName,
 			size: 0,
 			rootDirectory: user.email,
