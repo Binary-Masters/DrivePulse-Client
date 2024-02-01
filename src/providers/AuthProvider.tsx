@@ -14,10 +14,10 @@ import {
   updateProfile,
   User,
   UserCredential,
-  GithubAuthProvider
+  GithubAuthProvider,
 } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
-import { FacebookAuthProvider } from "firebase/auth";
+// import { FacebookAuthProvider } from "firebase/auth";
 import { auth } from "../firebase/firebase.config";
 export interface AuthInfo {
   user: any;
@@ -30,6 +30,7 @@ export interface AuthInfo {
   // loginByFacebook: () => Promise<UserCredential>;
   updateUserPassword: any;
   resetPassword: any;
+  sendPassResetEmail:any;
   credential: any;
   logout: () => Promise<void>;
   setLoading: (value: boolean) => void;
@@ -72,6 +73,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     }
   };
 
+  // update password
   const updateUserPassword = async (newPass: string): Promise<void | null> => {
     if (!user) {
       console.error("User is null. Cannot update password.");
@@ -87,6 +89,16 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     }
   };
 
+  // password reset email
+  const sendPassResetEmail=async(email:string):Promise<void | null>=>{
+    try {
+      await sendPasswordResetEmail(auth, email);
+    } catch (error) {
+      console.error(error);
+      // Handle the error, depending on your use case
+      return null;
+    } 
+  }
 
   // const loginByFacebook = () => {
   //   const FB_Provider = new FacebookAuthProvider();
@@ -158,7 +170,8 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     setLoading,
     updateUser,
     // loginByFacebook,
-    loginByGithub
+    loginByGithub,
+    sendPassResetEmail
   };
 
   return (
