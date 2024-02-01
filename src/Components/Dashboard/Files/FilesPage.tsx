@@ -11,6 +11,7 @@ const FilesPage = () => {
 	const axiosPublic = useAxiosPublic();
 	const { user } = useAuth();
 
+	// Fetching file data for appropriate user
 	const {
 		data: files = [],
 		isLoading,
@@ -19,7 +20,7 @@ const FilesPage = () => {
 		queryKey: ["files"],
 		queryFn: async () => {
 			const { data } = await axiosPublic.get(
-				`/files?rootdir=${user.email}`
+				`/files?rootdir=${user.email}` // Fetching with email
 			);
 			return data;
 		},

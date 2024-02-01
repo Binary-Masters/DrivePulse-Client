@@ -15,7 +15,7 @@ const UploadForm: React.FC = () => {
 	const handleFileUpload = () => {
 		try {
 			if (file) {
-				uploadFile(file).then((snapshot) => {
+				uploadFile("/", file).then((snapshot) => {
 					Swal.fire({
 						title: "Success",
 						text: "File uplaoded successfully",
