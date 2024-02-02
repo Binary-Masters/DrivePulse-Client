@@ -21,7 +21,7 @@ const FolderButton = () => {
 
     return (
         <>
-            <button className="text-sm btn" onClick={openModal}><FaFolderPlus/> New Folder</button>
+            <button className="text-[16px]  border-0 btn bg-primary text-white hover:bg-blue-600 transition-all duration-300" onClick={openModal}><FaFolderPlus/> New Folder</button>
             <FolderModal isOpen={isModalOpen} onRequestClose={closeModal} onSubmit={handleCreateFolder} />
         </>
     );
