@@ -25,6 +25,7 @@ const PricingCard = () => {
   //     const res = await axios.get(
   //       "https://drive-pulse-server.vercel.app/pricing"
   //     );
+
   //     setCards(res?.data);
   //   };
   //   getData();
@@ -34,23 +35,23 @@ const PricingCard = () => {
     return <LoadingAnimation/>
   }
   return (
-    <div className="max-w-7xl my-20 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 ">
+    <div className="max-w-7xl py-20 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 ">
       {(pricings as PricingCardData[])?.map((card) => (
         <div
           style={{
-            backdropFilter: "blur(30px)",
+            backdropFilter: "blur(300px)",
             boxShadow: "0 1px 25px rgba(0,0,0,0.2)",
           }}
           key={card?.id}
-          className="flex flex-col  p-6 mx-auto  bg-gray-100 text-center text-gray-900 rounded-lg border w-full cards"
+          className="flex flex-col  p-6 mx-auto text-center text-gray-900 rounded-lg border w-full cards"
         >
           {card?.badg && (
-            <div className="w-[120px] absolute left-0 top-10 bg-red-600 text-white h-10 -rotate-45">
+            <div className="w-[120px] absolute left-0 top-10 bg-red-600 text-slate-300 h-10 -rotate-45">
               <h2 className="text-xl font-bold mt-1 uppercase">{card?.badg}</h2>
             </div>
           )}
-          <div className="flex justify-center items-baseline my-8 relative">
-            <span className="mr-2 text-5xl font-extrabold flex items-start gap-1 z-10 text-white">
+          <div className="flex justify-center items-baseline my-8 relative text-slate-200">
+            <span className="mr-2 text-5xl font-extrabold flex items-start gap-1 z-10 ">
               <span className="text-2xl font-medium">$</span>
               {card?.price}
             </span>
@@ -59,7 +60,7 @@ const PricingCard = () => {
             {/* <span className="text-gray-500 dark:text-gray-400">/month</span> */}
           </div>
 
-          <div className={`divider  text-2xl font-bold my-8`}>
+          <div className={`divider  text-2xl font-bold my-8 text-slate-200`}>
             {card?.recommended}
           </div>
           <ul role="list" className="mb-8 space-y-4 text-left">
@@ -76,7 +77,7 @@ const PricingCard = () => {
                   clip-rule="evenodd"
                 ></path>
               </svg>
-              <span>{card?.benifit1}</span>
+              <span className="text-slate-300">{card?.benifit1}</span>
             </li>
             <li className="flex items-center space-x-3">
               <svg
@@ -91,7 +92,7 @@ const PricingCard = () => {
                   clip-rule="evenodd"
                 ></path>
               </svg>
-              <span>{card?.benifit2}</span>
+              <span  className="text-slate-300">{card?.benifit2}</span>
             </li>
             <li className="flex items-center space-x-3">
               <svg
@@ -106,7 +107,7 @@ const PricingCard = () => {
                   clip-rule="evenodd"
                 ></path>
               </svg>
-              <span>{card?.benifit3}</span>
+              <span  className="text-slate-300">{card?.benifit3}</span>
             </li>
             <li className="flex items-center space-x-3">
               <svg
@@ -121,7 +122,7 @@ const PricingCard = () => {
                   clip-rule="evenodd"
                 ></path>
               </svg>
-              <span>{card?.benifit4}</span>
+              <span  className="text-slate-300">{card?.benifit4}</span>
             </li>
           </ul>
           <button

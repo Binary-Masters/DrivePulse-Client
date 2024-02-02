@@ -1,7 +1,11 @@
 import FilesPage from "@/Components/Dashboard/Files/FilesPage";
 
 const files = () => {
-	return <FilesPage/>
+	return (
+		<div className=" gradient1-bg min-h-screen">
+			<FilesPage/>
+		</div>
+	)
 }
 
 export default files;
