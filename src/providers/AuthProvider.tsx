@@ -15,6 +15,7 @@ import {
   User,
   UserCredential,
   GithubAuthProvider,
+  sendEmailVerification
 } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
 // import { FacebookAuthProvider } from "firebase/auth";
@@ -30,8 +31,9 @@ export interface AuthInfo {
   // loginByFacebook: () => Promise<UserCredential>;
   updateUserPassword: any;
   resetPassword: any;
-  sendPassResetEmail:any;
+  sendPassResetEmail: any;
   credential: any;
+  verifyEmail: any;
   logout: () => Promise<void>;
   setLoading: (value: boolean) => void;
   updateUser: (name: string, photoURL: string) => Promise<void> | undefined;
@@ -62,7 +64,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       console.error("User is null. Cannot reauthenticate.");
       return null;
     }
-  
+
     const cred = EmailAuthProvider.credential(user.email || "", pass);  // Ensure user.email is not null
     try {
       await reauthenticateWithCredential(user, cred);
@@ -90,14 +92,22 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   // password reset email
-  const sendPassResetEmail=async(email:string):Promise<void | null>=>{
+  const sendPassResetEmail = async (email: string): Promise<void | null> => {
     try {
       await sendPasswordResetEmail(auth, email);
     } catch (error) {
       console.error(error);
       // Handle the error, depending on your use case
       return null;
-    } 
+    }
+  }
+
+  // Email verification
+  const verifyEmail = () => {
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      return sendEmailVerification(currentUser);
+    }
   }
 
   // const loginByFacebook = () => {
@@ -107,12 +117,12 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   // };
 
   //Github Authentication
-  const loginByGithub = ()=>{
+  const loginByGithub = () => {
     setLoading(true);
-    return signInWithPopup(auth,githubProvider);
+    return signInWithPopup(auth, githubProvider);
   }
-  
-  const resetPassword = async (email:string) => {
+
+  const resetPassword = async (email: string) => {
     return sendPasswordResetEmail(auth, email);
   };
 
@@ -171,7 +181,8 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     updateUser,
     // loginByFacebook,
     loginByGithub,
-    sendPassResetEmail
+    sendPassResetEmail,
+    verifyEmail
   };
 
   return (
