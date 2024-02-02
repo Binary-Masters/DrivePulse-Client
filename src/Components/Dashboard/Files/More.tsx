@@ -35,11 +35,11 @@ const MoreDropDrown = () => {
   };
 
   return (
-    <div className="">
+    <div className="z-10">
       <motion.div animate={open ? "open" : "closed"} className="relative">
         <button
           onClick={() => setOpen((pv) => !pv)}
-          className="flex items-center gap-2 px-3 py-2 rounded-md bg-indigo-50 hover:bg-indigo-100 transition-colors"
+          className="flex items-center px-3 py-2 gap-2 rounded-md bg-indigo-50 hover:bg-indigo-100 transition-colors"
         >
           <motion.span variants={iconVariants}>
             <MdArrowDropDownCircle />
@@ -54,13 +54,13 @@ const MoreDropDrown = () => {
         >
           <motion.li
             onClick={() => setOpen(true)}
-            className="flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
+            className="flex items-center w-full p-2 text-xs font-medium cursor-pointer gap-2 whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors"
           > <FiCopy/> <CopyLink/>
           </motion.li>
 
           <motion.li
             onClick={() => setOpen(true)}
-            className="flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
+            className="flex items-center w-full p-2 text-xs font-medium cursor-pointer gap-2 whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors"
           > <button className="flex gap-2" onClick={openModal}><FiShare/> Share</button>
             <ShareModal />
           </motion.li>
@@ -68,13 +68,13 @@ const MoreDropDrown = () => {
 
           <motion.li
             onClick={() => setOpen(false)}
-            className="flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
+            className="flex items-center w-full p-2 text-xs font-medium cursor-pointer gap-2 whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors"
           > <FiDownload/> <Download/>
           </motion.li>
 
           <motion.li
             onClick={() => setOpen(true)}
-            className="flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
+            className="flex items-center w-full p-2 text-xs font-medium cursor-pointer gap-2 whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors"
           > <button className="flex gap-2" onClick={renameModal}><MdDriveFileRenameOutline/> Rename</button>
             <RenameModal/>
           </motion.li>
