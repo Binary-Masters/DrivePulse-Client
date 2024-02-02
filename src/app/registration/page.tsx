@@ -21,7 +21,7 @@ const Registration = () => {
 	const [showPass, setShowPass] = useState(false);
 	const router = useRouter();
 
-	const { createUser, updateUser } = useContext<any | null>(
+	const { createUser, updateUser, verifyEmail } = useContext<any | null>(
 		AuthContext
 	);
 	const [imageUrl, setImageUrl] = useState("");
@@ -47,15 +47,14 @@ const Registration = () => {
 		createUser(email, password)
 			.then(() => {
 				updateUser(name, imageUrl).then(() => {
-					Swal.fire({
-						title: "Congratulations!",
-						text: "You've been registered successfully",
-						icon: "success",
-						confirmButtonText: "OK",
-					}).then(() => {
-						router.push("/dashboard");
-						setLoading(false);
-					});
+					verifyEmail()
+						.then(() => {
+							Swal.fire({
+								text: "Registration Successful",
+								icon: "success",
+								confirmButtonText: "OK",
+							})
+						})
 				});
 			})
 			.catch((error) => {
@@ -90,7 +89,7 @@ const Registration = () => {
 			<div className="w-11/12 mx-auto pt-8 text-center">
 				<div className="flex flex-col mx-auto gap-8 md:flex-row-reverse md:px-4">
 					<div className="w-full mx-auto mt-20 lg:w-1/2">
-					<Lottie animationData={animationData}/>
+						<Lottie animationData={animationData} />
 					</div>
 					<div className="w-full mx-auto lg:w-1/2">
 						<h1 className="mb-4 text-5xl font-bold text-white">
