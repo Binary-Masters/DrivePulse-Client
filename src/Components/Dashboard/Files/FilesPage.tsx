@@ -43,9 +43,12 @@ const FilesPage = () => {
 
 	return (
 		<div className="pt-[80px]">
-			<div className="flex gap-5 justify-end mr-5 pb-8 pt-2">
-				<FolderButton /> <NewFile/> <Upload/>
-			</div>
+		<div className="flex gap-5 justify-end mr-5 pb-8 pt-2">
+		  {/* Pass required props to FolderButton */}
+		  <FolderButton path={path} refetch={refetch} />
+		  <NewFile />
+		  <Upload />
+		</div>
 			<div style={{backdropFilter:"blur(200px)"}} className="relative overflow-x-auto shadow-md sm:rounded-lg">
 				<table className="w-full text-sm text-left text-gray-500 rtl:text-right ">
 					<thead className="text-xs text-slate-200 uppercase bg-primary ">
