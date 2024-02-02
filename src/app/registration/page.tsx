@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import backgroundImg from '../../assests/Login-Registration/banner.jpg';
 import Lottie from "lottie-react";
 import animationData from '../../assests/lottie-animation/Registration.json'
+import './style.css'
 
 const image_hosting_key = process.env.NEXT_PUBLIC_IMG_HOSTING_API_KEY;
 // console.log(process.env.NEXT_PUBLIC_IMG_HOSTING_API_KEY);
@@ -107,7 +108,7 @@ const Registration = () => {
 										type="text"
 										name="name"
 										placeholder="Your name"
-										className="w-full border-blue-600 input rounded-md bg-transparent"
+										className="w-full regStyle border-blue-600 input rounded-md bg-transparent"
 										required
 									/>
 								</div>
@@ -121,7 +122,7 @@ const Registration = () => {
 										type="email"
 										name="email"
 										placeholder="Email"
-										className="w-full border-blue-600 input rounded-md bg-transparent"
+										className="w-full regStyle border-blue-600 input rounded-md bg-transparent"
 										required
 									/>
 								</div>
@@ -137,7 +138,7 @@ const Registration = () => {
 											onChange={handleUploadImageBB}
 											name="image"
 											placeholder="Please give your photo url"
-											className="w-full rounded-md border-2 border-blue-600 border-b-white bg-transparent"
+											className="w-full regStyle rounded-md border-2 border-blue-600 border-b-white bg-transparent"
 										/>
 									</div>
 								</div>
@@ -152,7 +153,7 @@ const Registration = () => {
 										type={showPass ? "text" : "password"}
 										name="password"
 										placeholder="password"
-										className="w-full border-blue-600 input rounded-md bg-transparent"
+										className="w-full regStyle border-blue-600 input rounded-md bg-transparent"
 										required
 									/>
 									<span
