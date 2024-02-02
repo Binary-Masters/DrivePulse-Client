@@ -19,16 +19,12 @@ const FolderButton = ({ path, refetch }) => {
 
 	const handleCreateFolder = (data: { folderName: string }) => {
 		//if needed to used logic here for backend
-		const pPath = path.split("/")
-		const parentPath = pPath[pPath.length - 1];
 		const folderMetadata = {
 			type: "folder",
 			bucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
 			fullPath: `${ user.email + path + data.folderName + "/" }`,
 			name: data.folderName,
 			size: 0,
-			rootDirectory: user.email,
-			parentPath: parentPath || "/",
 		};
 		axiosPublic.post("/files", folderMetadata)
 		.then(() => refetch());

@@ -9,11 +9,11 @@ import { FaFolder } from "react-icons/fa";
 import FolderButton from "./Folder/FolderButton";
 import NewFile from "./Folder/NewFile";
 import Upload from "./Folder/Upload";
-import { useState } from "react";
+import useStorage from "@/Hooks/useStorage";
 
 const FilesPage = () => {
 	const axiosPublic = useAxiosPublic();
-	const [path, setPath] = useState<string>("/");
+	const { path, setPath } = useStorage();
 	const { user } = useAuth();
 
 	// Fetching file data for appropriate user
@@ -33,11 +33,12 @@ const FilesPage = () => {
 
 	const nodeClickHandler = (type: string, fullPath: string) => {
 		if (type === "folder") {
-			setPath(fullPath);
+			const fullPathArr = fullPath.split("/");
+			fullPathArr[0] = "" // Removing root dir
+			const newFullPath = fullPathArr.join("/");
+			setPath(newFullPath);
 			refetch();
-			refetch();
-		}
-		else console.log("This is a file");
+		} else console.log("This is a file");
 	};
 
 	return (
@@ -60,10 +61,22 @@ const FilesPage = () => {
 					</thead>
 					<tbody>
 						{files.map(
-							({ _id, name, timeCreated, size, type, fullPath }, i) => (
+							(
+								{
+									_id,
+									name,
+									timeCreated,
+									size,
+									type,
+									fullPath,
+								},
+								i
+							) => (
 								<tr
 									key={_id}
-									onClick={() => nodeClickHandler(type, fullPath)}
+									onClick={() =>
+										nodeClickHandler(type, fullPath)
+									}
 									className="cursor-pointer"
 								>
 									<td className="flex items-center justify-center px-6 py-4 text-2xl font-medium whitespace-nowrap">
@@ -80,7 +93,11 @@ const FilesPage = () => {
 											<MdDelete />
 										</Link>
 									</td>
-									<td className={`px-6 py-4 ${ type === "folder" && "hidden" }`}>
+									<td
+										className={`px-6 py-4 ${
+											type === "folder" && "hidden"
+										}`}
+									>
 										<Link href="#" className="text-2xl">
 											<MoreDropDrown></MoreDropDrown>
 										</Link>

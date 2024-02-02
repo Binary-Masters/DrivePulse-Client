@@ -9,13 +9,13 @@ import useAxiosPublic from "@/Hooks/useAxiosPublic";
 
 const UploadForm: React.FC = () => {
 	const [file, setFile] = useState<File | null>(null);
-	const { uploadFile } = useStorage();
+	const { uploadFile, path } = useStorage();
 	const axiosPublic = useAxiosPublic();
 
 	const handleFileUpload = () => {
 		try {
 			if (file) {
-				uploadFile("/", file).then((snapshot) => {
+				uploadFile(file).then((snapshot) => {
 					Swal.fire({
 						title: "Success",
 						text: "File uplaoded successfully",
