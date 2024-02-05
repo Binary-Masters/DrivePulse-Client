@@ -1,5 +1,4 @@
 import { CloudLightning, DatabaseZap, Usb } from "lucide-react";
-import "./styles.css";
 
 const HostedInfo = () => {
   const info = [

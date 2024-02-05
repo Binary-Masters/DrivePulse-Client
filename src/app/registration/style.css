@@ -1,0 +1,12 @@
+
+.regStyle{
+    background: transparent;
+    border: 2px solid blue;
+    border-bottom: 2px solid white;
+}
+
+form input[type="submit"]{
+  border:1px solid blue;   
+}
+
+

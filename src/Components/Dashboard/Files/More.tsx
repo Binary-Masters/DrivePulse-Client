@@ -35,7 +35,7 @@ const MoreDropDrown = () => {
   };
 
   return (
-    <div className="z-10">
+    <div className="">
       <motion.div animate={open ? "open" : "closed"} className="relative">
         <button
           onClick={() => setOpen((pv) => !pv)}

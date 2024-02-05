@@ -11,6 +11,7 @@ const UploadForm: React.FC = () => {
 	const [file, setFile] = useState<File | null>(null);
 	const { uploadFile, path } = useStorage();
 	const axiosPublic = useAxiosPublic();
+	console.log(path);
 
 	const handleFileUpload = () => {
 		try {
@@ -18,7 +19,7 @@ const UploadForm: React.FC = () => {
 				uploadFile(file).then((snapshot) => {
 					Swal.fire({
 						title: "Success",
-						text: "File uplaoded successfully",
+						text: "File uploaded successfully",
 						icon: "success",
 						confirmButtonText: "OK",
 					});
