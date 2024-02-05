@@ -5,12 +5,12 @@ import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { MdDelete } from "react-icons/md";
-import { FaFolder } from "react-icons/fa";
 import FolderButton from "./Folder/FolderButton";
 import NewFile from "./Folder/NewFile";
 import Upload from "./Folder/Upload";
 import useStorage from "@/Hooks/useStorage";
-
+import icons from "./icons";
+import { FaImage } from "react-icons/fa";
 
 const FilesPage = () => {
 	const axiosPublic = useAxiosPublic();
@@ -33,7 +33,6 @@ const FilesPage = () => {
 	});
 
 	const nodeClickHandler = (type: string, fullPath: string) => {
-		console.log(path);
 		if (type === "folder") {
 			const fullPathArr = fullPath.split("/");
 			fullPathArr[0] = ""; // Removing root dir
@@ -91,6 +90,7 @@ const FilesPage = () => {
 									size,
 									type,
 									fullPath,
+									contentType,
 								},
 								i
 							) => (
@@ -102,17 +102,31 @@ const FilesPage = () => {
 									className="text-white cursor-pointer"
 								>
 									<td className="flex items-center justify-center px-6 py-4 text-2xl font-medium whitespace-nowrap">
-										{type === "folder" && <FaFolder />}
+										{icons.map((elem) => {
+											if (
+												elem.contentType === contentType
+											)
+												return <elem.icon />;
+										})}
 									</td>
 									<td className="px-6 py-4 ">{name}</td>
 									<td className="px-6 py-4">{timeCreated}</td>
 									<td className="px-6 py-4">{size}</td>
 									<td className="px-6 py-4">
+										{/* <Link */}
+										{/* 	href="#" */}
+										{/* 	className={`text-3xl ${ */}
+										{/* 		type === "folder" && "hidden" */}
+										{/* 	} font-medium text-red-600 dark:text-red-500 hover:font-bold`} */}
+										{/* 	onClick={() => */}
+										{/* 		handleDeleteFile(fullPath) */}
+										{/* 	} */}
+										{/* > */}
+										{/* 	<MdDelete /> */}
+										{/* </Link> */}
 										<Link
 											href="#"
-											className={`text-3xl ${
-												type === "folder" && "hidden"
-											} font-medium text-red-600 dark:text-red-500 hover:font-bold`}
+											className={`text-3xl font-medium text-red-600 dark:text-red-500 hover:font-bold`}
 											onClick={() =>
 												handleDeleteFile(fullPath)
 											}
@@ -125,7 +139,10 @@ const FilesPage = () => {
 											type === "folder" && "hidden"
 										}`}
 									>
-										<Link href="#" className="text-2xl text-gray-500">
+										<Link
+											href="#"
+											className="text-2xl text-gray-500"
+										>
 											<MoreDropDrown></MoreDropDrown>
 										</Link>
 									</td>

@@ -29,7 +29,6 @@ export default function StorageProvider({
 	const [path, setPath] = useState<string>("/");
 	const [storageLoading, setStorageLoading] = useState<boolean>(true);
 	const storage = getStorage();
-	console.log(path);
 
 	const uploadFile = async (file: File): Promise<UploadResult> => {
 		setStorageLoading(true);

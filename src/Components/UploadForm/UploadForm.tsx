@@ -11,7 +11,6 @@ const UploadForm: React.FC = () => {
 	const [file, setFile] = useState<File | null>(null);
 	const { uploadFile, path } = useStorage();
 	const axiosPublic = useAxiosPublic();
-	console.log(path);
 
 	const handleFileUpload = () => {
 		try {
