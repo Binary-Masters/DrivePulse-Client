@@ -10,6 +10,7 @@ import Upload from "./Folder/Upload";
 import useStorage from "@/Hooks/useStorage";
 import icons from "./icons";
 import { FaImage } from "react-icons/fa";
+import { useState } from "react";
 
 const FilesPage = () => {
 	const [currentPath, setCurrentPath] = useState(['']);
