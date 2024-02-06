@@ -5,18 +5,17 @@ import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { MdDelete } from "react-icons/md";
-import { FaFolder } from "react-icons/fa";
 import FolderButton from "./Folder/FolderButton";
 import Upload from "./Folder/Upload";
 import useStorage from "@/Hooks/useStorage";
-import NavigationFolder from "./Folder/NavigationFolder";
-import { useEffect, useState } from "react";
+import icons from "./icons";
+import { FaImage } from "react-icons/fa";
 
 const FilesPage = () => {
 	const [currentPath, setCurrentPath] = useState(['']);
 	
 	const axiosPublic = useAxiosPublic();
-	const { path, setPath } = useStorage();
+	const { path, setPath, deleteFile } = useStorage();
 	const { user } = useAuth();
 
 	console.log(path)
@@ -45,25 +44,40 @@ const FilesPage = () => {
 	const nodeClickHandler = (type: string, fullPath: string) => {
 		if (type === "folder") {
 			const fullPathArr = fullPath.split("/");
-			fullPathArr[0] = "" // Removing root dir
+			fullPathArr[0] = ""; // Removing root dir
 			const newFullPath = fullPathArr.join("/");
 			setPath(newFullPath);
 			refetch();
 		} else console.log("This is a file");
 	};
 
+	const handleDeleteFile = (filePath: string) => {
+		deleteFile(filePath)
+			.then((result) => {
+				console.log(result);
+				axiosPublic
+					.delete(`/files?fullPath=${filePath}`)
+					.then((result) => {
+						console.log(result);
+						refetch();
+					})
+					.catch((err) => console.log(err));
+			})
+			.catch((err) => console.log(err));
+	};
+
 	return (
 		<div className="mt-20">
-			<div className="flex justify-between pt-2 ">
-				<NavigationFolder currentPath={currentPath} onNavigate={handleNavigate} />
-				<div className="flex justify-end pb-8 mr-5 gap-5">
-					<FolderButton onNavigate={handleNavigate} path={path} refetch={refetch} currentPath={currentPath} />
-					<Upload />
-				</div>
+			<div className="flex justify-end pt-2 pb-8 mr-5 gap-5">
+				<FolderButton path={path} refetch={refetch} /> <NewFile />{" "}
+				<Upload />
 			</div>
-			<div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+			<div
+				style={{ backdropFilter: "blur(200px)" }}
+				className="relative h-screen overflow-x-auto shadow-md sm:rounded-lg"
+			>
 				<table className="w-full text-sm text-left text-gray-500 rtl:text-right ">
-					<thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
+					<thead className="text-xs uppercase text-slate-200 bg-primary ">
 						<tr>
 							<th className="px-6 py-3"></th>
 							<th className="px-6 py-3">Name</th>
@@ -83,6 +97,7 @@ const FilesPage = () => {
 									size,
 									type,
 									fullPath,
+									contentType,
 								},
 								i
 							) => (
@@ -91,18 +106,37 @@ const FilesPage = () => {
 									onClick={() =>
 										nodeClickHandler(type, fullPath)
 									}
-									className="cursor-pointer"
+									className="text-white cursor-pointer"
 								>
 									<td className="flex items-center justify-center px-6 py-4 text-2xl font-medium whitespace-nowrap">
-										{type === "folder" && <FaFolder />}
+										{icons.map((elem) => {
+											if (
+												elem.contentType === contentType
+											)
+												return <elem.icon />;
+										})}
 									</td>
 									<td className="px-6 py-4 ">{name}</td>
 									<td className="px-6 py-4">{timeCreated}</td>
 									<td className="px-6 py-4">{size}</td>
 									<td className="px-6 py-4">
+										{/* <Link */}
+										{/* 	href="#" */}
+										{/* 	className={`text-3xl ${ */}
+										{/* 		type === "folder" && "hidden" */}
+										{/* 	} font-medium text-red-600 dark:text-red-500 hover:font-bold`} */}
+										{/* 	onClick={() => */}
+										{/* 		handleDeleteFile(fullPath) */}
+										{/* 	} */}
+										{/* > */}
+										{/* 	<MdDelete /> */}
+										{/* </Link> */}
 										<Link
 											href="#"
-											className="text-3xl font-medium text-red-600 dark:text-red-500 hover:font-bold"
+											className={`text-3xl font-medium text-red-600 dark:text-red-500 hover:font-bold`}
+											onClick={() =>
+												handleDeleteFile(fullPath)
+											}
 										>
 											<MdDelete />
 										</Link>
@@ -111,7 +145,10 @@ const FilesPage = () => {
 										className={`px-6 py-4 ${type === "folder" && "hidden"
 											}`}
 									>
-										<Link href="#" className="text-2xl">
+										<Link
+											href="#"
+											className="text-2xl text-gray-500"
+										>
 											<MoreDropDrown></MoreDropDrown>
 										</Link>
 									</td>

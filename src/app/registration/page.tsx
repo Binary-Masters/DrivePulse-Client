@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import backgroundImg from '../../assests/Login-Registration/banner.jpg';
 import Lottie from "lottie-react";
 import animationData from '../../assests/lottie-animation/Registration.json'
+import './style.css'
 
 const image_hosting_key = process.env.NEXT_PUBLIC_IMG_HOSTING_API_KEY;
 // console.log(process.env.NEXT_PUBLIC_IMG_HOSTING_API_KEY);
@@ -21,7 +22,7 @@ const Registration = () => {
 	const [showPass, setShowPass] = useState(false);
 	const router = useRouter();
 
-	const { createUser, updateUser } = useContext<any | null>(
+	const { createUser, updateUser, verifyEmail } = useContext<any | null>(
 		AuthContext
 	);
 	const [imageUrl, setImageUrl] = useState("");
@@ -47,15 +48,14 @@ const Registration = () => {
 		createUser(email, password)
 			.then(() => {
 				updateUser(name, imageUrl).then(() => {
-					Swal.fire({
-						title: "Congratulations!",
-						text: "You've been registered successfully",
-						icon: "success",
-						confirmButtonText: "OK",
-					}).then(() => {
-						router.push("/dashboard");
-						setLoading(false);
-					});
+					verifyEmail()
+						.then(() => {
+							Swal.fire({
+								text: "Registration Successful",
+								icon: "success",
+								confirmButtonText: "OK",
+							})
+						})
 				});
 			})
 			.catch((error) => {
@@ -90,7 +90,7 @@ const Registration = () => {
 			<div className="w-11/12 mx-auto pt-8 text-center">
 				<div className="flex flex-col mx-auto gap-8 md:flex-row-reverse md:px-4">
 					<div className="w-full mx-auto mt-20 lg:w-1/2">
-					<Lottie animationData={animationData}/>
+						<Lottie animationData={animationData} />
 					</div>
 					<div className="w-full mx-auto lg:w-1/2">
 						<h1 className="mb-4 text-5xl font-bold text-white">
@@ -108,7 +108,7 @@ const Registration = () => {
 										type="text"
 										name="name"
 										placeholder="Your name"
-										className="w-full border-blue-600 input rounded-md bg-transparent"
+										className="w-full regStyle border-blue-600 input rounded-md bg-transparent"
 										required
 									/>
 								</div>
@@ -122,7 +122,7 @@ const Registration = () => {
 										type="email"
 										name="email"
 										placeholder="Email"
-										className="w-full border-blue-600 input rounded-md bg-transparent"
+										className="w-full regStyle border-blue-600 input rounded-md bg-transparent"
 										required
 									/>
 								</div>
@@ -138,7 +138,7 @@ const Registration = () => {
 											onChange={handleUploadImageBB}
 											name="image"
 											placeholder="Please give your photo url"
-											className="w-full rounded-md border-2 border-blue-600 border-b-white bg-transparent"
+											className="w-full regStyle rounded-md border-2 border-blue-600 border-b-white bg-transparent"
 										/>
 									</div>
 								</div>
@@ -153,7 +153,7 @@ const Registration = () => {
 										type={showPass ? "text" : "password"}
 										name="password"
 										placeholder="password"
-										className="w-full border-blue-600 input rounded-md bg-transparent"
+										className="w-full regStyle border-blue-600 input rounded-md bg-transparent"
 										required
 									/>
 									<span

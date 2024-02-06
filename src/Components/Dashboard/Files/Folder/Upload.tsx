@@ -19,7 +19,7 @@ const Upload = () => {
     }
     return (
         <div>
-            <button onClick={openModal}  className="text-sm btn" ><FaFileUpload/> Upload</button>
+            <button onClick={openModal}  className="text-[16px]  border-0 btn bg-primary text-white hover:bg-blue-600 transition-all duration-300text-sm" ><FaFileUpload/> Upload</button>
             
             {/* modal */}
             <dialog id="my_modal_3" className="modal text-black">

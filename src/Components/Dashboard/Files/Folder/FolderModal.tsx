@@ -55,7 +55,7 @@ const FolderModal: React.FC<FolderModalProps> = ({ isOpen, onRequestClose, onSub
                 {errors.folderName && <span className='text-red-400 text-sm'>This field is required</span>}
 
                 <div className='flex gap-5 justify-end'>
-                    <button onClick={()=>onRequestClose(false)} className=' text-blue-600 bg-white border border-sky-500 focus:outline-none hover:bg-gray-100 focus:ring-1 focus:ring-gray-200 font-medium rounded-3xl text-sm px-3 mt-5'>Cancel</button>
+                    <button onClick={()=>onRequestClose()} className=' text-blue-600 bg-white border border-sky-500 focus:outline-none hover:bg-gray-100 focus:ring-1 focus:ring-gray-200 font-medium rounded-3xl text-sm px-3 mt-5'>Cancel</button>
                     <button className='text-white bg-gradient-to-br from-sky-500 to-blue-600 hover:bg-gradient-to-bl rounded-3xl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-3 py-2 text-center mt-5' type="submit">Confirm</button>
                 </div>
             </form>

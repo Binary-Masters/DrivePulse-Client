@@ -137,7 +137,7 @@ const Login = () => {
                   />
                 </div>
                 <div className="mt-4">
-                  <Link href='/forget-pass' className="text-red-600 text-center">Forget Password ?</Link>
+                  <Link href='/forget-password' className="text-red-600 text-center hover:underline">Forget Password ?</Link>
                   <p>
                     Do not have account ? Please{" "}
                     <Link href="/registration" className="ml-2 font-medium">

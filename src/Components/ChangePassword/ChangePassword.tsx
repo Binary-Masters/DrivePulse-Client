@@ -3,6 +3,7 @@
 import useAuth from "@/Hooks/useAuth";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
+import '../../app/dashboard/profile/profile.css'
 const ChangePassword = () => {
   const { updateUserPassword, credential } = useAuth();
   const handleChangeSubmit = async (e) => {
@@ -30,8 +31,8 @@ const ChangePassword = () => {
       });
   };
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-center">Change Password</h1>
+    <div className="w-80 h-96 bg-slate-200 rounded-2xl shadow-slate-300">
+      <h1 className=" text-3xl font-bold mt-5 text-center">Change Password</h1>
       <form onSubmit={handleChangeSubmit} className="card-body">
         <div className="form-control">
           <label className="label">
