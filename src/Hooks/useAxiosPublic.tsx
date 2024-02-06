@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const axiosPublic = axios.create({
-	baseURL: "https://drive-pulse-server.vercel.app",
+	baseURL: "http://drive-pulse-server.vercel.app",
 });
 
 // http://localhost:3001

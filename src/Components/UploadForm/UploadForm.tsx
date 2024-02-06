@@ -17,7 +17,7 @@ const UploadForm: React.FC = () => {
 				uploadFile(file).then((snapshot) => {
 					Swal.fire({
 						title: "Success",
-						text: "File uplaoded successfully",
+						text: "File uploaded successfully",
 						icon: "success",
 						confirmButtonText: "OK",
 					});
