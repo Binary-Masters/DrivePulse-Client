@@ -51,12 +51,11 @@ const FolderButton: React.FC<FolderButtonProps> = ({ path, refetch }) => {
 			>
 				<FaFolderPlus /> New Folder
 			</button>
-			<FolderModal
-				isOpen={isModalOpen}
-				onRequestClose={closeModal}
-				onSubmit={handleCreateFolder}
-                currentPath={currentPath} 
-                onNavigate={onNavigate}
+			<FolderModal 
+			isOpen={isModalOpen}
+			onRequestClose={closeModal}
+			onSubmit={handleCreateFolder}
+			
 			/>
 		</>
 	);

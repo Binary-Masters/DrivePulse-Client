@@ -70,7 +70,7 @@ const FilesPage = () => {
 	return (
 		<div className="mt-20">
 			<div className="flex justify-end pt-2 pb-8 mr-5 gap-5">
-				<FolderButton path={path} refetch={refetch} /> <NewFile />{" "}
+				<FolderButton path={path} refetch={refetch} /> {" "}
 				<Upload />
 			</div>
 			<div
