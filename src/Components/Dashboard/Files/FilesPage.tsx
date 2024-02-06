@@ -7,14 +7,25 @@ import Link from "next/link";
 import { MdDelete } from "react-icons/md";
 import { FaFolder } from "react-icons/fa";
 import FolderButton from "./Folder/FolderButton";
-import NewFile from "./Folder/NewFile";
 import Upload from "./Folder/Upload";
 import useStorage from "@/Hooks/useStorage";
+import NavigationFolder from "./Folder/NavigationFolder";
+import { useEffect, useState } from "react";
 
 const FilesPage = () => {
+	const [currentPath, setCurrentPath] = useState(['']);
+	
 	const axiosPublic = useAxiosPublic();
 	const { path, setPath } = useStorage();
 	const { user } = useAuth();
+
+	console.log(path)
+	console.log('current path', currentPath)
+
+	const handleNavigate = (path) => {
+		setCurrentPath(path);
+		console.log('Current Path:', currentPath);
+	};
 
 	// Fetching file data for appropriate user
 	const {
@@ -43,9 +54,12 @@ const FilesPage = () => {
 
 	return (
 		<div className="mt-20">
-			<div className="flex justify-end pt-2 pb-8 mr-5 gap-5">
-				<FolderButton path={path} refetch={refetch} /> <NewFile />{" "}
-				<Upload />
+			<div className="flex justify-between pt-2 ">
+				<NavigationFolder currentPath={currentPath} onNavigate={handleNavigate} />
+				<div className="flex justify-end pb-8 mr-5 gap-5">
+					<FolderButton onNavigate={handleNavigate} path={path} refetch={refetch} currentPath={currentPath} />
+					<Upload />
+				</div>
 			</div>
 			<div className="relative overflow-x-auto shadow-md sm:rounded-lg">
 				<table className="w-full text-sm text-left text-gray-500 rtl:text-right ">
@@ -94,9 +108,8 @@ const FilesPage = () => {
 										</Link>
 									</td>
 									<td
-										className={`px-6 py-4 ${
-											type === "folder" && "hidden"
-										}`}
+										className={`px-6 py-4 ${type === "folder" && "hidden"
+											}`}
 									>
 										<Link href="#" className="text-2xl">
 											<MoreDropDrown></MoreDropDrown>

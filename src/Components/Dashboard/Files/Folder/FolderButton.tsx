@@ -4,7 +4,9 @@ import { FaFolderPlus } from "react-icons/fa";
 import useAuth from "@/Hooks/useAuth";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 
-const FolderButton = ({ path, refetch }) => {
+
+  
+const FolderButton = ({ path, refetch, currentPath, onNavigate }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const axiosPublic = useAxiosPublic();
 	const { user } = useAuth();
@@ -40,6 +42,8 @@ const FolderButton = ({ path, refetch }) => {
 				isOpen={isModalOpen}
 				onRequestClose={closeModal}
 				onSubmit={handleCreateFolder}
+                currentPath={currentPath} 
+                onNavigate={onNavigate}
 			/>
 		</>
 	);
