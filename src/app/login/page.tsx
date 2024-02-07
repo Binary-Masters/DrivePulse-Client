@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import useAuth from "@/Hooks/useAuth";
 import "./style.css";
+import useAxiosPublic from "@/Hooks/useAxiosPublic";
 
 const Login = () => {
   const [showPass, setShowPass] = useState(false);
@@ -16,6 +17,7 @@ const Login = () => {
     useContext<any>(AuthContext);
   const { setLoading } = useAuth();
   const router = useRouter();
+  const axiosPublic = useAxiosPublic();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -23,16 +25,46 @@ const Login = () => {
     const email = form.email.value;
     const password = form.password.value;
     login(email, password)
-      .then(() => {
-        Swal.fire({
-          title: "Congratulations!",
-          text: "Logged in successfully",
-          icon: "success",
-          confirmButtonText: "OK",
-        }).then(() => {
-          router.push("/dashboard");
-          setLoading(false);
-        });
+      .then((result) => {
+        if (result.user.emailVerified) {
+          const userInfo = {
+            email: result.user?.email,
+            name: result.user?.name,
+            emailVerified: result?.user?.emailVerified,
+            phoneNumber: result?.user?.phoneNumber,
+            photoURL: result?.user?.photoURL,
+            uid: result?.user?.uid,
+            type: "user",
+          };
+
+          axiosPublic
+            .put("/user", userInfo)
+            .then(() => {
+              Swal.fire({
+                title: "Congratulations!",
+                text: "Logged in successfully",
+                icon: "success",
+                confirmButtonText: "OK",
+              }).then(() => {
+                router.push("/dashboard");
+                setLoading(false);
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          logout()
+            .then(() => {
+              Swal.fire({
+                title: "Opps You Didn't Verify Your Email!",
+                text: "You Have To Verify Your Email Account And Try Again!",
+                icon: "error",
+              });
+              form.reset();
+            })
+            .catch();
+        }
       })
       .catch((error) => {
         Swal.fire({
@@ -45,16 +77,32 @@ const Login = () => {
   };
   const handleLoginByGoogle = () => {
     loginByGoogle()
-      .then(() => {
-        Swal.fire({
-          title: "Congratulations!",
-          text: "Logged in successfully",
-          icon: "success",
-          confirmButtonText: "OK",
-        }).then(() => {
-          router.push("/dashboard");
-          setLoading(false);
-        });
+      .then((res) => {
+        const userInfo = {
+          email: res.user?.email,
+          name: res.user?.displayName,
+          emailVerified: res?.user?.emailVerified,
+          phoneNumber: res?.user?.phoneNumber,
+          photoURL: res?.user?.photoURL,
+          uid: res?.user?.uid,
+          type: "user",
+        };
+        axiosPublic
+          .post("/users", userInfo)
+          .then(() => {
+            Swal.fire({
+              title: "Congratulations!",
+              text: "Logged in successfully",
+              icon: "success",
+              confirmButtonText: "OK",
+            }).then(() => {
+              router.push("/dashboard");
+              setLoading(false);
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((error) => {
         Swal.fire({
@@ -67,16 +115,32 @@ const Login = () => {
   };
   const handleLoginByGithub = () => {
     loginByGithub()
-      .then(() => {
-        Swal.fire({
-          title: "Congratulations!",
-          text: "Logged in successfully",
-          icon: "success",
-          confirmButtonText: "OK",
-        }).then(() => {
-          router.push("/dashboard");
-          setLoading(false);
-        });
+      .then((res) => {
+        const userInfo = {
+          email: res.user?.email,
+          name: res.user?.displayName,
+          emailVerified: res?.user?.emailVerified,
+          phoneNumber: res?.user?.phoneNumber,
+          photoURL: res?.user?.photoURL,
+          uid: res?.user?.uid,
+          type: "user",
+        };
+        axiosPublic
+          .post("/users", userInfo)
+          .then(() => {
+            Swal.fire({
+              title: "Congratulations!",
+              text: "Logged in successfully",
+              icon: "success",
+              confirmButtonText: "OK",
+            }).then(() => {
+              router.push("/dashboard");
+              setLoading(false);
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((error) => {
         Swal.fire({
@@ -96,7 +160,9 @@ const Login = () => {
       <div className="w-11/12 mx-auto">
         <div className="mx-auto w-fit">
           <div className="pt-16">
-            <p className="text-white text-5xl font-bold mb-4 text-center">Login now!</p>
+            <p className="text-white text-5xl font-bold mb-4 text-center">
+              Login now!
+            </p>
             <div className="px-4 py-6 text-white bg-transparent border-2 border-indigo-600 rounded-lg shadow-2xl backdrop-blur-sm">
               <form onSubmit={handleLogin} className="relative">
                 <div>
@@ -137,7 +203,12 @@ const Login = () => {
                   />
                 </div>
                 <div className="mt-4">
-                  <Link href='/forget-password' className="text-red-600 text-center hover:underline">Forget Password ?</Link>
+                  <Link
+                    href="/forget-password"
+                    className="text-red-600 text-center hover:underline"
+                  >
+                    Forget Password ?
+                  </Link>
                   <p>
                     Do not have account ? Please{" "}
                     <Link href="/registration" className="ml-2 font-medium">
