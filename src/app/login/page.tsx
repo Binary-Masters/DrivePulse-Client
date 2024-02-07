@@ -27,7 +27,6 @@ const Login = () => {
     login(email, password)
       .then((result) => {
         if (result.user.emailVerified) {
-          console.log(result);
           const userInfo = {
             email: result.user?.email,
             name: result.user?.name,
