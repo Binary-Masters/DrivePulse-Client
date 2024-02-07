@@ -38,7 +38,7 @@ const SideNave = () => {
       id: 4,    //Only Admin can see this route
       name: "Users-Management",
       icon: <FaUsers />,
-      path: "/dashboard/user-management",
+      path: "/dashboard/users-management",
     },
   ];
 
