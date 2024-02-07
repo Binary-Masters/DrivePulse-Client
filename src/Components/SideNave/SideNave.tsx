@@ -1,6 +1,7 @@
 "use client";
 import { FileUp, Home, LayoutDashboard, Settings, Upload } from "lucide-react";
 import { CgProfile } from "react-icons/cg";
+import { FaUsers } from "react-icons/fa";
 import Image from "next/image";
 import logo from "../../assests/icons/logo.png";
 import Link from "next/link";
@@ -32,6 +33,12 @@ const SideNave = () => {
       name: "Files",
       icon: <FileUp />,
       path: "/dashboard/files",
+    },
+    {
+      id: 4,    //Only Admin can see this route
+      name: "Users-Management",
+      icon: <FaUsers />,
+      path: "/dashboard/user-management",
     },
   ];
 

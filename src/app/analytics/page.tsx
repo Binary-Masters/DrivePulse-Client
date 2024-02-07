@@ -27,7 +27,7 @@ const Analytics = () => {
             id:4,
             icon:<FaUserFriends />,
             number: 500,
-            desc:"All Users"
+            desc:"Total Storage"
         },
         {
             id:5,
@@ -35,21 +35,15 @@ const Analytics = () => {
             number: 500,
             desc:"All Users"
         },
-        {
-            id:6,
-            icon:<FaUserFriends />,
-            number: 500,
-            desc:"All Users"
-        },
     ]
 
-    let userData = data.filter(item=> item.id<4);
+    // let userData = data.filter(item=> item.id<4);
     
 
     return (
         <div className="grid  lg:grid-cols-3 gap-3">
             {
-                userData.map(item=> <Link href={`/analytics/${item.desc}`} style={{boxShadow:"1px 1px 20px #24207b"}} key={item?.id} className="rounded-md bg-[#090d2b] p-5 space-y-1 flex items-center justify-between">
+                data.map(item=> <Link href={`/analytics/${item.desc}`} style={{boxShadow:"1px 1px 20px #24207b"}} key={item?.id} className="rounded-md bg-[#090d2b] p-5 space-y-1 flex items-center justify-between">
                     <h3 className="text-2xl bg-primary text-white p-3 rounded-3xl">{item.icon}</h3>
                     <div>
                     <h1 className="text-3xl font-bold text-slate-300">{item.number}</h1>
