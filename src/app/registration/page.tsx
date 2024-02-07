@@ -56,11 +56,8 @@ const Registration = () => {
         // console.log(name,email,photoUrl,password);
         createUser(email, password)
           .then((res) => {
-            updateUser(name, imageUrl)
-              .then((res) => {
-                console.log(res);
-              })
-              .catch();
+            console.log(res);
+            updateUser(name, imageUrl).then().catch();
             verifyEmail().then().catch();
             const userInfo = {
               email: res.user?.email,

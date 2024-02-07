@@ -27,26 +27,47 @@ const Login = () => {
     login(email, password)
       .then((result) => {
         if (result.user.emailVerified) {
-          router.push("/dashboard");
-          setLoading(false);
-          Swal.fire({
-            title: "Congratulations!",
-            text: "Logged in successfully",
-            icon: "success",
-            confirmButtonText: "OK",
-          })
+          console.log(result);
+          const userInfo = {
+            email: result.user?.email,
+            name: result.user?.name,
+            emailVerified: result?.user?.emailVerified,
+            phoneNumber: result?.user?.phoneNumber,
+            photoURL: result?.user?.photoURL,
+            uid: result?.user?.uid,
+            type: "user",
+          };
+
+          axiosPublic
+            .put("/user", userInfo)
+            .then(() => {
+              Swal.fire({
+                title: "Congratulations!",
+                text: "Logged in successfully",
+                icon: "success",
+                confirmButtonText: "OK",
+              }).then(() => {
+                router.push("/dashboard");
+                setLoading(false);
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         } else {
           logout()
-          .then(()=>{
-            Swal.fire({
-              title: "Opps You Didn't Verify Your Email!",
-              text: "You Have To Verify Your Email Account And Try Again!",
-              icon: "error",
-            });
-            form.reset();
-          })
-          .catch()
-      }}) .catch((error) => {
+            .then(() => {
+              Swal.fire({
+                title: "Opps You Didn't Verify Your Email!",
+                text: "You Have To Verify Your Email Account And Try Again!",
+                icon: "error",
+              });
+              form.reset();
+            })
+            .catch();
+        }
+      })
+      .catch((error) => {
         Swal.fire({
           title: "Error",
           text: error,
@@ -54,7 +75,6 @@ const Login = () => {
           confirmButtonText: "Close",
         });
       });
-     
   };
   const handleLoginByGoogle = () => {
     loginByGoogle()
