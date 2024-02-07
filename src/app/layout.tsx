@@ -3,9 +3,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ReactNode } from "react"; // Import ReactNode
-import AuthProvider from "@/providers/AuthProvider";
 import "./globals.css";
+
+// Providers
 import ReactTanstackProvider from "../providers/ReactTanstackProvider";
+import AuthProvider from "@/providers/AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,7 +26,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 			<html lang="en" data-theme="light">
 				<body className={inter.className}>
 					<div className="min-h-screen">
-						<AuthProvider>{children}</AuthProvider>
+							<AuthProvider>{children}</AuthProvider>
 					</div>
 				</body>
 			</html>
