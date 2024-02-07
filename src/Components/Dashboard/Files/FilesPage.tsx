@@ -6,16 +6,26 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { MdDelete } from "react-icons/md";
 import FolderButton from "./Folder/FolderButton";
-import NewFile from "./Folder/NewFile";
 import Upload from "./Folder/Upload";
 import useStorage from "@/Hooks/useStorage";
 import icons from "./icons";
 import { FaImage } from "react-icons/fa";
+import { useState } from "react";
 
 const FilesPage = () => {
+	const [currentPath, setCurrentPath] = useState(['']);
+	
 	const axiosPublic = useAxiosPublic();
 	const { path, setPath, deleteFile } = useStorage();
 	const { user } = useAuth();
+
+	console.log(path)
+	console.log('current path', currentPath)
+
+	const handleNavigate = (path) => {
+		setCurrentPath(path);
+		console.log('Current Path:', currentPath);
+	};
 
 	// Fetching file data for appropriate user
 	const {
@@ -58,11 +68,9 @@ const FilesPage = () => {
 	};
 
 	return (
-		<div className="pt-[80px] mt-20 px-4">
+		<div className="mt-20">
 			<div className="flex justify-end pt-2 pb-8 mr-5 gap-5">
-				{/* Pass required props to FolderButton */}
-				<FolderButton path={path} refetch={refetch} />
-				<NewFile />
+				<FolderButton path={path} refetch={refetch} /> <NewFile />{" "}
 				<Upload />
 			</div>
 			<div
@@ -135,9 +143,8 @@ const FilesPage = () => {
 										</Link>
 									</td>
 									<td
-										className={`px-6 py-4 ${
-											type === "folder" && "hidden"
-										}`}
+										className={`px-6 py-4 ${type === "folder" && "hidden"
+											}`}
 									>
 										<Link
 											href="#"
