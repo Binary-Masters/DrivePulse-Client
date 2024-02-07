@@ -14,6 +14,9 @@ const FolderButton: React.FC<FolderButtonProps> = ({ path, refetch }) => {
 	const axiosPublic = useAxiosPublic();
 	const { user } = useAuth();
 
+
+	console.log('ehiid path dir', path) 
+	
 	const openModal = () => {
 		setIsModalOpen(true);
 	};
@@ -55,7 +58,6 @@ const FolderButton: React.FC<FolderButtonProps> = ({ path, refetch }) => {
 			isOpen={isModalOpen}
 			onRequestClose={closeModal}
 			onSubmit={handleCreateFolder}
-			
 			/>
 		</>
 	);

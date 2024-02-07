@@ -3,20 +3,20 @@ import { FaFileUpload } from "react-icons/fa";
 import UploadForm from "@/Components/UploadForm/UploadForm";
 
 const Upload = () => {
+    const openModal = () => {
+        const modalElement = document.getElementById('my_modal_3');
+        if (modalElement) {
+            (modalElement as HTMLDialogElement).showModal();
+        } else {
+            console.error('Modal element not found');
+        }
+    }
     const closeModal = () => {
         const modalElement = document.getElementById('my_modal_3');
         if (modalElement) {
             (modalElement as HTMLDialogElement).close();
         }
     };
-    const openModal = () => {
-      const modalElement = document.getElementById('my_modal_3');
-      if (modalElement) {
-        (modalElement as HTMLDialogElement).showModal();
-      } else {
-        console.error('Modal element not found');
-      }
-    }
     return (
         <div>
             <button onClick={openModal}  className="text-[16px]  border-0 btn bg-primary text-white hover:bg-blue-600 transition-all duration-300text-sm" ><FaFileUpload/> Upload</button>
@@ -30,7 +30,7 @@ const Upload = () => {
                     </button>
                 </form>
                 <div>
-                   <UploadForm/>
+                   <UploadForm />
                   
                 </div>
                 

@@ -11,21 +11,16 @@ import useStorage from "@/Hooks/useStorage";
 import icons from "./icons";
 import { FaImage } from "react-icons/fa";
 import { useState } from "react";
+import NavigationFolder from "./Folder/NavigationFolder";
 
 const FilesPage = () => {
 	const [currentPath, setCurrentPath] = useState(['']);
-	
+
 	const axiosPublic = useAxiosPublic();
 	const { path, setPath, deleteFile } = useStorage();
 	const { user } = useAuth();
 
-	console.log(path)
-	console.log('current path', currentPath)
 
-	const handleNavigate = (path) => {
-		setCurrentPath(path);
-		console.log('Current Path:', currentPath);
-	};
 
 	// Fetching file data for appropriate user
 	const {
@@ -41,6 +36,8 @@ const FilesPage = () => {
 			return data;
 		},
 	});
+
+	console.log('files', files)
 
 	const nodeClickHandler = (type: string, fullPath: string) => {
 		if (type === "folder") {
@@ -69,9 +66,14 @@ const FilesPage = () => {
 
 	return (
 		<div className="mt-20">
-			<div className="flex justify-end pt-2 pb-8 mr-5 gap-5">
-				<FolderButton path={path} refetch={refetch} /> {" "}
-				<Upload />
+			<div className="flex justify-between items-center">
+			{/* navigate component here */}
+				<NavigationFolder/>
+
+				<div className="flex justify-end pt-2 pb-8 mr-5 gap-5">
+					<FolderButton path={path} refetch={refetch} /> {" "}
+					<Upload />
+				</div>
 			</div>
 			<div
 				style={{ backdropFilter: "blur(200px)" }}
