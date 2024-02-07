@@ -6,13 +6,14 @@ import img1 from "../../../assests/images/about1.jpg";
 import useAuth from '@/Hooks/useAuth';
 import {  Settings } from "lucide-react";
 import Link from 'next/link';
-// import "/src/app/dashboard/profile/profile.css"
+import Dropdown from './Dropdown';
+
 const ProfileCard = () => {
   const { user, logout } = useAuth();
   console.log(user,'user info')
   return (
     <div>
-      <div className="card w-72  h-96 bg-base-100 shadow-xl">
+      <div className="card w-80  h-96 bg-base-100 shadow-xl">
   <figure><div className="avatar">
   <div className="w-28 rounded-full ring hover:ring-offset-teal-700 ring-offset-base-100 ring-offset-2 my-8 ">
   <Image src={user?.photoURL || img1}
@@ -28,20 +29,9 @@ const ProfileCard = () => {
     <p className='text-center my-2'>{user?.email}</p>
     {/* todo number */}
     <p className='text-center my-2'>Number  : +088017*******</p>
-
-    {/*dynamic path  */}
-    {/* /dashboard/profile/password */}
-    <Link href='/dashboard/profile/password'>
-    <button className='absolute top-0 right-0 p-4' title='Change Password'><Settings className='w-6 h-6'/></button>
-    </Link>
-     
+     <Dropdown/>
   </div>
 </div>
-
-
-
-
-{/* test */}
 
     </div>
   )

@@ -1,5 +1,4 @@
 "use client";
-
 import useStorage from "@/Hooks/useStorage";
 import { File } from "lucide-react";
 import { useState } from "react";
@@ -18,7 +17,7 @@ const UploadForm: React.FC = () => {
 				uploadFile(file).then((snapshot) => {
 					Swal.fire({
 						title: "Success",
-						text: "File uplaoded successfully",
+						text: "File uploaded successfully",
 						icon: "success",
 						confirmButtonText: "OK",
 					});

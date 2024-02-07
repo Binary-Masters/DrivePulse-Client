@@ -7,9 +7,9 @@ import useAxiosPublic from "@/Hooks/useAxiosPublic";
 interface FolderButtonProps {
 	path: string;
 	refetch: () => void;
-  }
+}
 
-  const FolderButton: React.FC<FolderButtonProps> = ({ path, refetch }) => {
+const FolderButton: React.FC<FolderButtonProps> = ({ path, refetch }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const axiosPublic = useAxiosPublic();
 	const { user } = useAuth();
@@ -26,29 +26,40 @@ interface FolderButtonProps {
 		//if needed to used logic here for backend
 		const folderMetadata = {
 			type: "folder",
+			contentType: "folder",
 			bucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
 			fullPath: `${user.email + path + data.folderName + "/"}`,
 			name: data.folderName,
 			size: 0,
-		  };
-	  
-		  try {
+		};
+
+		try {
 			await axiosPublic.post("/files", folderMetadata);
 			refetch();
 			closeModal();
-		  } catch (error) {
+		} catch (error) {
 			console.error("Error creating folder:", error);
 			// Handle error as needed
-		  }
+		}
 	};
 
-    return (
-        <>
-            <button className="text-[16px]  border-0 btn bg-primary text-white hover:bg-blue-600 transition-all duration-300" onClick={openModal}><FaFolderPlus/> New Folder</button>
-            <FolderModal isOpen={isModalOpen} onRequestClose={closeModal} onSubmit={handleCreateFolder} />
-        </>
-    );
+	return (
+		<>
+			<button
+				className="text-[16px]  border-0 btn bg-primary text-white hover:bg-blue-600 transition-all duration-300"
+				onClick={openModal}
+			>
+				<FaFolderPlus /> New Folder
+			</button>
+			<FolderModal
+				isOpen={isModalOpen}
+				onRequestClose={closeModal}
+				onSubmit={handleCreateFolder}
+                currentPath={currentPath} 
+                onNavigate={onNavigate}
+			/>
+		</>
+	);
 };
 
 export default FolderButton;
-
