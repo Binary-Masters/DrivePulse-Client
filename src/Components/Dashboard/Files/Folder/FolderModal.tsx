@@ -6,8 +6,6 @@ interface FolderModalProps {
     isOpen: boolean;
     onRequestClose: () => void;
     onSubmit: (data: { folderName: string }) => void;
-    currentPath: string[];
-    onNavigate: (path: string[]) => void;
 }
 type FormData = {
     folderName: string
@@ -27,17 +25,14 @@ const customStyles = {
     },
 };
 
-const FolderModal: React.FC<FolderModalProps> = ({ isOpen, onRequestClose, onSubmit, currentPath, onNavigate }) => {
+const FolderModal: React.FC<FolderModalProps> = ({ isOpen, onRequestClose, onSubmit }) => {
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>()
 
     const handleFormSubmit = (data: { folderName: string }) => {
         onSubmit(data)
     }
 
-    const handleNavigateUp = () => {
-        const newPath = currentPath.slice(0, -1); 
-        onNavigate(newPath);
-      };
+  
 
     return (
         <Modal
@@ -45,8 +40,8 @@ const FolderModal: React.FC<FolderModalProps> = ({ isOpen, onRequestClose, onSub
             onRequestClose={onRequestClose}
             style={customStyles}
 
+
         >
-             <button onClick={handleNavigateUp}>Up</button>
             <form onSubmit={handleSubmit(handleFormSubmit)} className='z-10 space-y-2 '>
                 <label className="label">
                     <span className="label-text text-xl font-medium">Folder Name</span>
