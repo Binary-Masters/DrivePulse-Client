@@ -124,8 +124,7 @@ const FilesPage = () => {
                     <Link
                       href="#"
                       className={`text-3xl font-medium text-red-600 dark:text-red-500 hover:font-bold`}
-                      onClick={() => handleDeleteFile(fullPath)}
-                    >
+                      onClick={() => handleDeleteFile(fullPath)}>
                       <MdDelete />
                     </Link>
                   </td>
