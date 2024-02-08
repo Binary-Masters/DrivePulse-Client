@@ -23,5 +23,5 @@ const useGetSingleUser = () => {
     return [userData, loading, refetch];
   ;
 }
-// call hook in  ProfileCard
+// call hook in  ProfileCard and Edit.tsx
 export default useGetSingleUser
