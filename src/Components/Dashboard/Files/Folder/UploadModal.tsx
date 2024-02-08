@@ -4,7 +4,7 @@ import UploadForm from "@/Components/UploadForm/UploadForm";
 
 const Upload = () => {
     const openModal = () => {
-        const modalElement = document.getElementById('my_modal_3');
+        const modalElement = document.getElementById('my_modal_1');
         if (modalElement) {
             (modalElement as HTMLDialogElement).showModal();
         } else {
@@ -12,7 +12,7 @@ const Upload = () => {
         }
     }
     const closeModal = () => {
-        const modalElement = document.getElementById('my_modal_3');
+        const modalElement = document.getElementById('my_modal_1');
         if (modalElement) {
             (modalElement as HTMLDialogElement).close();
         }
@@ -22,7 +22,7 @@ const Upload = () => {
             <button onClick={openModal}  className="text-[16px]  border-0 btn bg-primary text-white hover:bg-blue-600 transition-all duration-300text-sm" ><FaFileUpload/> Upload</button>
             
             {/* modal */}
-            <dialog id="my_modal_3" className="modal text-black">
+            <dialog id="my_modal_1" className="modal text-black">
             <div className="modal-box bg-gradient-to-br from-cyan-900 to-sky-950">
                 <form method="dialog">
                     <button className="btn btn-sm btn-circle text-white btn-ghost absolute right-2 top-2" onClick={closeModal}>
