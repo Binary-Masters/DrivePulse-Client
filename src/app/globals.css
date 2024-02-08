@@ -23,7 +23,7 @@
 	background-color: #08072f;
 	background-image: radial-gradient(at 80% 90%, rgb(25, 128, 156) 0, transparent 22%), radial-gradient(at 31% 34%, rgb(25, 128, 156) 0, transparent 25%)
 }
-.card {
+/* .card {
 	position: relative;
 	overflow: hidden;
 	transition: all 0.5s;
@@ -51,7 +51,7 @@
 	  transform: translateX(-100%);
 	}
   }
-  
+   */
   
   
 .card2 {

@@ -1,32 +1,40 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import Modal from 'react-modal';
+import React from "react";
+import { useForm } from "react-hook-form";
+import Modal from "react-modal";
 
 interface FolderModalProps {
-    isOpen: boolean;
-    onRequestClose: () => void;
-    onSubmit: (data: { folderName: string }) => void;
+  isOpen: boolean;
+  onRequestClose: () => void;
+  onSubmit: (data: { folderName: string }) => void;
 }
 type FormData = {
-    folderName: string
-}
+  folderName: string;
+};
 
 //   style modal
 const customStyles = {
-    content: {
-        top: '40%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        zIndex: 999,
-        transform: 'translate(-50%, -50%)',
-        background: 'linear-gradient(to right, #eaeff3, #f6f8fa)',
-    },
+  content: {
+    top: "40%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    zIndex: 999,
+    transform: "translate(-50%, -50%)",
+    background: "linear-gradient(to right, #eaeff3, #f6f8fa)",
+  },
 };
 
-const FolderModal: React.FC<FolderModalProps> = ({ isOpen, onRequestClose, onSubmit }) => {
-    const { register, handleSubmit, formState: { errors } } = useForm<FormData>()
+const FolderModal: React.FC<FolderModalProps> = ({
+  isOpen,
+  onRequestClose,
+  onSubmit,
+}) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>();
 
     const handleFormSubmit = (data: { folderName: string }) => {
         onSubmit(data)

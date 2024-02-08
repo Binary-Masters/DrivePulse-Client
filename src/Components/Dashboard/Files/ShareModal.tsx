@@ -1,12 +1,16 @@
-import { FaFacebook, FaGlobeAsia, FaLink, FaLock, FaMailBulk } from "react-icons/fa";
+import {
+  FaFacebook,
+  FaGlobeAsia,
+  FaLink,
+  FaLock,
+  FaMailBulk,
+} from "react-icons/fa";
 import { CiMail } from "react-icons/ci";
 import CopyLink from "./Copy";
 import { useState } from "react";
 import 'firebase/storage';
 
 const ShareModal: React.FC = () => {
-
-
 
     const closeModal = () => {
         const modalElement = document.getElementById('my_modal_3');
