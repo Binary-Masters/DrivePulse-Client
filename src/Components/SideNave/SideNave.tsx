@@ -52,19 +52,19 @@ const SideNave = () => {
     {
       id: 2,
       name: "Profile",
-      icon: <CgProfile/>,
+      icon: <CgProfile />,
       path: "/dashboard/profile",
     },
     {
       id: 3,
       name: "Setting",
       icon: <Settings />,
-      path: "/dashboard/settings",
+      path: "/dashboard/setting",
     },
   ];
 
   return (
-    <div className="h-screen w-[60%] md:w-64 fixed z-50 shadow-sm bg-[#0e1642] mt-20 md:mt-0">
+    <div className="h-screen w-[60%] md:w-64 fixed z-50 shadow-sm bg-[#0e1642] mt-20 md:mt-0 overflow-y-auto">
       <div className="hidden p-3 md:block">
         <div className="flex items-center gap-1">
           <Image
