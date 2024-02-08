@@ -14,48 +14,6 @@ import { useState } from "react";
 import NavigationFolder from "./Folder/NavigationFolder";
 
 const FilesPage = () => {
-<<<<<<< HEAD
-  const axiosPublic = useAxiosPublic();
-  const { path, setPath } = useStorage();
-  const { user } = useAuth();
-
-  // Fetching file data for appropriate user
-  const {
-    data: files = [],
-    isLoading,
-    refetch,
-  } = useQuery({
-    queryKey: ["files"],
-    queryFn: async () => {
-      const { data } = await axiosPublic.get(
-        `/files?rootdir=${user.email}&path=${path}` // Fetching with email
-      );
-      return data;
-    },
-  });
-
-  const nodeClickHandler = (type: string, fullPath: string) => {
-    if (type === "folder") {
-      const fullPathArr = fullPath.split("/");
-      fullPathArr[0] = ""; // Removing root dir
-      const newFullPath = fullPathArr.join("/");
-      setPath(newFullPath);
-      refetch();
-    } else console.log("This is a file");
-  };
-
-  return (
-    <div className="pt-[80px]">
-      <div className="flex gap-5 justify-end mr-5 pb-8 pt-2">
-        <FolderButton /> <NewFile /> <Upload />
-      </div>
-      <div
-        style={{ backdropFilter: "blur(200px)" }}
-        className="relative overflow-x-auto shadow-md sm:rounded-lg"
-      >
-        <table className="w-full h-100vh text-sm text-left text-gray-500 rtl:text-right ">
-          <thead className="text-xs text-slate-200 uppercase bg-primary ">
-=======
   const [currentPath, setCurrentPath] = useState([""]);
 
   const axiosPublic = useAxiosPublic();
@@ -119,7 +77,6 @@ const FilesPage = () => {
         className="relative h-screen overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 rtl:text-right ">
           <thead className="text-xs uppercase text-slate-200 bg-primary ">
->>>>>>> e2ce03f80f1fe3165f6f2dcb6a5d5e058dfebaf4
             <tr>
               <th className="px-6 py-3"></th>
               <th className="px-6 py-3">Name</th>
@@ -131,25 +88,6 @@ const FilesPage = () => {
           </thead>
           <tbody>
             {files.map(
-<<<<<<< HEAD
-              ({ _id, name, timeCreated, size, type, fullPath }, i) => (
-                <tr
-                  key={_id}
-                  onClick={() => nodeClickHandler(type, fullPath)}
-                  className="cursor-pointer"
-                >
-                  <td className="flex items-center justify-center px-6 py-4 text-2xl font-medium whitespace-nowrap">
-                    {type === "folder" && <FaFolder />}
-                  </td>
-                  <td className="px-6 py-4 ">{name}</td>
-                  <td className="px-6 py-4">{timeCreated}</td>
-                  <td className="px-6 py-4">{size}</td>
-                  <td className="px-6 py-4">
-                    <Link
-                      href="#"
-                      className="text-3xl font-medium text-red-600 dark:text-red-500 hover:font-bold"
-                    >
-=======
               (
                 { _id, name, timeCreated, size, type, fullPath, contentType },
                 i
@@ -183,16 +121,11 @@ const FilesPage = () => {
                       href="#"
                       className={`text-3xl font-medium text-red-600 dark:text-red-500 hover:font-bold`}
                       onClick={() => handleDeleteFile(fullPath)}>
->>>>>>> e2ce03f80f1fe3165f6f2dcb6a5d5e058dfebaf4
                       <MdDelete />
                     </Link>
                   </td>
                   <td className={`px-6 py-4 ${type === "folder" && "hidden"}`}>
-<<<<<<< HEAD
-                    <Link href="#" className="text-2xl">
-=======
                     <Link href="#" className="text-2xl text-gray-500">
->>>>>>> e2ce03f80f1fe3165f6f2dcb6a5d5e058dfebaf4
                       <MoreDropDrown></MoreDropDrown>
                     </Link>
                   </td>

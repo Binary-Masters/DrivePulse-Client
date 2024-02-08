@@ -45,14 +45,14 @@ const SideNave = () => {
     {
       id: 2,
       name: "Profile",
-      icon: <CgProfile/>,
+      icon: <CgProfile />,
       path: "/dashboard/profile",
     },
     {
       id: 3,
       name: "Setting",
       icon: <Settings />,
-      path: "/dashboard/settings",
+      path: "/dashboard/setting",
     },
   ];
 
