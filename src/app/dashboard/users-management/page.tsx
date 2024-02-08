@@ -11,25 +11,20 @@ import { MdDelete } from "react-icons/md";
 const UsersManagement = () => {
     const [users, loading, refetch] = useGetAllUsers(); //load user from mongodb
     // console.log(users);
-    const { user } = useAuth();   //current or loggedin user
-    // console.log(user);
     const updateUser = useUpdateSingleUser();
     if (loading) {
         return <LoadingAnimation />
     }
 
-    const currentUser = users.find(singleUser => singleUser?.email === user?.email); // match user current user and mongodb user
-    console.log(currentUser);
-
-
-    const makeAdmin = () => {
+    const makeAdmin = (user) => { 
+        console.log(user);
         const userInfo = {
-            email: currentUser?.email,
-            name: currentUser.name,
-            emailVerified: currentUser.emailVerified,
-            phoneNumber: currentUser.phoneNumber,
-            photoURL: currentUser.photoURL,
-            uid: currentUser.uid,
+            email: user?.email,
+            name: user.name,
+            emailVerified: user.emailVerified,
+            phoneNumber: user.phoneNumber,
+            photoURL: user.photoURL,
+            uid: user.uid,
             type: 'admin',
         }
         updateUser(userInfo)
@@ -45,14 +40,14 @@ const UsersManagement = () => {
                 }
             })
     }
-    const makeUser = () => {
+    const makeUser = (user) => {
         const userInfo = {
-            email: currentUser?.email,
-            name: currentUser.name,
-            emailVerified: currentUser.emailVerified,
-            phoneNumber: currentUser.phoneNumber,
-            photoURL: currentUser.photoURL,
-            uid: currentUser.uid,
+            email: user?.email,
+            name: user.name,
+            emailVerified: user.emailVerified,
+            phoneNumber: user.phoneNumber,
+            photoURL: user.photoURL,
+            uid: user.uid,
             type: 'user',
         }
         updateUser(userInfo)
@@ -125,9 +120,9 @@ const UsersManagement = () => {
                                 <td className="flex flex-col gap-2">
                                     {
                                         user.type === 'admin' ?
-                                            <button onClick={() => makeUser()} className="btn btn-sm btn-outline text-white">Make User</button>
+                                            <button onClick={() => makeUser(user)} className="btn btn-sm btn-outline text-white">Make User</button>
                                             :
-                                            <button onClick={() => makeAdmin()} className="btn btn-sm btn-outline text-white">Make Admin</button>
+                                            <button onClick={() => makeAdmin(user)} className="btn btn-sm btn-outline text-white">Make Admin</button>
                                     }
                                 </td>
                                 <td>
