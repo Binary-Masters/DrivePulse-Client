@@ -95,10 +95,10 @@ const Login = () => {
               text: "Logged in successfully",
               icon: "success",
               confirmButtonText: "OK",
-            }).then(() => {
+            })
               router.push("/dashboard");
               setLoading(false);
-            });
+          
           })
           .catch((err) => {
             console.log(err);
@@ -133,10 +133,10 @@ const Login = () => {
               text: "Logged in successfully",
               icon: "success",
               confirmButtonText: "OK",
-            }).then(() => {
+            })
               router.push("/dashboard");
               setLoading(false);
-            });
+            
           })
           .catch((err) => {
             console.log(err);
