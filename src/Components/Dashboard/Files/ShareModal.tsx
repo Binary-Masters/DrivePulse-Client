@@ -1,8 +1,13 @@
 import { FaFacebook, FaGlobeAsia, FaLink, FaLock, FaMailBulk } from "react-icons/fa";
 import { CiMail } from "react-icons/ci";
 import CopyLink from "./Copy";
+import { useState } from "react";
+import 'firebase/storage';
 
 const ShareModal: React.FC = () => {
+
+
+
     const closeModal = () => {
         const modalElement = document.getElementById('my_modal_3');
         if (modalElement) {
@@ -23,9 +28,9 @@ const ShareModal: React.FC = () => {
                     <hr className="bg-gray-400 h-[1px]" />
                     <h2 className="text-xl font-medium">Access Control</h2>
                     <div>
-                        <select className="select w-full">
-                            <option><FaLock /> Only me</option>
-                            <option><FaGlobeAsia /> Anyone</option>
+                        <select className="select w-full" >
+                            <option value="private"><FaLock /> Only me</option>
+                            <option value="public"><FaGlobeAsia /> Public</option>
                         </select>
                     </div>
                     <hr className="bg-gray-400 h-[1px]" />
