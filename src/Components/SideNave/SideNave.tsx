@@ -6,7 +6,8 @@ import Image from "next/image";
 import logo from "../../assests/icons/logo.png";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Profile from "@/app/dashboard/profile/page";
+import useAuth from "@/Hooks/useAuth";
+import useGetAllUsers from "@/Hooks/useGetAllUsers";
 interface Items {
   id: number;
   name: string;
@@ -15,7 +16,12 @@ interface Items {
 }
 const SideNave = () => {
   const pathname = usePathname();
-  const menuList: Items[] = [
+  const [users, loading, refetch] = useGetAllUsers(); //get user from mongodb
+  const { user } = useAuth();   //current or loggedin user
+  // console.log(user);
+  const currentUser = users.find(singleUser => singleUser.email === user.email);
+  console.log(currentUser);
+  const adminMenuList: Items[] = [
     {
       id: 1,
       name: "Dashboard",
@@ -41,6 +47,9 @@ const SideNave = () => {
       path: "/dashboard/users-management",
     },
   ];
+
+  const userMenuList = adminMenuList.filter(route => route.id < 4)  //user menu list before id 4
+  // console.log(userMenuList);
 
   const anotherMenu: Items[] = [
     {
@@ -87,22 +96,43 @@ const SideNave = () => {
         </div>
       </div>
       <div className="flex flex-col mt-5 gap-4">
-        {menuList.map((item, index) => (
-          <Link
-            href={item?.path}
-            key={item?.id}
-            className={`${
-              pathname === item.path ? "text-primary" : "text-slate-200"
-            } `}>
-            <button
-              className={`flex items-center gap-2 w-full hover:bg-gray-600 px-4 py-2 rounded-md  font-medium `}>
-              <h2 className="text-2xl bg-primary text-white p-2 rounded-xl">
-                {item?.icon}
-              </h2>
-              <h2 className="font-medium">{item?.name}</h2>
-            </button>
-          </Link>
-        ))}
+        {
+          currentUser?.type === 'admin' ? <div>
+            {adminMenuList.map((item, index) => (
+              <Link
+                href={item?.path}
+                key={item?.id}
+                className={`${pathname === item.path ? "text-primary" : "text-slate-200"
+                  } `}>
+                <button
+                  className={`flex items-center gap-2 w-full hover:bg-gray-600 px-4 py-2 rounded-md  font-medium `}>
+                  <h2 className="text-2xl bg-primary text-white p-2 rounded-xl">
+                    {item?.icon}
+                  </h2>
+                  <h2 className="font-medium">{item?.name}</h2>
+                </button>
+              </Link>
+            ))}
+          </div>
+            :
+            <div>
+              {userMenuList.map((item, index) => (
+                <Link
+                  href={item?.path}
+                  key={item?.id}
+                  className={`${pathname === item.path ? "text-primary" : "text-slate-200"
+                    } `}>
+                  <button
+                    className={`flex items-center gap-2 w-full hover:bg-gray-600 px-4 py-2 rounded-md  font-medium `}>
+                    <h2 className="text-2xl bg-primary text-white p-2 rounded-xl">
+                      {item?.icon}
+                    </h2>
+                    <h2 className="font-medium">{item?.name}</h2>
+                  </button>
+                </Link>
+              ))}
+            </div>
+        }
       </div>
       <hr className="mt-10" />
       <div className="flex flex-col mt-5 gap-4">
@@ -110,9 +140,8 @@ const SideNave = () => {
           <Link
             href={item?.path}
             key={item?.id}
-            className={`${
-              pathname === item.path ? "text-primary" : "text-slate-200"
-            } `}>
+            className={`${pathname === item.path ? "text-primary" : "text-slate-200"
+              } `}>
             <button
               className={`flex items-center gap-2 w-full hover:bg-gray-600 px-4 py-2 rounded-md  font-medium `}>
               <h2 className="text-2xl bg-primary text-white p-2 rounded-xl">
