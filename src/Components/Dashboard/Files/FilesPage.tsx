@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { MdDelete } from "react-icons/md";
 import FolderButton from "./Folder/FolderButton";
-import Upload from "./Folder/Upload";
+import Upload from "./Folder/UploadModal";
 import useStorage from "@/Hooks/useStorage";
 import icons from "./icons";
 import { FaImage } from "react-icons/fa";
