@@ -6,9 +6,10 @@ import useGetSingleUser from "@/Hooks/useGetSingleUser";
 import Swal from "sweetalert2";
 
 const Edit = () => {
-    const axiosPublic = useAxiosPublic();
-    const { user } = useAuth();
-    const [userData, loading, refetch]=useGetSingleUser()
+  const axiosPublic = useAxiosPublic();
+  const { user } = useAuth();
+  const [userData, loading, refetch] = useGetSingleUser()
+  console.log(userData);
   const updateValue = async (e) => {
     e.preventDefault();
     const name = e.target.name.value;
@@ -17,27 +18,27 @@ const Edit = () => {
     const photoURL = e.target.image.value;
     // console.log(name, number, email, image);
     const Data = {
-      name,     
-phoneNumber,
+      name,
+      phoneNumber,
       email,
-photoURL,
+      photoURL,
     };
     // console.log(Data)
     // put request 
-    await axiosPublic.put(`/users?email=${user?.email}`,Data)
-   .then(datass =>{
-    if(datass){
-       return Swal.fire({
-        title: "Good job!",
-        text: "Update successfully ",
-        icon: "success"
-      });
-    }
-    // console.log(datass?.id)
- })
- .catch(err =>{
-    console.log(err)
- })
+    await axiosPublic.put(`/users?email=${user?.email}`, Data)
+      .then(datass => {
+        if (datass) {
+          return Swal.fire({
+            title: "Good job!",
+            text: "Update successfully ",
+            icon: "success"
+          });
+        }
+        // console.log(datass?.id)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   };
   return (
     <div>
@@ -98,7 +99,7 @@ photoURL,
                 placeholder="Email"
                 className="input input-bordered"
                 required
-                
+
               />
               <div className="form-control mt-6">
                 <button className="btn btn-primary">Update</button>
