@@ -6,11 +6,13 @@ import useUpdateSingleUser from "@/Hooks/useUpdateSingleUser";
 import Image from "next/image";
 import Swal from "sweetalert2";
 import { MdDelete } from "react-icons/md";
+import { useRouter } from "next/navigation";
 
 
 const UsersManagement = () => {
     const [users, loading, refetch] = useGetAllUsers(); //load user from mongodb
     // console.log(users);
+    const router = useRouter();
     const updateUser = useUpdateSingleUser();
     if (loading) {
         return <LoadingAnimation />
@@ -60,6 +62,7 @@ const UsersManagement = () => {
                         confirmButtonText: "OK",
                     })
                     refetch();
+                    router.push("/dashboard");
                 }
             })
     }
