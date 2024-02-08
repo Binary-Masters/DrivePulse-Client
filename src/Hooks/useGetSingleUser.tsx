@@ -1,23 +1,27 @@
-// import { useQuery } from 'react-query';
+"use client"
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "./useAxiosPublic";
 import useAuth from "./useAuth";
 
-const useGetSingleUser = () => {
-  const axiosPublic = useAxiosPublic();
-  const {user:CurrentUser} = useAuth();
-  const {
-    data: user = [],
-    isLoading: loading,
-    refetch,
-  } = useQuery({
-    queryKey: ["single-user"],
-    queryFn: async () => {
-      const res = await axiosPublic("/single-user",CurrentUser.email);
-      return res.data;
-    },
-  });
-  return [user, loading, refetch];
-};
 
-export default useGetSingleUser;
+const useGetSingleUser = () => {
+    // http://localhost:3001/users?email=mnmorshadmondol@gmail.com
+    const axiosPublic = useAxiosPublic();
+    const { user } = useAuth();
+    // datatype default empty object 
+    const {
+      data: userData ={},
+      isLoading: loading,
+      refetch,
+    } = useQuery({
+      queryKey: ['user',user?.email],
+      queryFn: async () => {
+        const res = await axiosPublic.get(`/users?email=${user?.email}`);
+        return res.data;
+      },
+    });
+    return [userData, loading, refetch];
+  ;
+}
+// call hook in  ProfileCard and Edit.tsx
+export default useGetSingleUser
