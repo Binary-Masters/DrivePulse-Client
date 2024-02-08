@@ -1,8 +1,18 @@
+import LoadingAnimation from "@/Components/Animation/LoadingAnimation/LoadingAnimation";
+import useGetAllUsers from "@/Hooks/useGetAllUsers";
+import useGetSingleUser from "@/Hooks/useGetSingleUser";
 import Link from "next/link";
 import { FaRegTrashAlt, FaUserFriends } from "react-icons/fa";
 import { LuFileSpreadsheet } from "react-icons/lu";
 
 const Analytics = () => {
+    // const [users, loading, refetch] = useGetSingleUser(); //getting user from mongodb
+    // console.log(users);
+    // if (loading) {
+    //     return <LoadingAnimation />
+    // }
+
+
     const data = [
         {
             id:1,
@@ -29,15 +39,9 @@ const Analytics = () => {
             number: 500,
             desc:"Total Storage"
         },
-        {
-            id:5,
-            icon:<FaUserFriends />,
-            number: 500,
-            desc:"All Users"
-        },
     ]
 
-    // let userData = data.filter(item=> item.id<4);
+    let userData = data.filter(item=> item.id<4);   //filtering data for normal user
     
 
     return (

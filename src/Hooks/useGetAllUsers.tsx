@@ -1,4 +1,3 @@
-// import { useQuery } from 'react-query';
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "./useAxiosPublic";
 
@@ -15,7 +14,6 @@ const useGetAllUsers = () => {
       return res.data;
     },
   });
-  console.log(users);
   return [users, loading, refetch];
 };
 
