@@ -16,6 +16,7 @@ import {
 	UserCredential,
 	GithubAuthProvider,
 	sendEmailVerification,
+	deleteUser,
 } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
 // import { FacebookAuthProvider } from "firebase/auth";
@@ -36,6 +37,7 @@ export interface AuthInfo {
 	credential: any;
 	verifyEmail: any;
 	logout: () => Promise<void>;
+	deleteAnyUser: (aUser:any) => Promise<void>;
 	setLoading: (value: boolean) => void;
 	updateUser: (name: string, photoURL: string) => Promise<void> | undefined;
 }
@@ -132,21 +134,25 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 		return signInWithPopup(auth, githubProvider);
 	};
 
+	// password reset
 	const resetPassword = async (email: string) => {
 		return sendPasswordResetEmail(auth, email);
 	};
 
+	// login with gmail and password
 	const login = (email: string, password: string) => {
 		setLoading(true);
 		return signInWithEmailAndPassword(auth, email, password);
 	};
 
+	// login with google account
 	const loginByGoogle = () => {
 		const provider = new GoogleAuthProvider();
 		setLoading(true);
 		return signInWithPopup(auth, provider);
 	};
 
+	// update user Like name and Photo
 	const updateUser = (name: string, photoURL: string) => {
 		setLoading(true);
 		const currentUser = auth.currentUser;
@@ -157,10 +163,18 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 			});
 		}
 	};
+
+	// Logout
 	const logout = () => {
 		setLoading(true);
 		return signOut(auth);
 	};
+
+	// Delete User
+	const deleteAnyUser = (aUser:any) => {
+		setLoading(true);
+		return deleteUser(aUser)
+	}
 
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -193,6 +207,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 		loginByGithub,
 		sendPassResetEmail,
 		verifyEmail,
+		deleteAnyUser,
 	};
 
 	return (
