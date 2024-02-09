@@ -1,4 +1,10 @@
-import { FaFacebook, FaGlobeAsia, FaLink, FaLock, FaMailBulk } from "react-icons/fa";
+import {
+  FaFacebook,
+  FaGlobeAsia,
+  FaLink,
+  FaLock,
+  FaMailBulk,
+} from "react-icons/fa";
 import { CiMail } from "react-icons/ci";
 import CopyLink from "./Copy";
 import { useState } from "react";
@@ -7,15 +13,14 @@ import 'firebase/storage';
 const ShareModal: React.FC = () => {
 
 
-
     const closeModal = () => {
-        const modalElement = document.getElementById('my_modal_3');
+        const modalElement = document.getElementById('my_modal_2');
         if (modalElement) {
             (modalElement as HTMLDialogElement).close();
         }
     };
     return (
-        <dialog id="my_modal_3" className="modal text-black">
+        <dialog id="my_modal_2" className="modal text-black">
             <div className="modal-box">
                 <form method="dialog">
                     <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={closeModal}>
@@ -47,6 +52,7 @@ const ShareModal: React.FC = () => {
             </div>
         </dialog>
     );
+
 };
 
 export default ShareModal;
