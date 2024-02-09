@@ -12,30 +12,16 @@ import icons from "./icons";
 import { FaImage } from "react-icons/fa";
 import { useState } from "react";
 import NavigationFolder from "./Folder/NavigationFolder";
+import useGetFilesByEmail from "@/Hooks/useGetFilesByEmail";
 
 const FilesPage = () => {
   const [currentPath, setCurrentPath] = useState([""]);
 
   const axiosPublic = useAxiosPublic();
   const { path, setPath, deleteFile } = useStorage();
-  const { user } = useAuth();
+  const [filesData, loading, refetch]=useGetFilesByEmail()
 
   // Fetching file data for appropriate user
-  const {
-    data: files = [],
-    isLoading,
-    refetch,
-  } = useQuery({
-    queryKey: ["files"],
-    queryFn: async () => {
-      const { data } = await axiosPublic.get(
-        `/files?rootdir=${user.email}&path=${path}` // Fetching with email
-      );
-      return data;
-    },
-  });
-
-  console.log("files", files);
 
   const nodeClickHandler = (type: string, fullPath: string) => {
     if (type === "folder") {
@@ -88,7 +74,7 @@ const FilesPage = () => {
             </tr>
           </thead>
           <tbody>
-            {files.map(
+            {filesData.map(
               (
                 { _id, name, timeCreated, size, type, fullPath, contentType },
                 i
@@ -130,7 +116,7 @@ const FilesPage = () => {
                   </td>
                   <td className={`px-6 py-4 ${type === "folder" && "hidden"}`}>
                     <Link href="#" className="text-2xl text-gray-500">
-                      <MoreDropDrown></MoreDropDrown>
+                      <MoreDropDrown fullPath={fullPath}></MoreDropDrown>
                     </Link>
                   </td>
                 </tr>

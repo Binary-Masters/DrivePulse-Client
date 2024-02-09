@@ -11,9 +11,13 @@ const Dropdown = () => {
           tabIndex={0}
           className="dropdown-content z-[1] menu  shadow absolute -right-8  rounded-xl   "
         >
-          <button className="btn btn-accent btn-md mb-1 text-sm">
-            Edit Profile
-          </button>
+          <Link href="/dashboard/profile/edit">
+            <button className="btn btn-accent btn-md mb-1 text-sm">
+              Edit Profile
+            </button>
+          </Link>
+
+          {/* edit */}
           {/*dynamic path  */}
           {/* /dashboard/profile/password */}
           <Link href="/dashboard/profile/password">

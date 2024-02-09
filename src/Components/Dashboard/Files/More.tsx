@@ -2,6 +2,7 @@
 import { FiShare, FiCopy, FiDownload, FiAlertCircle } from "react-icons/fi";
 import { AnimatePresence, motion } from "framer-motion";
 import { Dispatch, SetStateAction, useState } from "react";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import React from "react";
 import {
   MdArrowDropDownCircle,
@@ -13,9 +14,11 @@ import RenameModal from "./RenameModal";
 import CopyLink from "./Copy";
 import Link from "next/link";
 import Download from "./Download";
+import Swal from "sweetalert2";
 
-const MoreDropDrown = () => {
+const MoreDropDrown = ({ fullPath }) => {
   const [open, setOpen] = useState<boolean>(false);
+  const [downloadUrl, setDownloadUrl] = useState("");
 
   const openModal = () => {
     const modalElement = document.getElementById("my_modal_3");
@@ -33,13 +36,30 @@ const MoreDropDrown = () => {
       console.error("Modal element not found");
     }
   };
+  const handelGetUrl = () => {
+    const storage = getStorage();
+    getDownloadURL(ref(storage, fullPath))
+      .then((url) => {
+        setDownloadUrl(url);
+        Swal.fire({
+          title: "Well Done!!",
+          text: url,
+          icon: "success",
+          confirmButtonText: "Got It",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div className="">
       <motion.div animate={open ? "open" : "closed"} className="relative">
         <button
           onClick={() => setOpen((pv) => !pv)}
-          className="flex items-center px-3 py-2 gap-2 rounded-md bg-indigo-50 hover:bg-indigo-100 transition-colors">
+          className="flex items-center px-3 py-2 gap-2 rounded-md bg-indigo-50 hover:bg-indigo-100 transition-colors"
+        >
           <motion.span variants={iconVariants}>
             <MdArrowDropDownCircle />
           </motion.span>
@@ -49,34 +69,38 @@ const MoreDropDrown = () => {
           initial={wrapperVariants.closed}
           variants={wrapperVariants}
           style={{ originY: "top", translateX: "-50%" }}
-          className="flex flex-col gap-2 p-2 pr-4 rounded-lg bg-white text-black shadow-xl absolute top-[120%] left-[50%] w-auto z-10">
+          className="flex flex-col gap-2 p-2 pr-4 rounded-lg bg-white text-black shadow-xl absolute top-[120%] left-[50%] w-auto z-10"
+        >
           <motion.li
             onClick={() => setOpen(true)}
-            className="flex items-center w-full p-2 text-xs font-medium cursor-pointer gap-2 whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors">
+            className="flex items-center w-full p-2 text-xs font-medium cursor-pointer gap-2 whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors"
+          >
             {" "}
             <FiCopy /> <CopyLink />
           </motion.li>
 
           <motion.li
             onClick={() => setOpen(true)}
-            className="flex items-center w-full p-2 text-xs font-medium cursor-pointer gap-2 whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors">
+            className="flex items-center w-full p-2 text-xs font-medium cursor-pointer gap-2 whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors"
+          >
             {" "}
-            <button className="flex gap-2" onClick={openModal}>
+            <button className="flex gap-2" onClick={handelGetUrl}>
               <FiShare /> Share
             </button>
-            <ShareModal />
           </motion.li>
 
           <motion.li
             onClick={() => setOpen(false)}
-            className="flex items-center w-full p-2 text-xs font-medium cursor-pointer gap-2 whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors">
+            className="flex items-center w-full p-2 text-xs font-medium cursor-pointer gap-2 whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors"
+          >
             {" "}
-            <FiDownload /> <Download />
+            <FiDownload /> <Download fullPath={fullPath} />
           </motion.li>
 
           <motion.li
             onClick={() => setOpen(true)}
-            className="flex items-center w-full p-2 text-xs font-medium cursor-pointer gap-2 whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors">
+            className="flex items-center w-full p-2 text-xs font-medium cursor-pointer gap-2 whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors"
+          >
             {" "}
             <button className="flex gap-2" onClick={renameModal}>
               <MdDriveFileRenameOutline /> Rename
