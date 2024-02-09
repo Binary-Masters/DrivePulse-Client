@@ -1,17 +1,17 @@
 'use client'
 import LoadingAnimation from "@/Components/Animation/LoadingAnimation/LoadingAnimation";
-import useAuth from "@/Hooks/useAuth";
 import useGetAllUsers from "@/Hooks/useGetAllUsers";
 import useUpdateSingleUser from "@/Hooks/useUpdateSingleUser";
 import Image from "next/image";
 import Swal from "sweetalert2";
 import { MdDelete } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import userIcon from '../../../assests/images/blank-head-profile-pic-for-a-man.jpg'
 
 
 const UsersManagement = () => {
     const [users, loading, refetch] = useGetAllUsers(); //load user from mongodb
-    // console.log(users);
+    console.log(users);
     const router = useRouter();
     const updateUser = useUpdateSingleUser();
     if (loading) {
@@ -106,7 +106,7 @@ const UsersManagement = () => {
                                     <div className="flex items-center gap-3">
                                         <div className="avatar">
                                             <div className="mask mask-squircle w-12 h-12">
-                                                <Image src={user.photoURL} width={50} height={50} alt="user-picture" />
+                                                <Image src={user.photoURL?user.photoURL:userIcon} width={50} height={50} alt="user-picture" />
                                             </div>
                                         </div>
                                     </div>
