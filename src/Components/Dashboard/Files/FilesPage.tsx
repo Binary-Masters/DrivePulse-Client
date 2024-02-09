@@ -10,6 +10,7 @@ import useStorage from "@/Hooks/useStorage";
 import icons from "./icons";
 import { useState } from "react";
 import NavigationFolder from "./Folder/NavigationFolder";
+import useGetFilesByEmail from "@/Hooks/useGetFilesByEmail";
 import UploadButton from "./UploadButton&Modal/UploadButton";
 
 const FilesPage = () => {
@@ -17,24 +18,9 @@ const FilesPage = () => {
 
   const axiosPublic = useAxiosPublic();
   const { path, setPath, deleteFile } = useStorage();
-  const { user } = useAuth();
+  const [filesData, loading, refetch] = useGetFilesByEmail();
 
   // Fetching file data for appropriate user
-  const {
-    data: files = [],
-    isLoading,
-    refetch,
-  } = useQuery({
-    queryKey: ["files"],
-    queryFn: async () => {
-      const { data } = await axiosPublic.get(
-        `/files?rootdir=${user.email}&path=${path}` // Fetching with email
-      );
-      return data;
-    },
-  });
-
-  console.log("files", files);
 
   const nodeClickHandler = (type: string, fullPath: string) => {
     if (type === "folder") {
@@ -73,7 +59,8 @@ const FilesPage = () => {
       </div>
       <div
         style={{ backdropFilter: "blur(200px)" }}
-        className="relative h-screen overflow-x-auto shadow-md sm:rounded-lg">
+        className="relative h-screen overflow-x-auto shadow-md sm:rounded-lg"
+      >
         <table className="w-full text-sm text-left text-gray-500 rtl:text-right ">
           <thead className="text-xs uppercase text-slate-200 bg-primary ">
             <tr>
@@ -86,7 +73,7 @@ const FilesPage = () => {
             </tr>
           </thead>
           <tbody>
-            {files.map(
+            {filesData.map(
               (
                 { _id, name, timeCreated, size, type, fullPath, contentType },
                 i
@@ -94,7 +81,8 @@ const FilesPage = () => {
                 <tr
                   key={_id}
                   onClick={() => nodeClickHandler(type, fullPath)}
-                  className="text-white cursor-pointer">
+                  className="text-white cursor-pointer"
+                >
                   <td className=" text-2xl pl-5 font-medium whitespace-nowrap">
                     {icons.map((elem) => {
                       if (elem.contentType === contentType)
@@ -102,8 +90,10 @@ const FilesPage = () => {
                     })}
                   </td>
                   <td className="px-6 py-4 ">{name}</td>
-                  <td className="px-6 py-4">{timeCreated.slice(0,10)}</td>
-                  <td className="px-6 py-4">{(size/1024/1024).toFixed(2)} MB</td>
+                  <td className="px-6 py-4">{timeCreated.slice(0, 10)}</td>
+                  <td className="px-6 py-4">
+                    {(size / 1024 / 1024).toFixed(2)} MB
+                  </td>
                   <td className="px-6 py-4">
                     {/* <Link */}
                     {/* 	href="#" */}
@@ -119,13 +109,17 @@ const FilesPage = () => {
                     <Link
                       href="#"
                       className={`text-3xl font-medium text-red-600 dark:text-red-500 hover:font-bold`}
-                      onClick={() => handleDeleteFile(fullPath)}>
+                      onClick={() => handleDeleteFile(fullPath)}
+                    >
                       <MdDelete />
                     </Link>
                   </td>
                   <td className={`px-6 py-4 ${type === "folder" && "hidden"}`}>
                     <Link href="#" className="text-2xl text-gray-500">
-                      <MoreDropDrown></MoreDropDrown>
+                      <MoreDropDrown
+                        fileName={name}
+                        fullPath={fullPath}
+                      ></MoreDropDrown>
                     </Link>
                   </td>
                 </tr>

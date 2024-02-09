@@ -8,7 +8,7 @@ import useAxiosPublic from "@/Hooks/useAxiosPublic";
 
 const UploadForm: React.FC = () => {
 	const [file, setFile] = useState<File | null>(null);
-	const { uploadFile, path } = useStorage();
+	const { uploadFile } = useStorage();
 	const axiosPublic = useAxiosPublic();
 
 	const handleFileUpload = () => {
