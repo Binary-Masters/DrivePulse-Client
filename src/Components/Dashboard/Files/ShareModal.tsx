@@ -12,7 +12,6 @@ import 'firebase/storage';
 
 const ShareModal: React.FC = () => {
 
-
     const closeModal = () => {
         const modalElement = document.getElementById('my_modal_2');
         if (modalElement) {
@@ -52,7 +51,6 @@ const ShareModal: React.FC = () => {
             </div>
         </dialog>
     );
-
 };
 
 export default ShareModal;
