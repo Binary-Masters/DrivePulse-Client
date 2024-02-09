@@ -6,12 +6,11 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { MdDelete } from "react-icons/md";
 import FolderButton from "./Folder/FolderButton";
-import Upload from "./Folder/UploadModal";
 import useStorage from "@/Hooks/useStorage";
 import icons from "./icons";
-import { FaImage } from "react-icons/fa";
 import { useState } from "react";
 import NavigationFolder from "./Folder/NavigationFolder";
+import UploadButton from "./UploadButton&Modal/UploadButton";
 
 const FilesPage = () => {
   const [currentPath, setCurrentPath] = useState([""]);
@@ -69,7 +68,7 @@ const FilesPage = () => {
         <NavigationFolder />
 
         <div className="flex justify-end pt-2 pb-8 mr-5 gap-5">
-          <FolderButton path={path} refetch={refetch} /> <Upload />
+          <FolderButton path={path} refetch={refetch} /> <UploadButton />
         </div>
       </div>
       <div

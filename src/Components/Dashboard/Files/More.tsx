@@ -18,7 +18,7 @@ const MoreDropDrown = () => {
   const [open, setOpen] = useState<boolean>(false);
 
   const openModal = () => {
-    const modalElement = document.getElementById("my_modal_3");
+    const modalElement = document.getElementById("my_modal_2");
     if (modalElement) {
       (modalElement as HTMLDialogElement).showModal();
     } else {
