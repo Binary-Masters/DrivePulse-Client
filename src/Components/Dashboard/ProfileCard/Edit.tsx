@@ -7,8 +7,9 @@ import Swal from "sweetalert2";
 
 const Edit = () => {
     const axiosPublic = useAxiosPublic();
-    const { user } = useAuth();
+    const { user,updateUser,changeemail } = useAuth();
     const [userData, loading, refetch]=useGetSingleUser()
+    // console.log(user?.photoURL)
   const updateValue = async (e) => {
     e.preventDefault();
     const name = e.target.name.value;
@@ -26,22 +27,30 @@ photoURL,
     // put request 
     await axiosPublic.put(`/users?email=${user?.email}`,Data)
    .then(datass =>{
+    updateUser(name,photoURL).then().catch();
+    // changeemail(email).then().catch();
+
     if(datass){
-       return Swal.fire({
-        title: "Good job!",
-        text: "Update successfully ",
-        icon: "success"
-      });
-    }
+      return Swal.fire({
+       title: "Good job!",
+       text: "Update successfully ",
+       icon: "success"
+     });
+     
+   }
+
     // console.log(datass?.id)
  })
  .catch(err =>{
     console.log(err)
  })
+
   };
+  console.log(userData?.name)
+  console.log(user?.displayName)
   return (
-    <div>
-      <div className="hero min-h-screen ">
+    <div className="flex mx-auto justify-center items-center">
+      <div className="hero   min-h-screen ">
         <div className="hero-content flex-col ">
           <div className="card flex-shrink-0  shadow-2xl bg-slate-100 w-auto ">
             <form onSubmit={updateValue} className="card-body ">

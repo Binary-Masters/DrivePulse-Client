@@ -16,6 +16,7 @@ import {
 	UserCredential,
 	GithubAuthProvider,
 	sendEmailVerification,
+	updateEmail,
 } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
 // import { FacebookAuthProvider } from "firebase/auth";
@@ -35,6 +36,8 @@ export interface AuthInfo {
 	sendPassResetEmail: any;
 	credential: any;
 	verifyEmail: any;
+	// test 
+	changeemail: any;
 	logout: () => Promise<void>;
 	setLoading: (value: boolean) => void;
 	updateUser: (name: string, photoURL: string) => Promise<void> | undefined;
@@ -146,7 +149,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 		setLoading(true);
 		return signInWithPopup(auth, provider);
 	};
-
+// update user 
 	const updateUser = (name: string, photoURL: string) => {
 		setLoading(true);
 		const currentUser = auth.currentUser;
@@ -157,11 +160,21 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 			});
 		}
 	};
+	// test 
+	// update email 
+	const changeemail = (email:string)=>{
+		setLoading(true)
+		const currentUser = auth.currentUser
+		if(currentUser){
+			return updateEmail(currentUser,email)
+		}
+	}
+	// logout 
 	const logout = () => {
 		setLoading(true);
 		return signOut(auth);
 	};
-
+// hold your user 
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
 			if (user) {
@@ -175,7 +188,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 			unsubscribe();
 		};
 	}, []);
-
+// 
 	const authInfo: AuthInfo = {
 		user,
 		isAuthenticated,
@@ -193,6 +206,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 		loginByGithub,
 		sendPassResetEmail,
 		verifyEmail,
+		changeemail,
 	};
 
 	return (
