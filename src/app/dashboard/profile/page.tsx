@@ -1,9 +1,7 @@
 // "use client"
 import React from 'react'
 import ProfileCard from '@/Components/Dashboard/ProfileCard/ProfileCard'
-import Dropdown from '@/Components/Dashboard/ProfileCard/Dropdown'
 import '../profile/profile.css'
-import useGetSingleUser from '@/Hooks/useGetSingleUser'
 const Profile = () => {
  
   return (
@@ -11,7 +9,7 @@ const Profile = () => {
     {/* profile card */}
       <ProfileCard/>  
     </div>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;

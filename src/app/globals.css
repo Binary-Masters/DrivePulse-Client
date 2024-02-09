@@ -110,4 +110,8 @@
 	animation: rotBGimg 3.5s linear infinite;
   } */
   
+  /* using sweet alert for z index */
+  .swal-custom {
+    z-index: 1100; 
+}
   

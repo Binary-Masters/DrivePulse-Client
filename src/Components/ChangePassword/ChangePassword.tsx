@@ -1,7 +1,6 @@
 "use client";
 
 import useAuth from "@/Hooks/useAuth";
-import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import '../../app/dashboard/profile/profile.css'
 const ChangePassword = () => {
