@@ -1,8 +1,8 @@
 
 import { FaFileUpload } from "react-icons/fa";
-import UploadForm from "@/Components/UploadForm/UploadForm";
+import UploadModal from "./UploadModal";
 
-const Upload = () => {
+const UploadButton = () => {
     const openModal = () => {
         const modalElement = document.getElementById('my_modal_1');
         if (modalElement) {
@@ -30,7 +30,7 @@ const Upload = () => {
                     </button>
                 </form>
                 <div>
-                   <UploadForm />
+                   <UploadModal />
                   
                 </div>
                 
@@ -40,4 +40,4 @@ const Upload = () => {
     );
 };
 
-export default Upload;
+export default UploadButton;
