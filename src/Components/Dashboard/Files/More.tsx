@@ -1,7 +1,7 @@
 "use client";
 import { FiShare, FiCopy, FiDownload, FiAlertCircle } from "react-icons/fi";
 import { AnimatePresence, motion } from "framer-motion";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import React from "react";
 import {
@@ -18,10 +18,11 @@ import Swal from "sweetalert2";
 
 const MoreDropDrown = ({ fullPath }) => {
   const [open, setOpen] = useState<boolean>(false);
-  const [downloadUrl, setDownloadUrl] = useState("");
+  const [downloadUrl, setDownloadUrl] = useState(null);
+  const [fileName, setFileName] = useState(null);
 
   const openModal = () => {
-    const modalElement = document.getElementById("my_modal_3");
+    const modalElement = document.getElementById("my_modal_2");
     if (modalElement) {
       (modalElement as HTMLDialogElement).showModal();
     } else {
@@ -36,21 +37,19 @@ const MoreDropDrown = ({ fullPath }) => {
       console.error("Modal element not found");
     }
   };
-  const handelGetUrl = () => {
-    const storage = getStorage();
-    getDownloadURL(ref(storage, fullPath))
-      .then((url) => {
-        setDownloadUrl(url);
-        Swal.fire({
-          title: "Well Done!!",
-          text: url,
-          icon: "success",
-          confirmButtonText: "Got It",
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const handelShowModal = async () => {
+    const storage = await getStorage();
+    try {
+      const url = await getDownloadURL(ref(storage, fullPath));
+      const filePath = fullPath.split("/");
+      setFileName(filePath[1]);
+      console.log(url);
+      setDownloadUrl(url);
+    } catch (err) {
+      console.log(err);
+    }
+
+    openModal();
   };
 
   return (
@@ -84,9 +83,15 @@ const MoreDropDrown = ({ fullPath }) => {
             className="flex items-center w-full p-2 text-xs font-medium cursor-pointer gap-2 whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors"
           >
             {" "}
-            <button className="flex gap-2" onClick={handelGetUrl}>
+            <button className="flex gap-2" onClick={handelShowModal}>
               <FiShare /> Share
             </button>
+            <ShareModal
+              setFileName={setFileName}
+              setDownloadUrl={setDownloadUrl}
+              fileName={fileName}
+              downloadUrl={downloadUrl}
+            />
           </motion.li>
 
           <motion.li
@@ -94,7 +99,7 @@ const MoreDropDrown = ({ fullPath }) => {
             className="flex items-center w-full p-2 text-xs font-medium cursor-pointer gap-2 whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors"
           >
             {" "}
-            <FiDownload /> <Download fullPath={fullPath} />
+            <FiDownload /> <Download downloadUrl={downloadUrl} />
           </motion.li>
 
           <motion.li

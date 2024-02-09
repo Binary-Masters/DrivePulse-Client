@@ -6,20 +6,19 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { MdDelete } from "react-icons/md";
 import FolderButton from "./Folder/FolderButton";
-import Upload from "./Folder/UploadModal";
 import useStorage from "@/Hooks/useStorage";
 import icons from "./icons";
-import { FaImage } from "react-icons/fa";
 import { useState } from "react";
 import NavigationFolder from "./Folder/NavigationFolder";
 import useGetFilesByEmail from "@/Hooks/useGetFilesByEmail";
+import UploadButton from "./UploadButton&Modal/UploadButton";
 
 const FilesPage = () => {
   const [currentPath, setCurrentPath] = useState([""]);
 
   const axiosPublic = useAxiosPublic();
   const { path, setPath, deleteFile } = useStorage();
-  const [filesData, loading, refetch]=useGetFilesByEmail()
+  const [filesData, loading, refetch] = useGetFilesByEmail();
 
   // Fetching file data for appropriate user
 
@@ -55,7 +54,7 @@ const FilesPage = () => {
         <NavigationFolder />
 
         <div className="flex justify-end pt-2 pb-8 mr-5 gap-5">
-          <FolderButton path={path} refetch={refetch} /> <Upload />
+          <FolderButton path={path} refetch={refetch} /> <UploadButton />
         </div>
       </div>
       <div
@@ -110,13 +109,17 @@ const FilesPage = () => {
                     <Link
                       href="#"
                       className={`text-3xl font-medium text-red-600 dark:text-red-500 hover:font-bold`}
-                      onClick={() => handleDeleteFile(fullPath)}>
+                      onClick={() => handleDeleteFile(fullPath)}
+                    >
                       <MdDelete />
                     </Link>
                   </td>
                   <td className={`px-6 py-4 ${type === "folder" && "hidden"}`}>
                     <Link href="#" className="text-2xl text-gray-500">
-                      <MoreDropDrown fullPath={fullPath}></MoreDropDrown>
+                      <MoreDropDrown
+                        fileName={name}
+                        fullPath={fullPath}
+                      ></MoreDropDrown>
                     </Link>
                   </td>
                 </tr>

@@ -6,10 +6,17 @@ import { MdClose } from "react-icons/md";
 import Swal from "sweetalert2";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 
-const UploadForm: React.FC = () => {
+const UploadModal: React.FC = () => {
 	const [file, setFile] = useState<File | null>(null);
-	const { uploadFile } = useStorage();
+	const { uploadFile, path } = useStorage();
 	const axiosPublic = useAxiosPublic();
+
+    const closeModal = () => {
+        const modalElement = document.getElementById('my_modal_1');
+        if (modalElement) {
+            (modalElement as HTMLDialogElement).close();
+        }
+    };
 
 	const handleFileUpload = () => {
 		try {
@@ -116,7 +123,10 @@ const UploadForm: React.FC = () => {
 			<div className="flex justify-center mt-4">
 				<button
 					disabled={!file}
-					onClick={handleFileUpload}
+                    onClick={() => {
+                        handleFileUpload();
+                        closeModal();
+                      }}
 					className="px-6 py-2 text-xl text-center text-white rounded-full bg-primary text hover:bg-blue-600 transition-all duration-300 disabled:bg-gray-300"
 				>
 					Upload
@@ -126,4 +136,4 @@ const UploadForm: React.FC = () => {
 	);
 };
 
-export default UploadForm;
+export default UploadModal;
