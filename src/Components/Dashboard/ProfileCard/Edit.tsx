@@ -18,16 +18,17 @@ const Edit = () => {
     const photoURL = e.target.image.value;
     // console.log(name, number, email, image);
     const Data = {
-      name,     
-phoneNumber,
+      name,
+      phoneNumber,
       email,
-photoURL,
+      photoURL,
     };
     // console.log(Data)
     // put request 
     await axiosPublic.put(`/users?email=${user?.email}`,Data)
    .then(datass =>{
     updateUser(name,photoURL).then().catch();
+    // todo 
     // changeemail(email).then().catch();
 
     if(datass){
@@ -107,7 +108,7 @@ photoURL,
                 placeholder="Email"
                 className="input input-bordered"
                 required
-                
+
               />
               <div className="form-control mt-6">
                 <button className="btn btn-primary">Update</button>
