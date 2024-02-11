@@ -3,13 +3,21 @@
 import useAuth from "@/Hooks/useAuth";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import useGetSingleUser from "@/Hooks/useGetSingleUser";
+import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
+
 
 const Edit = () => {
     const axiosPublic = useAxiosPublic();
     const { user,updateUser,changeemail } = useAuth();
     const [userData, loading, refetch]=useGetSingleUser()
+    // navigate
+    const router = useRouter();
     // console.log(user?.photoURL)
+    // navigate to dashboardProfile
+    const navigateToDashboardProfile = () => {
+      router.push('/dashboard/profile');
+    };
   const updateValue = async (e) => {
     e.preventDefault();
     const name = e.target.name.value;
@@ -24,6 +32,8 @@ const Edit = () => {
       photoURL,
     };
     // console.log(Data)
+
+
     // put request 
     await axiosPublic.put(`/users?email=${user?.email}`,Data)
    .then(datass =>{
@@ -32,13 +42,21 @@ const Edit = () => {
     // changeemail(email).then().catch();
 
     if(datass){
-      return Swal.fire({
-       title: "Good job!",
-       text: "Update successfully ",
-       icon: "success"
-     });
+      Swal.fire({
+        title: "Good job!",
+        text: "Update successfully ",
+        icon: "success", 
+        confirmButtonText: 'OK'
+
+      }).then((result) => {
+        if (result.isConfirmed) {
+          return navigateToDashboardProfile()
+        }
+      });;
      
+ 
    }
+   
 
     // console.log(datass?.id)
  })
@@ -112,7 +130,7 @@ const Edit = () => {
 
               />
               <div className="form-control mt-6">
-                <button className="btn btn-primary">Update</button>
+                <button  className="btn btn-primary">Update</button>
               </div>
             </form>
           </div>
