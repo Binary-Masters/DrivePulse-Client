@@ -104,6 +104,7 @@ const Edit = () => {
               <input
                 defaultValue={userData?.email}
                 name="email"
+                readOnly
                 type="text"
                 placeholder="Email"
                 className="input input-bordered"
