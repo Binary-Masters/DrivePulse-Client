@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-const img_url = 'https://i.ibb.co/qFBTv9K/fernando-marques-dz-ZV4-Pp-Q-NI-unsplash.jpg'
+const img_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Handyaufnahme_des_Sonnenuntergangs_als_Zeitraffer_20200909_DSC3277.jpg/330px-Handyaufnahme_des_Sonnenuntergangs_als_Zeitraffer_20200909_DSC3277.jpg'
 const Download = () => {
     const downloadUrl = (url) =>{
         fetch(url)

@@ -49,10 +49,11 @@ const FolderButton: React.FC<FolderButtonProps> = ({ path, refetch }) => {
 	return (
 		<>
 			<button
-				className="text-[16px]  border-0 btn bg-primary text-white hover:bg-blue-600 transition-all duration-300"
+				className="text-xs md:text-[16px]  border-0 btn  bg-primary text-white hover:bg-blue-600 transition-all duration-300"
 				onClick={openModal}
 			>
-				<FaFolderPlus /> New Folder
+				<FaFolderPlus className="text-xl"/> 
+				<span className="hidden md:block">New Folder</span>
 			</button>
 			<FolderModal 
 			isOpen={isModalOpen}
