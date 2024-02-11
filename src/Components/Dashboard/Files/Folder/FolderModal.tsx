@@ -36,7 +36,6 @@ const FolderModal: React.FC<FolderModalProps> = ({
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
-  // ata cell korbo ..
 
     const handleFormSubmit = (data: { folderName: string }) => {
         onSubmit(data)
