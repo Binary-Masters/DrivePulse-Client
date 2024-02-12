@@ -1,5 +1,3 @@
-// Copy.tsx
-
 import axios from "axios";
 import React, { useState } from "react";
 
@@ -9,7 +7,8 @@ interface CopyLinkProps {
 
 const CopyLink: React.FC<CopyLinkProps> = ({ downloadUrl }) => {
   const [isCopied, setIsCopied] = useState<boolean>(false);
-
+  const [copyText, setCopyText] = useState(downloadUrl);
+  
   const handleCopyClick = async () => {
     if (downloadUrl) { // Check if downloadUrl is not null
       const textarea = document.createElement("textarea");
@@ -23,9 +22,9 @@ const CopyLink: React.FC<CopyLinkProps> = ({ downloadUrl }) => {
       setIsCopied(true);
 
       // You can add the backend code here
-      const response = await axios.post('/api/backend link here', {
-          copiedText: downloadUrl,
-        });
+      // const response = await axios.post('/api/backend link here', {
+      //   copiedText: downloadUrl,
+      // });
     }
   };
 
