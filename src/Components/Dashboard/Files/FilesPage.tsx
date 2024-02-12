@@ -10,12 +10,14 @@ import NavigationFolder from "./Folder/NavigationFolder";
 import useGetFilesByEmail from "@/Hooks/useGetFilesByEmail";
 import UploadButton from "./UploadButton&Modal/UploadButton";
 import MoreDropDown from "./MoreDropDown";
-import getFullPath from "@/Utils/FolderNavigation/getFullPath";
+import getFolderPathData from "@/Utils/FolderNavigation/getFolderPathData";
+import useAuth from "@/Hooks/useAuth";
 
 const FilesPage: React.FC = () => {
 	const [downloadUrl, setDownloadUrl] = useState<string>("");
 	const [fileName, setFileName] = useState<string>("");
 	const axiosPublic = useAxiosPublic();
+	const { user } = useAuth();
 	const { path, setPath, deleteFile } = useStorage();
 	const [filesData, loading, refetch] = useGetFilesByEmail();
 
@@ -23,8 +25,9 @@ const FilesPage: React.FC = () => {
 
 	const nodeClickHandler = (type: string, fullPath: string) => {
 		if (type === "folder") {
-			const newFullPath = getFullPath(fullPath);
-			setPath(newFullPath);
+			const { currentPath } = getFolderPathData(fullPath, type, user)
+			setPath(currentPath);
+			console.log(path);
 			refetch();
 		} else console.log("This is a file");
 	};

@@ -1,21 +1,24 @@
+import useAuth from "@/Hooks/useAuth";
 import useStorage from "@/Hooks/useStorage";
-import React from "react";
+import getFolderPathData from "@/Utils/FolderNavigation/getFolderPathData";
 
-interface NavigationFolderProps {
-	refetch: () => void;
-}
+const NavigationFolder: React.FC = () => {
+	const { path, setPath } = useStorage();
+	const { user } = useAuth();
+	const { parentPath } = getFolderPathData(path, "folder", user);
 
-const NavigationFolder: React.FC<NavigationFolderProps> = (refetch) => {
-	const { path } = useStorage();
-	
-	
-	
+	const handleClick = () => {
+		console.log("Parent path", parentPath);
+		setPath(parentPath);
+	};
+
 	return (
 		<div className="flex items-center text-white gap-2">
-			<button className="text-xl cursor-pointer">{ path }</button>
+			<button className="text-xl cursor-pointer" onClick={ handleClick }>
+				Back
+			</button>
 		</div>
 	);
 };
 
 export default NavigationFolder;
-
