@@ -1,5 +1,4 @@
-"use client";
-import { useState } from "react";
+import React, { useState } from "react";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { motion } from "framer-motion";
 import { MdArrowDropDownCircle, MdDriveFileRenameOutline } from "react-icons/md";
@@ -8,14 +7,15 @@ import ShareModal from "./ShareModal";
 import RenameModal from "./RenameModal";
 import CopyLink from "./Copy";
 import Download from "./Download";
+
 interface MoreDropDrownProps {
+  fileName: string;
   fullPath: string;
 }
 
-const MoreDropDrown: React.FC<MoreDropDrownProps> = ({ fullPath }) => {
+const MoreDropDrown: React.FC<MoreDropDrownProps> = ({ fileName, fullPath }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
-  const [fileName, setFileName] = useState<string | null>(null);
 
   const openModal = () => {
     setOpen(true);
@@ -30,13 +30,15 @@ const MoreDropDrown: React.FC<MoreDropDrownProps> = ({ fullPath }) => {
     }
   };
 
+  const handleSetDownloadUrl = (url: string | null) => {
+    setDownloadUrl(url);
+  };
+
   const handelShowModal = async () => {
     const storage = getStorage();
     try {
       const url = await getDownloadURL(ref(storage, fullPath));
-      const filePath = fullPath.split("/");
-      setFileName(filePath[1]);
-      setDownloadUrl(url);
+      handleSetDownloadUrl(url);
       openModal();
     } catch (err) {
       console.error("Error fetching download URL:", err);
@@ -62,24 +64,23 @@ const MoreDropDrown: React.FC<MoreDropDrownProps> = ({ fullPath }) => {
         >
           <motion.li variants={itemVariants}>
             <FiCopy />
-            {/* <CopyLink /> */}
+            <CopyLink downloadUrl={downloadUrl} />
           </motion.li>
 
           <motion.li variants={itemVariants}>
             <button className="flex gap-2" onClick={handelShowModal}>
               <FiShare /> Share
             </button>
-            {/* <ShareModal
-              setFileName={setFileName}
-              setDownloadUrl={setDownloadUrl}
+            <ShareModal
+              setDownloadUrl={handleSetDownloadUrl}
               fileName={fileName}
-              downloadUrl={downloadUrl}
-            /> */}
+              downloadUrl={downloadUrl || ''}
+            />
           </motion.li>
 
           <motion.li variants={itemVariants}>
             <FiDownload />
-            {/* <Download downloadUrl={downloadUrl} /> */}
+            <Download downloadUrl={downloadUrl} />
           </motion.li>
 
           <motion.li variants={itemVariants}>

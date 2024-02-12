@@ -13,7 +13,7 @@ import NavigationFolder from "./Folder/NavigationFolder";
 import useGetFilesByEmail from "@/Hooks/useGetFilesByEmail";
 import UploadButton from "./UploadButton&Modal/UploadButton";
 
-const FilesPage: React.FC  = () => {
+const FilesPage: React.FC = () => {
   const [currentPath, setCurrentPath] = useState([""]);
 
   const axiosPublic = useAxiosPublic();
@@ -117,7 +117,7 @@ const FilesPage: React.FC  = () => {
                   <td className={`px-6 py-4 ${type === "folder" && "hidden"}`}>
                     <Link href="#" className="text-2xl text-gray-500">
                       <MoreDropDrown
-                        // fileName={name}
+                        fileName={name}
                         fullPath={fullPath}
                       ></MoreDropDrown>
                     </Link>

@@ -13,19 +13,16 @@ import "firebase/storage";
 interface ShareModalProps {
   fileName: string;
   downloadUrl: string;
-  setDownloadUrl: React.Dispatch<React.SetStateAction<string>>;
-  setFileName: React.Dispatch<React.SetStateAction<string>>;
+  setDownloadUrl: (url: string | null) => void; // Adjusted to directly accept the function
 }
 
 const ShareModal: React.FC<ShareModalProps> = ({
   fileName,
   downloadUrl,
   setDownloadUrl,
-  setFileName,
 }) => {
   const closeModal = () => {
-    setDownloadUrl('');
-    setFileName('');
+    setDownloadUrl(null); // Adjusted to pass null directly
     const modalElement = document.getElementById('my_modal_2');
     if (modalElement) {
       (modalElement as HTMLDialogElement).close();
