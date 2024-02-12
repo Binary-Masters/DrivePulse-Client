@@ -1,10 +1,8 @@
-import axios from "axios";
 import React, { useState } from "react";
 
 interface CopyLinkProps {
   downloadUrl: string;
 }
-
 const CopyLink: React.FC<CopyLinkProps> = ({ downloadUrl }) => {
   const [copyText, setCopyText] = useState(downloadUrl);
   const [isCopied, setIsCopied] = useState<boolean>(false);
