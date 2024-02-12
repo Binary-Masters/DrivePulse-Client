@@ -65,7 +65,7 @@ const FilesPage = () => {
     <div className="pt-20">
       <div className="flex justify-between items-center">
         {/* navigate component here */}
-        {/* <NavigationFolder /> */}
+        <NavigationFolder />
 
         <div className="flex justify-end pt-2 pb-8 mr-5 gap-5">
           <FolderButton path={path} refetch={refetch} /> <UploadButton /> 
