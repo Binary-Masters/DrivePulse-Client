@@ -8,18 +8,18 @@ import {
   MdArrowDropDownCircle,
   MdDriveFileRenameOutline,
 } from "react-icons/md";
-import { IconType } from "react-icons";
 import ShareModal from "./ShareModal";
 import RenameModal from "./RenameModal";
 import CopyLink from "./Copy";
-import Link from "next/link";
 import Download from "./Download";
-import Swal from "sweetalert2";
+interface MoreDropDrownProps {
+  fullPath: string;
+}
 
-const MoreDropDrown = ({ fullPath }) => {
+const MoreDropDrown: React.FC<MoreDropDrownProps> = ({ fullPath }) => {
   const [open, setOpen] = useState<boolean>(false);
-  const [downloadUrl, setDownloadUrl] = useState(null);
-  const [fileName, setFileName] = useState(null);
+  const [downloadUrl, setDownloadUrl] = useState<String>("");
+  const [fileName, setFileName] = useState<String>("");
 
   const openModal = () => {
     const modalElement = document.getElementById("my_modal_2");

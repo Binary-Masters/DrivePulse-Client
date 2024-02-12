@@ -10,12 +10,24 @@ import CopyLink from "./Copy";
 import { useState } from "react";
 import "firebase/storage";
 
-const ShareModal: React.FC = ({ fileName, downloadUrl,setDownloadUrl,setFileName }) => {
+interface ShareModalProps {
+  fileName: string;
+  downloadUrl: string | null;
+  setDownloadUrl: React.Dispatch<React.SetStateAction<string | null>>;
+  setFileName: React.Dispatch<React.SetStateAction<string | null>>;
+}
+
+const ShareModal: React.FC<ShareModalProps> = ({
+  fileName,
+  downloadUrl,
+  setDownloadUrl,
+  setFileName,
+}) => {
   console.log(downloadUrl);
   console.log(fileName);
   const closeModal = () => {
     setDownloadUrl(null);
-    setFileName(null)
+    setFileName(null);
     const modalElement = document.getElementById("my_modal_2");
     if (modalElement) {
       (modalElement as HTMLDialogElement).close();
