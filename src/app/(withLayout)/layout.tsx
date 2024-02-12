@@ -1,16 +1,18 @@
 import Footer from "@/Components/Shared/Footer/Footer";
 import Navbar from "@/Components/Shared/Navbar/Navbar";
+import AuthProvider from "@/providers/AuthProvider";
 
 const Layout = ({ children }) => {
-    return (
-        <div>
-            <Navbar/>
-            <div className="min-h-screen">
-            {children}
-            </div>
-            <Footer/>
-        </div>
-    );
+	return (
+		<AuthProvider>
+			<div>
+				<Navbar />
+				{children}
+				<Footer />
+			</div>
+		</AuthProvider>
+	);
 };
 
 export default Layout;
+

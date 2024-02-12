@@ -1,40 +1,62 @@
 "use client";
 
-import logo from "@/../public/logo.png";
+import logo from "../../../assests/icons/logo.png";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaBars } from "react-icons/fa6";
 import { FaArrowLeft } from "react-icons/fa6";
 import { usePathname } from "next/navigation";
+import useAuth from "@/Hooks/useAuth";
 
 export default function Navbar() {
 	const [toggleSidebar, setToggleSidebar] = useState(false);
 	const pathname = usePathname();
+	const { user } = useAuth();
+	const [sroll, setScroll] = useState(false);
 	const dividerPosition = 2;
 	const routes = [
 		{ path: "/", label: "Home" },
 		{ path: "/about", label: "About" },
 		{ path: "/pricing", label: "Pricing" },
-		{ path: "/developers", label: "Developers" },
 		{ path: "/contact", label: "Contact" },
-		{ path: "/register", label: "Register" },
-		{ path: "/login", label: "Login" },
+		{
+			path: `${user ? "/dashboard" : "/login"}`,
+			label: `${user ? "Dashboard" : "Login"}`,
+		},
 	];
+	useEffect(() => {
+		const handleScroll = () => {
+			if (window.scrollY > 200) {
+				setScroll(true);
+			} else {
+				setScroll(false);
+			}
+		};
+		window.addEventListener("scroll", handleScroll);
 
-	return (
-		<div className="px-4 navbar md:px-14">
-			<div className="text-2xl navbar-start gap-2 md:text-3xl">
-				<p onClick={() => setToggleSidebar(true)}>
-					<FaBars className="text-xl cursor-pointer md:hidden min-w-1" />
-				</p>
-				<Image
-					src={ logo }
-					height={ 80 }
-					width={ 130 }
-					alt="DrivePulse Logo"
-				/>
-			</div>
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+  return (
+    <div
+      className={`px-4 navbar md:px-14 fixed top-0  z-50 ${
+        sroll ?
+        "glass text-white shadow-md border-b py-2 transition-all duration-300" : "text-white"
+      }`}>
+      <div className="text-2xl navbar-start gap-2 md:text-3xl">
+        <p onClick={() => setToggleSidebar(true)}>
+          <FaBars className="text-xl cursor-pointer md:hidden min-w-1" />
+        </p>
+        <div className="flex items-center gap-1">
+        <Image src={logo} className="w-[30px] h-[30px] md:w-[60px] md:h-[70px]" alt="DrivePulse Logo" />
+        <div className="">
+          <h2 style={{letterSpacing:"2px"}} className="font-bold text-blue-400 text-[20px] md:text-3xl">DRIVE</h2>
+          <p style={{letterSpacing:"7px"}} className="text-[14px] md:text-[22px] font-medium md:-mt-2 -mt-3">PULSE</p>
+        </div>
+        </div>
+      </div>
 
 			{/* visible for larger devices */}
 			<div className="hidden navbar-end gap-6 md:flex">
@@ -85,20 +107,19 @@ export default function Navbar() {
 				</div>
 				<ul className="w-full">
 					{routes.map((route, i) => (
-						<>
-							<li>
-								<Link
-									key={route.path + route.label}
-									href={route.path}
-									className={`${pathname === route.path && "font-bold"}`}
-								>
-									{route.label}
-								</Link>
-								{routes.length - 1 !== i && (
-									<div className="my-2 divider"></div>
-								)}
-							</li>
-						</>
+						<li key={route.path + route.label}>
+							<Link
+								href={route.path}
+								className={`${
+									pathname === route.path && "font-bold"
+								}`}
+							>
+								{route.label}
+							</Link>
+							{routes.length - 1 !== i && (
+								<div className="my-2 divider"></div>
+							)}
+						</li>
 					))}
 				</ul>
 			</div>

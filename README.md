@@ -28,13 +28,6 @@ DrivePulse is a robust and user-friendly platform to store and share files accro
 
 -   The platform offers clear and transparent pricing plans, allowing users to choose the subscription or storage model that best suits their needs. Different plans may offer varied storage limits, features, and pricing tiers.
 
-# Contributions
-
-## Khan Md. Jahan Zaib
-
--   Created main project documentation
--   Added responsive navbar with sidebar (for smaller devices)
-
 # Conclusion
 
 The project delivers a cutting-edge solution that sets new standards for file sharing. With a user-friendly interface and robust features, it anticipates future needs, providing an efficient and secure platform for seamless collaboration and digital asset management.
