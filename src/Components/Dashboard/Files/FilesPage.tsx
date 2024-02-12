@@ -1,7 +1,6 @@
 "use client";
-import MoreDropDrown from "@/Components/Dashboard/Files/More";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
-import Link from "next/link";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { MdDelete } from "react-icons/md";
 import FolderButton from "./Folder/FolderButton";
 import useStorage from "@/Hooks/useStorage";
@@ -9,8 +8,12 @@ import icons from "./icons";
 import NavigationFolder from "./Folder/NavigationFolder";
 import useGetFilesByEmail from "@/Hooks/useGetFilesByEmail";
 import UploadButton from "./UploadButton&Modal/UploadButton";
+import MoreDropDown from "./MoreDropDown";
+import { useState } from "react";
 
 const FilesPage: React.FC = () => {
+  const [downloadUrl, setDownloadUrl] = useState<string>("");
+  const [fileName, setFileName] = useState<string>("");
   const axiosPublic = useAxiosPublic();
   const { path, setPath, deleteFile } = useStorage();
   const [filesData, loading, refetch] = useGetFilesByEmail();
@@ -42,6 +45,18 @@ const FilesPage: React.FC = () => {
       .catch((err) => console.log(err));
   };
 
+  const handelShowModal = async (fullPath) => {
+    const storage = getStorage();
+    try {
+      const url = await getDownloadURL(ref(storage, fullPath));
+      const filePath = fullPath.split("/");
+      setFileName(filePath[1]);
+      setDownloadUrl(url);
+    } catch (err) {
+      console.error("Error fetching download URL:", err);
+    }
+  };
+
   return (
     <div className="pt-20">
       <div className="flex justify-between items-center">
@@ -49,7 +64,7 @@ const FilesPage: React.FC = () => {
         <NavigationFolder />
 
         <div className="flex justify-end pt-2 pb-8 mr-5 gap-5">
-          <FolderButton path={path} refetch={refetch} /> <UploadButton />
+          <FolderButton path={path} refetch={refetch} /> <UploadButton /> 
         </div>
       </div>
       <div
@@ -68,15 +83,17 @@ const FilesPage: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {filesData.map(
+            {/* optional chaining update */}
+            {filesData?.map(
               (
                 { _id, name, timeCreated, size, type, fullPath, contentType },
                 i
               ) => (
                 <tr
                   key={_id}
+                  // update just hover .
                   onClick={() => nodeClickHandler(type, fullPath)}
-                  className="text-white cursor-pointer"
+                  className="text-white cursor-pointer hover:bg-slate-400"
                 >
                   <td className=" text-2xl pl-5 font-medium whitespace-nowrap">
                     {icons.map((elem) => {
@@ -90,32 +107,25 @@ const FilesPage: React.FC = () => {
                     {(size / 1024 / 1024).toFixed(2)} MB
                   </td>
                   <td className="px-6 py-4">
-                    {/* <Link */}
-                    {/* 	href="#" */}
-                    {/* 	className={`text-3xl ${ */}
-                    {/* 		type === "folder" && "hidden" */}
-                    {/* 	} font-medium text-red-600 dark:text-red-500 hover:font-bold`} */}
-                    {/* 	onClick={() => */}
-                    {/* 		handleDeleteFile(fullPath) */}
-                    {/* 	} */}
-                    {/* > */}
-                    {/* 	<MdDelete /> */}
-                    {/* </Link> */}
-                    <Link
-                      href="#"
-                      className={`text-3xl font-medium text-red-600 dark:text-red-500 hover:font-bold`}
+                    <button
+                      className={`text-3xl font-medium text-red-600  dark:text-red-500 hover:font-bold`}
                       onClick={() => handleDeleteFile(fullPath)}
                     >
                       <MdDelete />
-                    </Link>
+                    </button>
                   </td>
-                  <td className={`px-6 py-4 ${type === "folder" && "hidden"}`}>
-                    <Link href="#" className="text-2xl text-gray-500">
-                      <MoreDropDrown
-                        fileName={name}
-                        fullPath={fullPath}
-                      ></MoreDropDrown>
-                    </Link>
+                  <td
+                    className={`px-6 py-4 ${
+                      type === "folder" && "hidden"
+                    } items-center`}
+                  >
+                    <button
+                      onClick={() => handelShowModal(fullPath)}
+                      className="text-2xl text-gray-500"
+                    >
+                      <MoreDropDown fileName={fileName}
+                downloadUrl={downloadUrl} />
+                    </button>
                   </td>
                 </tr>
               )

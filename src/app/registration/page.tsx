@@ -66,7 +66,8 @@ const Registration = () => {
               uid: res?.user?.uid,
               type: "user",
             };
-
+ 
+            
             axiosPublic
               .post("/users", userInfo)
               .then(() => {

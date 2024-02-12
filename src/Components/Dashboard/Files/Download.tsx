@@ -4,16 +4,11 @@ import React, { useState } from "react";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 interface DownloadProps {
-  downloadUrl: string | null; // Define downloadUrl prop here
+  downloadUrl: string;
 }
 
 const Download: React.FC<DownloadProps> = ({ downloadUrl }) => {
   const handleDownload = () => {
-    if (!downloadUrl) {
-      console.error("Download URL is not available");
-      return;
-    }
-
     fetch(downloadUrl)
       .then((res) => res.blob())
       .then((blob) => {
