@@ -1,6 +1,6 @@
 
-const RenameModal = () => {
-    const closeModal = () => {
+const RenameModal: React.FC = () => {
+    const closeModal = (e: React.MouseEvent<HTMLButtonElement>) => {
         const modalElement = document.getElementById('my_modal_4');
         if (modalElement) {
             (modalElement as HTMLDialogElement).close();

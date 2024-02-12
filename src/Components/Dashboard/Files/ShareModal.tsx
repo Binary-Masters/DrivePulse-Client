@@ -10,29 +10,25 @@ import CopyLink from "./Copy";
 import { useState } from "react";
 import "firebase/storage";
 
+// interface ShareModalProps {
+//   fileName: string;
+//   downloadUrl: string;
+//   setDownloadUrl: React.Dispatch<React.SetStateAction<string>>;
+//   setFileName: React.Dispatch<React.SetStateAction<string>>;
+// }
 interface ShareModalProps {
   fileName: string;
-  downloadUrl: string | null;
-  setDownloadUrl: React.Dispatch<React.SetStateAction<string | null>>;
-  setFileName: React.Dispatch<React.SetStateAction<string | null>>;
+  downloadUrl: string;
 }
 
-const ShareModal: React.FC<ShareModalProps> = ({
-  fileName,
-  downloadUrl,
-  setDownloadUrl,
-  setFileName,
-}) => {
-  console.log(downloadUrl);
-  console.log(fileName);
+const ShareModal: React.FC<ShareModalProps> = ({ fileName, downloadUrl }) => {
   const closeModal = () => {
-    setDownloadUrl(null);
-    setFileName(null);
     const modalElement = document.getElementById("my_modal_2");
     if (modalElement) {
       (modalElement as HTMLDialogElement).close();
     }
   };
+
   return (
     <dialog id="my_modal_2" className="modal text-black">
       <div className="modal-box">
@@ -48,7 +44,7 @@ const ShareModal: React.FC<ShareModalProps> = ({
           <h2 className="text-2xl font-semibold">Share this file</h2>
           <p className="text-lg text-gray-700">{fileName}</p>
           <hr className="bg-gray-400 h-[1px]" />
-          <label htmlFor="">Shar Link</label>
+          <label htmlFor="">Share Link</label>
           <input
             type="text"
             value={downloadUrl}
