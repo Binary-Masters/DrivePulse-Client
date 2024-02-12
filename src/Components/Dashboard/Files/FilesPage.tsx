@@ -1,21 +1,16 @@
 "use client";
 import MoreDropDrown from "@/Components/Dashboard/Files/More";
-import useAuth from "@/Hooks/useAuth";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
-import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { MdDelete } from "react-icons/md";
 import FolderButton from "./Folder/FolderButton";
 import useStorage from "@/Hooks/useStorage";
 import icons from "./icons";
-import { useState } from "react";
 import NavigationFolder from "./Folder/NavigationFolder";
 import useGetFilesByEmail from "@/Hooks/useGetFilesByEmail";
 import UploadButton from "./UploadButton&Modal/UploadButton";
 
 const FilesPage: React.FC = () => {
-  const [currentPath, setCurrentPath] = useState([""]);
-
   const axiosPublic = useAxiosPublic();
   const { path, setPath, deleteFile } = useStorage();
   const [filesData, loading, refetch] = useGetFilesByEmail();

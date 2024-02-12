@@ -1,6 +1,4 @@
 "use client";
-import regImg from "../../assests/Login-Registration/registration.png";
-import Image from "next/image";
 import Link from "next/link";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useContext, useState } from "react";

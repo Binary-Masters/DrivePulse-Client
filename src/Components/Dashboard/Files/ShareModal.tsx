@@ -3,11 +3,9 @@ import {
   FaGlobeAsia,
   FaLink,
   FaLock,
-  FaMailBulk,
 } from "react-icons/fa";
 import { CiMail } from "react-icons/ci";
 import CopyLink from "./Copy";
-import { useState } from "react";
 import "firebase/storage";
 
 interface ShareModalProps {
