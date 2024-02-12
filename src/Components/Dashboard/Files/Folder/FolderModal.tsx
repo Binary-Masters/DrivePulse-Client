@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import Modal from "react-modal";
 
+
 interface FolderModalProps {
   isOpen: boolean;
   onRequestClose: () => void;
@@ -40,7 +41,13 @@ const FolderModal: React.FC<FolderModalProps> = ({
         onSubmit(data)
     }
 
-  
+  // key press features 
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSubmit(handleFormSubmit)();
+    }
+  };
 
     return (
         <Modal
@@ -54,7 +61,7 @@ const FolderModal: React.FC<FolderModalProps> = ({
                 <label className="label">
                     <span className="label-text text-xl font-medium">Folder Name</span>
                 </label>
-                <input placeholder='Enter Folder Name' className="input input-bordered w-full inline-block " type="text" {...register("folderName", { required: true })} />
+                <input placeholder='Enter Folder Name' className="input input-bordered w-full inline-block " type="text" {...register("folderName", { required: true })} onKeyPress={handleKeyPress} />
                 {errors.folderName && <span className='text-red-400 text-sm'>This field is required</span>}
 
                 <div className='flex gap-5 justify-end'>

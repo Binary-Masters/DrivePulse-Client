@@ -13,7 +13,7 @@ import NavigationFolder from "./Folder/NavigationFolder";
 import useGetFilesByEmail from "@/Hooks/useGetFilesByEmail";
 import UploadButton from "./UploadButton&Modal/UploadButton";
 
-const FilesPage = () => {
+const FilesPage: React.FC  = () => {
   const [currentPath, setCurrentPath] = useState([""]);
 
   const axiosPublic = useAxiosPublic();
@@ -73,15 +73,17 @@ const FilesPage = () => {
             </tr>
           </thead>
           <tbody>
-            {filesData.map(
+            {/* optional chaining update */}
+            {filesData?.map(
               (
                 { _id, name, timeCreated, size, type, fullPath, contentType },
                 i
               ) => (
                 <tr
                   key={_id}
+                  // update just hover .
                   onClick={() => nodeClickHandler(type, fullPath)}
-                  className="text-white cursor-pointer"
+                  className="text-white cursor-pointer hover:bg-slate-400"
                 >
                   <td className=" text-2xl pl-5 font-medium whitespace-nowrap">
                     {icons.map((elem) => {
@@ -108,7 +110,7 @@ const FilesPage = () => {
                     {/* </Link> */}
                     <Link
                       href="#"
-                      className={`text-3xl font-medium text-red-600 dark:text-red-500 hover:font-bold`}
+                      className={`text-3xl font-medium text-red-600  dark:text-red-500 hover:font-bold`}
                       onClick={() => handleDeleteFile(fullPath)}
                     >
                       <MdDelete />
@@ -117,7 +119,7 @@ const FilesPage = () => {
                   <td className={`px-6 py-4 ${type === "folder" && "hidden"}`}>
                     <Link href="#" className="text-2xl text-gray-500">
                       <MoreDropDrown
-                        fileName={name}
+                        // fileName={name}
                         fullPath={fullPath}
                       ></MoreDropDrown>
                     </Link>

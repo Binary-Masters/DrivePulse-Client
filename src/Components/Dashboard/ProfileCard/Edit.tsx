@@ -3,13 +3,21 @@
 import useAuth from "@/Hooks/useAuth";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import useGetSingleUser from "@/Hooks/useGetSingleUser";
+import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
+
 const Edit = () => {
-  const axiosPublic = useAxiosPublic();
-  const { user } = useAuth();
-  const [userData, loading, refetch] = useGetSingleUser()
-  console.log(userData);
+    const axiosPublic = useAxiosPublic();
+    const { user,updateUser,changeemail } = useAuth();
+    const [userData, loading, refetch]=useGetSingleUser()
+    // navigate
+    const router = useRouter();
+    // console.log(user?.photoURL)
+    // navigate to dashboardProfile
+    const navigateToDashboardProfile = () => {
+      router.push('/dashboard/profile');
+    };
   const updateValue = async (e) => {
     e.preventDefault();
     const name = e.target.name.value;
@@ -24,25 +32,44 @@ const Edit = () => {
       photoURL,
     };
     // console.log(Data)
+
+
     // put request 
-    await axiosPublic.put(`/users?email=${user?.email}`, Data)
-      .then(datass => {
-        if (datass) {
-          return Swal.fire({
-            title: "Good job!",
-            text: "Update successfully ",
-            icon: "success"
-          });
+    await axiosPublic.put(`/users?email=${user?.email}`,Data)
+   .then(datass =>{
+    updateUser(name,photoURL).then().catch();
+    // todo 
+    // changeemail(email).then().catch();
+
+    if(datass){
+      Swal.fire({
+        title: "Good job!",
+        text: "Update successfully ",
+        icon: "success", 
+        confirmButtonText: 'OK'
+
+      }).then((result) => {
+        if (result.isConfirmed) {
+          return navigateToDashboardProfile()
         }
-        // console.log(datass?.id)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+      });;
+     
+ 
+   }
+   
+
+    // console.log(datass?.id)
+ })
+ .catch(err =>{
+    console.log(err)
+ })
+
   };
+  console.log(userData?.name)
+  console.log(user?.displayName)
   return (
-    <div>
-      <div className="hero min-h-screen ">
+    <div className="flex mx-auto justify-center items-center">
+      <div className="hero   min-h-screen ">
         <div className="hero-content flex-col ">
           <div className="card flex-shrink-0  shadow-2xl bg-slate-100 w-auto ">
             <form onSubmit={updateValue} className="card-body ">
@@ -95,6 +122,7 @@ const Edit = () => {
               <input
                 defaultValue={userData?.email}
                 name="email"
+                readOnly
                 type="text"
                 placeholder="Email"
                 className="input input-bordered"
@@ -102,7 +130,7 @@ const Edit = () => {
 
               />
               <div className="form-control mt-6">
-                <button className="btn btn-primary">Update</button>
+                <button  className="btn btn-primary">Update</button>
               </div>
             </form>
           </div>

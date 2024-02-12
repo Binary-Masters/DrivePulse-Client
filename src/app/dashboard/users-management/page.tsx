@@ -1,19 +1,22 @@
 'use client'
 import LoadingAnimation from "@/Components/Animation/LoadingAnimation/LoadingAnimation";
-import useAuth from "@/Hooks/useAuth";
 import useGetAllUsers from "@/Hooks/useGetAllUsers";
 import useUpdateSingleUser from "@/Hooks/useUpdateSingleUser";
 import Image from "next/image";
 import Swal from "sweetalert2";
 import { MdDelete } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import userIcon from '../../../assests/images/blank-head-profile-pic-for-a-man.jpg'
+import useAuth from "@/Hooks/useAuth";
 
 
 const UsersManagement = () => {
     const [users, loading, refetch] = useGetAllUsers(); //load user from mongodb
-    // console.log(users);
+    console.log(users);
     const router = useRouter();
     const updateUser = useUpdateSingleUser();
+    const {deleteAnyUser} = useAuth();
+
     if (loading) {
         return <LoadingAnimation />
     }
@@ -68,8 +71,19 @@ const UsersManagement = () => {
     }
 
     // delete user
-    const deleteUser=()=>{
-        console.log('user will be deleted');
+    const deleteUser=(aUser)=>{
+        console.log('user will be deleted',aUser);
+        deleteAnyUser(aUser)
+        .then(res=>{
+            console.log(res);
+            Swal.fire({
+                title: "Congratulations!",
+                text: "User Deletion successful",
+                icon: "success",
+                confirmButtonText: "OK",
+            })
+            refetch();
+        })
     }
 
     return (
@@ -106,7 +120,7 @@ const UsersManagement = () => {
                                     <div className="flex items-center gap-3">
                                         <div className="avatar">
                                             <div className="mask mask-squircle w-12 h-12">
-                                                <Image src={user.photoURL} width={50} height={50} alt="user-picture" />
+                                                <Image src={user.photoURL?user.photoURL:userIcon} width={50} height={50} alt="user-picture" />
                                             </div>
                                         </div>
                                     </div>
@@ -129,7 +143,7 @@ const UsersManagement = () => {
                                     }
                                 </td>
                                 <td>
-                                    <span onClick={deleteUser} className="text-red-600 text-3xl cursor-pointer"><MdDelete /></span>
+                                    <span onClick={()=>deleteUser(user)} className="text-red-600 text-3xl cursor-pointer"><MdDelete /></span>
                                 </td>
                             </tr>
                         </tbody>)
