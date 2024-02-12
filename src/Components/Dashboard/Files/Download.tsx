@@ -1,3 +1,5 @@
+// Download.tsx
+
 import React, { useState } from "react";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
@@ -19,18 +21,16 @@ const Download: React.FC<DownloadProps> = ({ downloadUrl }) => {
         aTag.remove();
       })
       .catch((err) => {
-        console.log(err);
+        console.error("Error downloading file:", err);
       });
   };
 
   return (
     <div>
       {downloadUrl ? (
-        <a href={downloadUrl} download>
-          Download
-        </a>
-      ) : (
         <button onClick={handleDownload}>Download</button>
+      ) : (
+        <p>Download URL is not available</p>
       )}
     </div>
   );

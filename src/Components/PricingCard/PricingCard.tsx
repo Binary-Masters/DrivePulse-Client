@@ -2,8 +2,7 @@
 import usePricings from "@/Hooks/usePricings";
 import "./pricing.css";
 import LoadingAnimation from "../Animation/LoadingAnimation/LoadingAnimation";
-import axios from "axios";
-import { useEffect, useState } from "react";
+
 interface PricingCardData {
   id: string;
   benifit1: string;
