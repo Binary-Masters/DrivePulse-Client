@@ -7,6 +7,8 @@ const CopyLink: React.FC<CopyLinkProps> = ({ downloadUrl }) => {
   const [copyText, setCopyText] = useState(downloadUrl);
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
+console.log(downloadUrl)
+
   const handleCopyClick = async () => {
     const textarea = document.createElement("textarea");
     textarea.value = copyText;

@@ -92,7 +92,7 @@ const FilesPage: React.FC = () => {
                 <tr
                   key={_id}
                   // update just hover .
-                  onClick={() => nodeClickHandler(type, fullPath)}
+				  onClick={() => type == "folder" && nodeClickHandler(type, fullPath)} 
                   className="text-white cursor-pointer hover:bg-slate-400"
                 >
                   <td className=" text-2xl pl-5 font-medium whitespace-nowrap">

@@ -20,6 +20,8 @@ const MoreDropDown: React.FC<MoreDropDrownProps> = ({fileName, downloadUrl}) => 
   const [open, setOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  console.log(downloadUrl)
+
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -59,10 +61,10 @@ const MoreDropDown: React.FC<MoreDropDrownProps> = ({fileName, downloadUrl}) => 
               className="relative" >
         <button
           onClick={() => setOpen((pv) => !pv)}
-          className="flex items-center px-3 py-2 gap-2 rounded-md bg-indigo-50 hover:bg-indigo-100 transition-colors"
+          className="flex items-center px-3 py-2 gap-2 rounded-md  transition-colors"
         >
           <motion.span variants={iconVariants}>
-            <MdArrowDropDownCircle />
+            <MdArrowDropDownCircle className="text-white"/>
           </motion.span>
         </button>
 
