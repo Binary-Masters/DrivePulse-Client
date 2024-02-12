@@ -1,7 +1,6 @@
 "use client";
 import { Menu } from "lucide-react";
 import Image from "next/image";
-import logo from "@/../../public/logo.png";
 import img from "@/assests/images/blank-head-profile-pic-for-a-man.jpg";
 import { useState, useEffect, useRef } from "react";
 import SideNave from "@/Components/SideNave/SideNave";

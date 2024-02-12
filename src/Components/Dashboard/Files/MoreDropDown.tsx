@@ -11,7 +11,12 @@ import RenameModal from "./RenameModal";
 import CopyLink from "./Copy";
 import Download from "./Download";
 
-const MoreDropDown = () => {
+interface MoreDropDrownProps {
+  fileName: string;
+  downloadUrl: string;
+}
+
+const MoreDropDown: React.FC<MoreDropDrownProps> = ({fileName, downloadUrl}) => {
   const [open, setOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -74,7 +79,7 @@ const MoreDropDown = () => {
                 className="flex items-center w-full p-2 text-xs font-medium cursor-pointer gap-2 whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors"
                 onClick={() => setOpen(true)}
               >
-                <FiCopy /> <CopyLink />
+                <FiCopy /> <CopyLink downloadUrl={downloadUrl}/>
               </motion.li>
 
               <motion.li
@@ -83,13 +88,13 @@ const MoreDropDown = () => {
               >
                 <FiShare /> Share
               </motion.li>
-              <ShareModal/>
+              <ShareModal fileName={fileName} downloadUrl={downloadUrl}/>
 
               <motion.li
                 className="flex items-center w-full p-2 text-xs font-medium cursor-pointer gap-2 whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors"
                 onClick={() => setOpen(false)}
               >
-                <FiDownload /> <Download />
+                <FiDownload /> <Download downloadUrl={downloadUrl}/>
               </motion.li>
 
               <motion.li

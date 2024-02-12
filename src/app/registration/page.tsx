@@ -68,7 +68,8 @@ const Registration = () => {
               uid: res?.user?.uid,
               type: "user",
             };
-
+ 
+            
             axiosPublic
               .post("/users", userInfo)
               .then(() => {
@@ -136,7 +137,7 @@ const Registration = () => {
                     type="text"
                     name="name"
                     placeholder="Your name"
-                    className="w-full regStyle border-blue-600 input rounded-md bg-transparent"
+                    className="w-full regStyle focus:border-blue-600 border-blue-600 input rounded-md bg-transparent"
                     required
                   />
                 </div>
@@ -148,7 +149,7 @@ const Registration = () => {
                     type="email"
                     name="email"
                     placeholder="Email"
-                    className="w-full regStyle border-blue-600 input rounded-md bg-transparent"
+                    className="w-full regStyle focus:border-blue-600 border-blue-600 input rounded-md bg-transparent"
                     required
                   />
                 </div>
@@ -175,7 +176,7 @@ const Registration = () => {
                     type={showPass ? "text" : "password"}
                     name="password"
                     placeholder="password"
-                    className="w-full regStyle border-blue-600 input rounded-md bg-transparent"
+                    className="w-full regStyle focus:border-blue-600 border-blue-600 input rounded-md bg-transparent"
                     required
                   />
                   <span

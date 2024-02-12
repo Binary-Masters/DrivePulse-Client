@@ -1,35 +1,35 @@
 'use client'
 import LoadingAnimation from "@/Components/Animation/LoadingAnimation/LoadingAnimation";
-import useAuth from "@/Hooks/useAuth";
 import useGetAllUsers from "@/Hooks/useGetAllUsers";
 import useUpdateSingleUser from "@/Hooks/useUpdateSingleUser";
 import Image from "next/image";
 import Swal from "sweetalert2";
 import { MdDelete } from "react-icons/md";
+import { useRouter } from "next/navigation";
+import userIcon from '../../../assests/images/blank-head-profile-pic-for-a-man.jpg'
+import useAuth from "@/Hooks/useAuth";
 
 
 const UsersManagement = () => {
     const [users, loading, refetch] = useGetAllUsers(); //load user from mongodb
-    // console.log(users);
-    const { user } = useAuth();   //current or loggedin user
-    // console.log(user);
+    console.log(users);
+    const router = useRouter();
     const updateUser = useUpdateSingleUser();
+    const {deleteAnyUser} = useAuth();
+
     if (loading) {
         return <LoadingAnimation />
     }
 
-    const currentUser = users.find(singleUser => singleUser?.email === user?.email); // match user current user and mongodb user
-    console.log(currentUser);
-
-
-    const makeAdmin = () => {
+    const makeAdmin = (user) => { 
+        console.log(user);
         const userInfo = {
-            email: currentUser?.email,
-            name: currentUser.name,
-            emailVerified: currentUser.emailVerified,
-            phoneNumber: currentUser.phoneNumber,
-            photoURL: currentUser.photoURL,
-            uid: currentUser.uid,
+            email: user?.email,
+            name: user.name,
+            emailVerified: user.emailVerified,
+            phoneNumber: user.phoneNumber,
+            photoURL: user.photoURL,
+            uid: user.uid,
             type: 'admin',
         }
         updateUser(userInfo)
@@ -45,14 +45,14 @@ const UsersManagement = () => {
                 }
             })
     }
-    const makeUser = () => {
+    const makeUser = (user) => {
         const userInfo = {
-            email: currentUser?.email,
-            name: currentUser.name,
-            emailVerified: currentUser.emailVerified,
-            phoneNumber: currentUser.phoneNumber,
-            photoURL: currentUser.photoURL,
-            uid: currentUser.uid,
+            email: user?.email,
+            name: user.name,
+            emailVerified: user.emailVerified,
+            phoneNumber: user.phoneNumber,
+            photoURL: user.photoURL,
+            uid: user.uid,
             type: 'user',
         }
         updateUser(userInfo)
@@ -65,13 +65,25 @@ const UsersManagement = () => {
                         confirmButtonText: "OK",
                     })
                     refetch();
+                    router.push("/dashboard");
                 }
             })
     }
 
     // delete user
-    const deleteUser=()=>{
-        console.log('user will be deleted');
+    const deleteUser=(aUser)=>{
+        console.log('user will be deleted',aUser);
+        deleteAnyUser(aUser)
+        .then(res=>{
+            console.log(res);
+            Swal.fire({
+                title: "Congratulations!",
+                text: "User Deletion successful",
+                icon: "success",
+                confirmButtonText: "OK",
+            })
+            refetch();
+        })
     }
 
     return (
@@ -108,7 +120,7 @@ const UsersManagement = () => {
                                     <div className="flex items-center gap-3">
                                         <div className="avatar">
                                             <div className="mask mask-squircle w-12 h-12">
-                                                <Image src={user.photoURL} width={50} height={50} alt="user-picture" />
+                                                <Image src={user.photoURL?user.photoURL:userIcon} width={50} height={50} alt="user-picture" />
                                             </div>
                                         </div>
                                     </div>
@@ -125,13 +137,13 @@ const UsersManagement = () => {
                                 <td className="flex flex-col gap-2">
                                     {
                                         user.type === 'admin' ?
-                                            <button onClick={() => makeUser()} className="btn btn-sm btn-outline text-white">Make User</button>
+                                            <button onClick={() => makeUser(user)} className="btn btn-sm btn-outline text-white">Make User</button>
                                             :
-                                            <button onClick={() => makeAdmin()} className="btn btn-sm btn-outline text-white">Make Admin</button>
+                                            <button onClick={() => makeAdmin(user)} className="btn btn-sm btn-outline text-white">Make Admin</button>
                                     }
                                 </td>
                                 <td>
-                                    <span onClick={deleteUser} className="text-red-600 text-3xl cursor-pointer"><MdDelete /></span>
+                                    <span onClick={()=>deleteUser(user)} className="text-red-600 text-3xl cursor-pointer"><MdDelete /></span>
                                 </td>
                             </tr>
                         </tbody>)
