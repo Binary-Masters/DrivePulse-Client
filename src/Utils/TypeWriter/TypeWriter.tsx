@@ -7,7 +7,7 @@ const TypeWriter = () => {
       " Welcome To Our File Sharing Website",
       "You Can Share Your File",
       "You Can Store Your File",
-      "This Website Will Be Helpfull",
+      "This Website Will Be Helpful",
     ],
     loop: true,
     typeSpeed: 120,

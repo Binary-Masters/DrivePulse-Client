@@ -1,0 +1,29 @@
+
+
+.dashboard-home-user{
+  background-image: linear-gradient( rgba(0,0,0,0.5), rgba(0,0,0,0.1)), url("../../../assests/images/dashbaord-home.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.progress-background{
+  background: linear-gradient(
+    to  right,
+    #090d2b,
+  
+    /* #24207b, */
+    /* #24207b, */
+    #1b2061
+  );
+}
+.chart-bg{
+  background: linear-gradient(
+    to  bottom,
+    #090d2b,
+  
+    /* #24207b, */
+    /* #24207b, */
+    #1b2061
+  );
+}

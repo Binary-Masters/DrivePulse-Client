@@ -1,6 +1,7 @@
 "use client";
-// import axios from "axios";
-// import { useEffect, useState } from "react";
+import axios from "axios";
+import { Tilt } from "react-tilt";
+import { useEffect, useState } from "react";
 import {
   BsBook,
   BsBriefcaseFill,
@@ -20,24 +21,20 @@ import LoadingAnimation from "@/Components/Animation/LoadingAnimation/LoadingAni
 //   description: string;
 //   icon: string;
 // }
-interface benefitesData {
-  benefits: void;
-  loading: any;
-  refetch: void;
-}
 const Benefits = () => {
-  const [benefits, loading] = useBenifites<benefitesData[]>();
+  const [benefits, loading] = useBenifites();
   // const [benefits, setBenefits] = useState<benifitesData[]>([]);
   // useEffect(() => {
   //   const getData = async () => {
   //     const res = await axios.get(
-  //       " https://drive-pulse-server.vercel.app/benifites"
+  //       "https://drive-pulse-server.vercel.app/benifites"
   //     );
   //     setBenefits(res?.data);
+  //     // console.log(res);
   //   };
   //   getData();
   // }, []);
-
+  // console.log(benefits);
   const getIcon = (icon) => {
     switch (icon) {
       case "BsBriefcaseFill":
@@ -61,35 +58,31 @@ const Benefits = () => {
     }
   };
   if (loading) {
-    return <LoadingAnimation/>
+    return <LoadingAnimation />;
   }
   return (
     <div
-      className="bg-blue-200-900/40 bg-cover py-16 "
-      style={{
-        backgroundImage: `url(${bg.src})`,
-        width: "100%",
-        height: "100%",
-      }}
-    >
-      <h2 className="text-4xl font-bold py-10 text-center">
-        Who Benefits from <span className="text-[#5757f4]">DrivePulse</span>
+      className="py-16 ">
+      <h2 className="py-10 text-4xl font-bold text-center text-slate-300">
+        Who Benefits from <span className="text-primary">DrivePulse?</span>
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 px-5">
+      <div className="grid max-w-7xl mx-auto grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 px-3">
         {benefits.map((item, index) => (
           <div
             key={index}
-            className="rounded-md bg-base-100 shadow hover:shadow-md shadow-[#5757f49f]"
-          >
-            <figure className="px-10 pt-10">
-              <div className="flex justify-center text-5xl">
-                {getIcon(item.icon)}
+            className="rounded-md  shadow-md hover:shadow-lg shadow-[#5757f49f] hover:shadow-primary cursor-pointer">
+            <Tilt
+              options={{ scale: 1, max: 30, speed: 300, perspective: 2000 }}>
+              <figure className="px-10 pt-10">
+                <div className="flex justify-center text-5xl text-slate-200">
+                  {getIcon(item.icon)}
+                </div>
+              </figure>
+              <div className="items-center text-center card-body">
+                <h3 className="text-2xl font-bold text-slate-300">{item.title}</h3>
+                <p className="text-slate-400">{item.description}</p>
               </div>
-            </figure>
-            <div className="card-body items-center text-center">
-              <h3 className="text-2xl font-bold">{item.title}</h3>
-              <p>{item.description}</p>
-            </div>
+            </Tilt>
           </div>
         ))}
       </div>

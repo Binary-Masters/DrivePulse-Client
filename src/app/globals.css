@@ -13,3 +13,105 @@
 .debug > * > * {
 	border: 1px solid blue;
 }
+
+
+.gradient1-bg{
+	background-color: #08072f;
+	background-image: radial-gradient(at 80% 90%, rgb(25, 128, 156) 0, transparent 22%), radial-gradient(at 31% 34%, rgb(19, 196, 245) 0, transparent 25%)
+}
+.gradient2-bg{
+	background-color: #08072f;
+	background-image: radial-gradient(at 80% 90%, rgb(25, 128, 156) 0, transparent 22%), radial-gradient(at 31% 34%, rgb(25, 128, 156) 0, transparent 25%)
+}
+/* .card {
+	position: relative;
+	overflow: hidden;
+	transition: all 0.5s;
+	box-shadow: 1px 1px 40px #0b3e5d;
+  }
+  .card:hover{
+   margin-top: -15px;
+   cursor: pointer;
+   box-shadow: 1px 1px 40px #0f6295;
+  }
+  .card::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 200%;
+	height: 100%;
+	background: linear-gradient(120deg, #093551 20%, #08072f 38%, #08072f
+	40%, #08072f 48%);
+	animation: gradientAnimation 4s infinite;
+  }
+  
+  @keyframes gradientAnimation {
+	100% {
+	  transform: translateX(-100%);
+	}
+  }
+   */
+  
+  
+.card2 {
+	width: 100%;
+	height: 100%;
+	background: #08072f;
+	box-shadow: 1px 1px 30px #063d4f;
+	cursor: pointer;
+	position: relative;
+	display: flex;
+	place-content: center;
+	place-items: center;
+	overflow: hidden;
+	border-radius: 20px;
+	transition: all 0.20s;
+  }
+  .card2:hover{
+	box-shadow: 1px 1px 30px #09779b;
+  }
+  .card2 h2 {
+	z-index: 1;
+	color: white;
+	font-size: 2em;
+  }
+  
+  .card2::before {
+	content: '';
+	position: absolute;
+	width: 120px;
+	background-image: linear-gradient(180deg, rgb(0, 183, 255), rgb(58, 48, 255));
+	height: 130%;
+	animation: rotBGimg 7s linear infinite;
+	transition: all 0.3s linear;
+  }
+  
+  @keyframes rotBGimg {
+	from {
+	  transform: rotate(0deg);
+	}
+  
+	to {
+	  transform: rotate(360deg);
+	}
+  }
+  
+  .card2::after {
+	content: '';
+	position: absolute;
+	background: #08072f;
+	;
+	inset: 3px;
+	border-radius: 15px;
+  }  
+  /* .card:hover:before {
+	background-image: linear-gradient(180deg, rgb(81, 255, 0), purple);
+	animation: rotBGimg 3.5s linear infinite;
+  } */
+  
+  /* using sweet alert for z index */
+  .swal-custom {
+    z-index: 1100; 
+}
+  
