@@ -5,9 +5,14 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import useGetSingleUser from "@/Hooks/useGetSingleUser";
 import { Cell, Legend, Pie, PieChart, Tooltip } from "recharts";
+import Link from "next/link";
+import useGetFiles from "@/Hooks/useGetFiles";
+import useAuth from "@/Hooks/useAuth";
 const PieChartContent = () => {
   const [userData] = useGetSingleUser();
-  // console.log(userData?.type);
+  const {user} = useAuth()
+  // const [filesData, loading, refetch] = useGetFiles();
+  // console.log(filesData);
   const value = 0.66;
   const value2 = 0.9;
 
@@ -49,15 +54,16 @@ const PieChartContent = () => {
       <div className="w-full lg:w-[40%] dashboard-home-user h-[250px] rounded-md py-10 pl-5">
         <div className="space-y-1 mb-10">
           <p className="text-blue-400 uppercase font-semibold">Welcome back,</p>
-          <h2 className="text-3xl text-slate-200 font-bold">Sadid Hasan</h2>
+          <h2 className="text-3xl text-slate-200 font-bold">{user?.displayName}</h2>
           <p className="text-gray-300 font-medium">
             Glad to see you again! <br />
             Ask me anything.
           </p>
         </div>
+        <Link href={"/dashboard/profile"}>
         <button className="text-slate-300 font-semibold cursor-pointer flex items-center gap-1">
           See Profile <FaArrowRight />
-        </button>
+        </button></Link>
       </div>
       <div className="w-full lg:w-[30%] progress-background rounded-md h-[250px] shadow-md p-6 relative">
         <div className=" flex justify-center">
