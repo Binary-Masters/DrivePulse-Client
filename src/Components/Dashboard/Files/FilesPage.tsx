@@ -15,7 +15,6 @@ import Swal from "sweetalert2";
 import Loading from "@/app/loading";
 import { useState } from "react";
 
-
 const FilesPage: React.FC = () => {
 	const [downloadUrl, setDownloadUrl] = useState<string>("");
 	const [fileName, setFileName] = useState<string>("");
@@ -23,7 +22,7 @@ const FilesPage: React.FC = () => {
 	const { user } = useAuth();
 	const { path, setPath, deleteFile } = useStorage();
 	const {filesData, isFilesLoading, refetchFiles} = useGetFiles();
-
+console.log(filesData)
 	// Fetching file data for appropriate user
 
 	const nodeClickHandler = (type: string, fullPath: string) => {
