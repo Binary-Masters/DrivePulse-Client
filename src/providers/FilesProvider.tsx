@@ -1,3 +1,4 @@
+"use client"
 import useAuth from "@/Hooks/useAuth";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import useStorage from "@/Hooks/useStorage";
@@ -22,7 +23,7 @@ interface FileData {
 	parentPath: string;
 }
 
-export const FilesContext = createContext({});
+export const FilesContext = createContext<any>({});
 export default function FilesProvider({
 	children,
 }): ReactElement<{ children: ReactNode }> {
@@ -44,7 +45,7 @@ export default function FilesProvider({
 			},
 		});
 
-	const filesInfo = [ filesData, isFilesLoading, refetchFiles ];
+	const filesInfo = { filesData, isFilesLoading, refetchFiles };
 	return (
 		<FilesContext.Provider value={filesInfo}>
 			{children}
