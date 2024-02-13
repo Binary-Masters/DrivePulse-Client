@@ -5,27 +5,61 @@ import { useState } from "react";
 import { MdClose } from "react-icons/md";
 import Swal from "sweetalert2";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
+import generateChecksum from "@/Utils/Checksum/generateChecksum";
+import useAuth from "@/Hooks/useAuth";
 
 const UploadForm: React.FC = () => {
 	const [file, setFile] = useState<File | null>(null);
+	const { user } = useAuth();
 	const { uploadFile } = useStorage();
 	const axiosPublic = useAxiosPublic();
 
 	const handleFileUpload = () => {
 		try {
 			if (file) {
-				uploadFile(file).then((snapshot) => {
-					Swal.fire({
-						title: "Success",
-						text: "File uploaded successfully",
-						icon: "success",
-						confirmButtonText: "OK",
-						
-					});
+				// Check database for duplicate files under current user
+				// Ensures cloud and server synchronization
+				generateChecksum(file).then((checksum) => {
 					axiosPublic
-						.post("/files", snapshot.metadata)
-						.then((response) => console.log(response))
-						.catch((err) => console.log(err));
+						.post("/files/lookup", { checksum })
+						.then(({ data }) => {
+							if (!data.exists) {
+								// Upload to cloud
+								uploadFile(file).then((snapshot) => {
+									Swal.fire({
+										title: "Success",
+										text: "File uploaded successfully",
+										icon: "success",
+										confirmButtonText: "OK",
+									});
+
+									// Post file metadata to database
+									axiosPublic
+										.post("/files", {
+											checksum,
+											owner: user.email,
+											...snapshot.metadata,
+										})
+										.then((response) =>
+											console.log(response)
+										)
+										.catch((err) => console.log(err));
+								});
+							} else {
+								Swal.fire({
+									title: "File Already Exists",
+									icon: "error",
+									confirmButtonText: "OK",
+								});
+							}
+						})
+						.catch((err) => {
+							Swal.fire({
+								title: err.message,
+								icon: "error",
+								confirmButtonText: "OK",
+							});
+						});
 				});
 			}
 		} catch (error) {

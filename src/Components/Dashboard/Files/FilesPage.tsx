@@ -5,13 +5,15 @@ import { MdDelete } from "react-icons/md";
 import FolderButton from "./Folder/FolderButton";
 import useStorage from "@/Hooks/useStorage";
 import icons from "./icons";
-import { useState } from "react";
 import NavigationFolder from "./Folder/NavigationFolder";
 import useGetFilesByEmail from "@/Hooks/useGetFilesByEmail";
 import UploadButton from "./UploadButton&Modal/UploadButton";
 import MoreDropDown from "./MoreDropDown";
 import getFolderPathData from "@/Utils/FolderNavigation/getFolderPathData";
 import useAuth from "@/Hooks/useAuth";
+import Swal from "sweetalert2";
+import Loading from "@/app/loading";
+import { useState } from "react";
 
 const FilesPage: React.FC = () => {
 	const [downloadUrl, setDownloadUrl] = useState<string>("");
@@ -25,27 +27,58 @@ const FilesPage: React.FC = () => {
 
 	const nodeClickHandler = (type: string, fullPath: string) => {
 		if (type === "folder") {
-			const { currentPath } = getFolderPathData(fullPath, type, user)
+			const { currentPath } = getFolderPathData(fullPath, type, user);
 			setPath(currentPath);
-			console.log(path);
 			refetch();
 		} else console.log("This is a file");
 	};
 
-	const handleDeleteFile = (filePath: string) => {
-		deleteFile(filePath)
-			.then((result) => {
-				console.log(result);
-				axiosPublic
-					.delete(`/files?fullPath=${filePath}`)
-					.then((result) => {
-						console.log(result);
-						refetch();
+	const handleDeleteFile = (fullPath: string) => {
+		const filePath = fullPath.split("/");
+		const myPath = filePath[filePath.length - 1];
+
+		Swal.fire({
+			title: "Are you sure?",
+			text: `You Want To Delete ${myPath} File `,
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Yes, delete it!",
+		}).then((result) => {
+			if (result.isConfirmed) {
+				deleteFile(fullPath)
+					.then(() => {
+						axiosPublic
+							.delete(`/files?fullPath=${fullPath}`)
+							.then((result) => {
+								if (result.data.deletedCount > 0) {
+									Swal.fire({
+										title: "Deleted!",
+										text: `Your ${myPath} file has been deleted`,
+										icon: "success",
+									});
+									refetch();
+								} else {
+									Swal.fire({
+										title: "Oppss!",
+										text: "Something Went Wrong Please Try Again",
+										icon: "error",
+									});
+								}
+							})
+							.catch();
 					})
-					.catch((err) => console.log(err));
-			})
-			.catch((err) => console.log(err));
+					.catch();
+			}
+		});
 	};
+
+	// Swal.fire({
+	//   title: "Deleted!",
+	//   text: "Your file has been deleted.",
+	//   icon: "success",
+	// });
 
 	const handelShowModal = async (fullPath) => {
 		const storage = getStorage();
@@ -58,12 +91,14 @@ const FilesPage: React.FC = () => {
 			console.error("Error fetching download URL:", err);
 		}
 	};
-
+	if (loading) {
+		return <Loading />;
+	}
 	return (
-		<div className="px-4 pt-20">
+		<div className="pt-20">
 			<div className="flex items-center justify-between">
 				{/* navigate component here */}
-				<NavigationFolder refetch={refetch} />
+				<NavigationFolder />
 
 				<div className="flex justify-end pt-2 pb-8 mr-5 gap-5">
 					<FolderButton path={path} refetch={refetch} />{" "}

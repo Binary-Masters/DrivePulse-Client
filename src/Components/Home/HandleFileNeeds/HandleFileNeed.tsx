@@ -1,5 +1,4 @@
 import Image from "next/image";
-import bgImage from "@/assests/bg.png";
 const data = [
   {
     image: "https://i.ibb.co/JkHMfXR/share.png",

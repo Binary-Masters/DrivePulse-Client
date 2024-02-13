@@ -1,6 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
-import Link from "next/link";
 import { useForm } from "react-hook-form";
 
 const ContactForm = () => {
