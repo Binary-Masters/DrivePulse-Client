@@ -24,7 +24,11 @@ const UploadForm: React.FC = () => {
 					});
 					axiosPublic
 						.post("/files", snapshot.metadata)
-						.then((response) => console.log(response))
+						.then((response) => {
+							console.log(response)
+			  // before upload file state will be  clear 
+						  setFile(null)
+						})
 						.catch((err) => console.log(err));
 				});
 			}

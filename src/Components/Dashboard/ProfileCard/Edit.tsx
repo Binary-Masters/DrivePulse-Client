@@ -52,7 +52,7 @@ const Edit = () => {
         if (result.isConfirmed) {
           return navigateToDashboardProfile()
         }
-      });;
+      });
      
  
    }
