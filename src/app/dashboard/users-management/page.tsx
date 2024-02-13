@@ -8,20 +8,32 @@ import { MdDelete } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import userIcon from '../../../assests/images/blank-head-profile-pic-for-a-man.jpg'
 import useAuth from "@/Hooks/useAuth";
+import useAxiosPublic from "@/Hooks/useAxiosPublic";
+
+// const admin = require('firebase-admin');
+// // import admin from 'firebase-admin';
+// import serviceAccount from "../../../firebase/serviceAccountKey.json";
+// // Admin power
+// admin.initializeApp({
+//     credential: admin.credential.cert(serviceAccount)
+// });
 
 
 const UsersManagement = () => {
     const [users, loading, refetch] = useGetAllUsers(); //load user from mongodb
-    console.log(users);
+    // console.log(users);
     const router = useRouter();
     const updateUser = useUpdateSingleUser();
-    const {deleteAnyUser} = useAuth();
+    const { deleteAnyUser, user: currentUser } = useAuth();
+    console.log(currentUser);
+    const axiosPublic = useAxiosPublic();
+
 
     if (loading) {
         return <LoadingAnimation />
     }
 
-    const makeAdmin = (user) => { 
+    const makeAdmin = (user) => {
         console.log(user);
         const userInfo = {
             email: user?.email,
@@ -65,25 +77,27 @@ const UsersManagement = () => {
                         confirmButtonText: "OK",
                     })
                     refetch();
-                    router.push("/dashboard");
+                    if (userInfo.email === currentUser.email) {
+                        router.push("/dashboard");
+                    }
                 }
             })
     }
 
     // delete user
-    const deleteUser=(aUser)=>{
-        console.log('user will be deleted',aUser);
-        deleteAnyUser(aUser)
-        .then(res=>{
-            console.log(res);
-            Swal.fire({
-                title: "Congratulations!",
-                text: "User Deletion successful",
-                icon: "success",
-                confirmButtonText: "OK",
+    const handleDeleteUser = (userID) => {
+        // console.log(userId);
+        const uid = {
+            data: {
+                userId: userID
+            }
+        }
+        console.log(uid);
+
+        axiosPublic.delete('/delete-user', uid)
+            .then(res => {
+                console.log(res);
             })
-            refetch();
-        })
     }
 
     return (
@@ -120,7 +134,7 @@ const UsersManagement = () => {
                                     <div className="flex items-center gap-3">
                                         <div className="avatar">
                                             <div className="mask mask-squircle w-12 h-12">
-                                                <Image src={user.photoURL?user.photoURL:userIcon} width={50} height={50} alt="user-picture" />
+                                                <Image src={user.photoURL ? user.photoURL : userIcon} width={50} height={50} alt="user-picture" />
                                             </div>
                                         </div>
                                     </div>
@@ -143,7 +157,7 @@ const UsersManagement = () => {
                                     }
                                 </td>
                                 <td>
-                                    <span onClick={()=>deleteUser(user)} className="text-red-600 text-3xl cursor-pointer"><MdDelete /></span>
+                                    <span onClick={() => handleDeleteUser(user.uid)} className="text-red-600 text-3xl cursor-pointer"><MdDelete /></span>
                                 </td>
                             </tr>
                         </tbody>)
