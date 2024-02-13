@@ -13,11 +13,14 @@ const Download: React.FC<DownloadProps> = ({ fileName, fullPath,bucket  }) => {
     try {
       const storage = getStorage();
       const downloadURL = await getDownloadURL(ref(storage, fullPath));
+      // console.log(downloadURL);
+      const downloadUrl = downloadURL.toString();
+      console.log(downloadUrl);
       
       // const downloadURL = `https://firebasestorage.googleapis.com/v0/b/${bucket}/o/${encodeURIComponent(fullPath)}?alt=media`;
 
   
-      fetch(downloadURL)
+      fetch(downloadUrl)
         .then((res) => res.blob())
         .then((blob) => {
           const blobUrl = window.URL.createObjectURL(blob);
