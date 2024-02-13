@@ -6,7 +6,7 @@ import FolderButton from "./Folder/FolderButton";
 import useStorage from "@/Hooks/useStorage";
 import icons from "./icons";
 import NavigationFolder from "./Folder/NavigationFolder";
-import useGetFilesByEmail from "@/Hooks/useGetFilesByEmail";
+import useGetFiles from "@/Hooks/useGetFiles";
 import UploadButton from "./UploadButton&Modal/UploadButton";
 import MoreDropDown from "./MoreDropDown";
 import getFolderPathData from "@/Utils/FolderNavigation/getFolderPathData";
@@ -21,7 +21,7 @@ const FilesPage: React.FC = () => {
 	const axiosPublic = useAxiosPublic();
 	const { user } = useAuth();
 	const { path, setPath, deleteFile } = useStorage();
-	const [filesData, loading, refetch] = useGetFilesByEmail();
+	const [filesData, loading, refetch] = useGetFiles();
 
 	// Fetching file data for appropriate user
 

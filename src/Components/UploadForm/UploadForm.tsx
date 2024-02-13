@@ -13,6 +13,10 @@ const UploadForm: React.FC = () => {
 	const { user } = useAuth();
 	const { uploadFile } = useStorage();
 	const axiosPublic = useAxiosPublic();
+	const owner = { 
+		uid: user.uid,
+		email: user.email,
+	}
 
 	const handleFileUpload = () => {
 		try {
@@ -21,7 +25,7 @@ const UploadForm: React.FC = () => {
 				// Ensures cloud and server synchronization
 				generateChecksum(file).then((checksum) => {
 					axiosPublic
-						.post("/files/lookup", { checksum })
+						.post("/files/lookup", { checksum, owner })
 						.then(({ data }) => {
 							if (!data.exists) {
 								// Upload to cloud
@@ -37,7 +41,7 @@ const UploadForm: React.FC = () => {
 									axiosPublic
 										.post("/files", {
 											checksum,
-											owner: user.email,
+											owner,
 											...snapshot.metadata,
 										})
 										.then((response) =>
