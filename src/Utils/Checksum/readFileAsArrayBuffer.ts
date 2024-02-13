@@ -1,3 +1,4 @@
+// Generates stream from blob
 const readFileAsArrayBuffer = (file: Blob): Promise<ArrayBuffer> => {
 	return new Promise((resolve, reject) => {
 		const reader = new FileReader();
