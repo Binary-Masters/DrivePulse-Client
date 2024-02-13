@@ -20,7 +20,6 @@ const SideNave = () => {
   const { user } = useAuth();   //current or loggedin user
   // console.log(user);
   const currentUser = users.find(singleUser => singleUser.email === user.email);
-  console.log(currentUser);
   const adminMenuList: Items[] = [
     {
       id: 1,
@@ -106,7 +105,7 @@ const SideNave = () => {
                   } `}>
                 <button
                   className={`flex items-center gap-2 w-full hover:bg-gray-600 px-4 py-2 rounded-md  font-medium `}>
-                  <h2 className="text-2xl bg-primary text-white p-2 rounded-xl">
+                  <h2 className="p-2 text-2xl text-white bg-primary rounded-xl">
                     {item?.icon}
                   </h2>
                   <h2 className="font-medium">{item?.name}</h2>
@@ -124,7 +123,7 @@ const SideNave = () => {
                     } `}>
                   <button
                     className={`flex items-center gap-2 w-full hover:bg-gray-600 px-4 py-2 rounded-md  font-medium `}>
-                    <h2 className="text-2xl bg-primary text-white p-2 rounded-xl">
+                    <h2 className="p-2 text-2xl text-white bg-primary rounded-xl">
                       {item?.icon}
                     </h2>
                     <h2 className="font-medium">{item?.name}</h2>
@@ -144,7 +143,7 @@ const SideNave = () => {
               } `}>
             <button
               className={`flex items-center gap-2 w-full hover:bg-gray-600 px-4 py-2 rounded-md  font-medium `}>
-              <h2 className="text-2xl bg-primary text-white p-2 rounded-xl">
+              <h2 className="p-2 text-2xl text-white bg-primary rounded-xl">
                 {item?.icon}
               </h2>
               <h2 className="font-medium">{item?.name}</h2>

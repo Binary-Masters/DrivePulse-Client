@@ -33,7 +33,7 @@ export default function StorageProvider({
 	const uploadFile = async (file: File): Promise<UploadResult> => {
 		setStorageLoading(true);
 
-		const root = user.email; // Root directory
+		const root = user.uid; // Root directory
 		const storagePath = ref(storage, `${root + path + file.name}`);
 		return uploadBytes(storagePath, file);
 	};

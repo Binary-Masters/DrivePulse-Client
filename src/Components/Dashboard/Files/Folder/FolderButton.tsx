@@ -3,21 +3,19 @@ import FolderModal from "./FolderModal";
 import { FaFolderPlus } from "react-icons/fa";
 import useAuth from "@/Hooks/useAuth";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
+import useGetFiles from "@/Hooks/useGetFiles";
 
 
 interface FolderButtonProps {
 	path: string;
-	refetch: () => void;
 }
 
-const FolderButton: React.FC<FolderButtonProps> = ({ path, refetch }) => {
+const FolderButton: React.FC<FolderButtonProps> = ({ path }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const axiosPublic = useAxiosPublic();
+	const { refetchFiles } = useGetFiles();
 	const { user } = useAuth();
 
-
-	console.log('ehiid path dir', path) 
-	
 	const openModal = () => {
 		setIsModalOpen(true);
 	};
@@ -29,17 +27,19 @@ const FolderButton: React.FC<FolderButtonProps> = ({ path, refetch }) => {
 	const handleCreateFolder = async (data: { folderName: string }) => {
 		//if needed to used logic here for backend
 		const folderMetadata = {
+			checksum: "",
 			type: "folder",
+			owner: { uid: user.uid, email: user.email },
 			contentType: "folder",
 			bucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
-			fullPath: `${user.email + path + data.folderName + "/"}`,
+			fullPath: `${user.uid + path + data.folderName + "/"}`,
 			name: data.folderName,
 			size: 0,
 		};
 
 		try {
 			await axiosPublic.post("/files", folderMetadata);
-			refetch();
+			refetchFiles();
 			closeModal();
 		} catch (error) {
 			console.error("Error creating folder:", error);
