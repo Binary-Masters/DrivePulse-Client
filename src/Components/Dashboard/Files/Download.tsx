@@ -5,15 +5,19 @@ const download = 'https://cdn.create.vista.com/api/media/small/96171264/stock-ph
 interface DownloadProps {
   fileName: string;
   fullPath: string;
+  bucket: string
 }
 
-const Download: React.FC<DownloadProps> = ({ fileName, fullPath,  }) => {
+const Download: React.FC<DownloadProps> = ({ fileName, fullPath,bucket  }) => {
   const handleDownload = async () => {
     try {
       const storage = getStorage();
       const downloadURL = await getDownloadURL(ref(storage, fullPath));
+      
+      // const downloadURL = `https://firebasestorage.googleapis.com/v0/b/${bucket}/o/${encodeURIComponent(fullPath)}?alt=media`;
+
   
-      fetch(download)
+      fetch(downloadURL)
         .then((res) => res.blob())
         .then((blob) => {
           const blobUrl = window.URL.createObjectURL(blob);
@@ -30,7 +34,8 @@ const Download: React.FC<DownloadProps> = ({ fileName, fullPath,  }) => {
     } catch (error) {
       console.error("Error getting download URL:", error);
     }
-  };
+
+  }
 
   return (
     <div>

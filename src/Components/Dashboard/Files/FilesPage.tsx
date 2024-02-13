@@ -6,99 +6,101 @@ import FolderButton from "./Folder/FolderButton";
 import useStorage from "@/Hooks/useStorage";
 import icons from "./icons";
 import NavigationFolder from "./Folder/NavigationFolder";
-import useGetFilesByEmail from "@/Hooks/useGetFilesByEmail";
+import useGetFiles from "@/Hooks/useGetFiles";
 import UploadButton from "./UploadButton&Modal/UploadButton";
 import MoreDropDown from "./MoreDropDown";
+import getFolderPathData from "@/Utils/FolderNavigation/getFolderPathData";
+import useAuth from "@/Hooks/useAuth";
 import Swal from "sweetalert2";
 import Loading from "@/app/loading";
 import { useState } from "react";
 
 const FilesPage: React.FC = () => {
-  const [downloadUrl, setDownloadUrl] = useState<string>("");
-  const [fileName, setFileName] = useState<string>("");
-  const axiosPublic = useAxiosPublic();
-  const { path, setPath, deleteFile } = useStorage();
-  const [filesData, loading, refetch] = useGetFilesByEmail();
+	const [downloadUrl, setDownloadUrl] = useState<string>("");
+	const [fileName, setFileName] = useState<string>("");
+	const axiosPublic = useAxiosPublic();
+	const { user } = useAuth();
+	const { path, setPath, deleteFile } = useStorage();
+	const [filesData, loading, refetch] = useGetFiles();
 
-  // Fetching file data for appropriate user
 
-  const nodeClickHandler = (type: string, fullPath: string) => {
-    if (type === "folder") {
-      const fullPathArr = fullPath.split("/");
-      fullPathArr[0] = ""; // Removing root dir
-      const newFullPath = fullPathArr.join("/");
-      setPath(newFullPath);
-      refetch();
-    } else console.log("This is a file");
-  };
+  console.log('hello',filesData)
+	// Fetching file data for appropriate user
 
-  const handleDeleteFile = (fullPath: string) => {
-    const filePath = fullPath.split("/");
-    const myPath = filePath[filePath.length - 1];
+	const nodeClickHandler = (type: string, fullPath: string) => {
+		if (type === "folder") {
+			const { currentPath } = getFolderPathData(fullPath, type, user);
+			setPath(currentPath);
+			refetch();
+		} else console.log("This is a file");
+	};
 
-    Swal.fire({
-      title: "Are you sure?",
-      text: `You Want To Delete ${myPath} File `,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        deleteFile(fullPath)
-          .then(() => {
-            axiosPublic
-              .delete(`/files?fullPath=${fullPath}`)
-              .then((result) => {
-                if (result.data.deletedCount > 0) {
-                  Swal.fire({
-                    title: "Deleted!",
-                    text: `Your ${myPath} file has been deleted`,
-                    icon: "success",
-                  });
-                  refetch();
-                } else {
-                  Swal.fire({
-                    title: "Oppss!",
-                    text: "Something Went Wrong Please Try Again",
-                    icon: "error",
-                  });
-                }
-              })
-              .catch();
-          })
-          .catch();
-      }
-    });
-  };
+	const handleDeleteFile = (fullPath: string) => {
+		const filePath = fullPath.split("/");
+		const myPath = filePath[filePath.length - 1];
+
+		Swal.fire({
+			title: "Are you sure?",
+			text: `You Want To Delete ${myPath} File `,
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Yes, delete it!",
+		}).then((result) => {
+			if (result.isConfirmed) {
+				deleteFile(fullPath)
+					.then(() => {
+						axiosPublic
+							.delete(`/files?fullPath=${fullPath}`)
+							.then((result) => {
+								if (result.data.deletedCount > 0) {
+									Swal.fire({
+										title: "Deleted!",
+										text: `Your ${myPath} file has been deleted`,
+										icon: "success",
+									});
+									refetch();
+								} else {
+									Swal.fire({
+										title: "Oppss!",
+										text: "Something Went Wrong Please Try Again",
+										icon: "error",
+									});
+								}
+							})
+							.catch();
+					})
+					.catch();
+			}
+		});
+	};
 
   // Swal.fire({
   //   title: "Deleted!",
   //   text: "Your file has been deleted.",
   //   icon: "success",
   // });
-  // console.log('fullPath', filesData)
 
-  const handelShowModal = async (fullPath) => {
-    const storage = getStorage();
-    try {
-      const url = await getDownloadURL(ref(storage, fullPath));
-      const filePath = fullPath.split("/");
-      setFileName(filePath[1]);
-      setDownloadUrl(url);
-    } catch (err) {
-      console.error("Error fetching download URL:", err);
-    }
-  };
-  if (loading) {
-    return <Loading />;
-  }
-  return (
-    <div className="pt-20">
-      <div className="flex justify-between items-center">
-        {/* navigate component here */}
-        <NavigationFolder />
+	const handelShowModal = async (fullPath) => {
+		const storage = getStorage();
+		try {
+			const url = await getDownloadURL(ref(storage, fullPath));
+			const filePath = fullPath.split("/");
+			setFileName(filePath[1]);
+			setDownloadUrl(url);
+		} catch (err) {
+			console.error("Error fetching download URL:", err);
+		}
+	};
+	if (loading) {
+		return <Loading />;
+	}
+	return (
+		<div className="pt-20">
+			<div className="flex items-center justify-between">
+				{/* navigate component here */}
+				<NavigationFolder />
 
         <div className="flex justify-end pt-2 pb-8 mr-5 gap-5">
           <FolderButton path={path} refetch={refetch} /> <UploadButton />
@@ -123,13 +125,13 @@ const FilesPage: React.FC = () => {
             {/* optional chaining update */}
             {filesData?.map(
               (
-                { _id, name, timeCreated, size, type, fullPath, contentType },
+                { _id, name, timeCreated, size, type, fullPath, contentType, bucket                },
                 i
               ) => (
                 <tr
                   key={_id}
                   // update just hover .
-				  onClick={() => type == "folder" && nodeClickHandler(type, fullPath)} 
+                  onClick={() => nodeClickHandler(type, fullPath)}
                   className="text-white cursor-pointer hover:bg-slate-400"
                 >
                   <td className=" text-2xl pl-5 font-medium whitespace-nowrap">
@@ -162,8 +164,9 @@ const FilesPage: React.FC = () => {
                     >
                       <MoreDropDown
                         fileName={fileName}
-                        downloadUrl={downloadUrl}
                         fullPath={fullPath}
+                        downloadUrl={downloadUrl}
+                        bucket={bucket}
                       />
                     </button>
                   </td>

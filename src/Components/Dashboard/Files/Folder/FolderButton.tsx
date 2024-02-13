@@ -15,7 +15,6 @@ const FolderButton: React.FC<FolderButtonProps> = ({ path, refetch }) => {
 	const axiosPublic = useAxiosPublic();
 	const { user } = useAuth();
 
-	
 	const openModal = () => {
 		setIsModalOpen(true);
 	};
@@ -27,10 +26,12 @@ const FolderButton: React.FC<FolderButtonProps> = ({ path, refetch }) => {
 	const handleCreateFolder = async (data: { folderName: string }) => {
 		//if needed to used logic here for backend
 		const folderMetadata = {
+			checksum: "",
 			type: "folder",
+			owner: { uid: user.uid, email: user.email },
 			contentType: "folder",
 			bucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
-			fullPath: `${user.email + path + data.folderName + "/"}`,
+			fullPath: `${user.uid + path + data.folderName + "/"}`,
 			name: data.folderName,
 			size: 0,
 		};

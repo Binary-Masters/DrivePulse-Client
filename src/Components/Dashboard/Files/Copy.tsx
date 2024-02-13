@@ -18,11 +18,6 @@ const CopyLink: React.FC<CopyLinkProps> = ({ downloadUrl }) => {
 
       document.body.removeChild(textarea);
       setIsCopied(true);
-
-      // You can add the backend code here
-      // const response = await axios.post('/api/backend link here', {
-      //   copiedText: downloadUrl,
-      // });
     }
   };
 
