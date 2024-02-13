@@ -9,14 +9,7 @@ import { useRouter } from "next/navigation";
 import userIcon from '../../../assests/images/blank-head-profile-pic-for-a-man.jpg'
 import useAuth from "@/Hooks/useAuth";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
-
-// const admin = require('firebase-admin');
-// // import admin from 'firebase-admin';
-// import serviceAccount from "../../../firebase/serviceAccountKey.json";
-// // Admin power
-// admin.initializeApp({
-//     credential: admin.credential.cert(serviceAccount)
-// });
+import { error } from "console";
 
 
 const UsersManagement = () => {
@@ -94,10 +87,32 @@ const UsersManagement = () => {
         }
         console.log(uid);
 
-        axiosPublic.delete('/delete-user', uid)
-            .then(res => {
-                console.log(res);
-            })
+        Swal.fire({
+            title: "Are you sure?",
+            text: `You Want To Delete This user `,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axiosPublic.delete('/delete-user', uid)
+                    .then(res => {
+                        console.log(res);
+                        Swal.fire({
+                            title: "Congratulations!",
+                            text: "User deletion successful",
+                            icon: "success",
+                            confirmButtonText: "OK",
+                        })
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+            }
+        });
+
     }
 
     return (
