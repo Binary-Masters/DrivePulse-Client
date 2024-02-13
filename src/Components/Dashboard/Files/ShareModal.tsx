@@ -3,11 +3,9 @@ import {
   FaGlobeAsia,
   FaLink,
   FaLock,
-  FaMailBulk,
 } from "react-icons/fa";
 import { CiMail } from "react-icons/ci";
 import CopyLink from "./Copy";
-import { useState } from "react";
 import "firebase/storage";
 
 // interface ShareModalProps {
@@ -22,6 +20,7 @@ interface ShareModalProps {
 }
 
 const ShareModal: React.FC<ShareModalProps> = ({ fileName, downloadUrl }) => {
+
   const closeModal = () => {
     const modalElement = document.getElementById("my_modal_2");
     if (modalElement) {
@@ -42,7 +41,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ fileName, downloadUrl }) => {
         </form>
         <div className="space-y-2">
           <h2 className="text-2xl font-semibold">Share this file</h2>
-          <p className="text-lg text-gray-700">{fileName}</p>
+          <p className="text-lg text-gray-700">{fileName ? fileName : 'share.png'}</p>
           <hr className="bg-gray-400 h-[1px]" />
           <label htmlFor="">Share Link</label>
           <input

@@ -14,27 +14,27 @@ import Download from "./Download";
 interface MoreDropDrownProps {
   fileName: string;
   downloadUrl: string;
+  fullPath: string;
 }
 
-const MoreDropDown: React.FC<MoreDropDrownProps> = ({fileName, downloadUrl}) => {
+const MoreDropDown: React.FC<MoreDropDrownProps> = ({fileName, downloadUrl, fullPath}) => {
   const [open, setOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  console.log(downloadUrl)
-
+// mouse event to outside click close dropdown
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleOutsideClick);
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, []);
 
+  // share modal for open
   const openModal = () => {
     const modalElement = document.getElementById("my_modal_2");
     if (modalElement) {
@@ -96,7 +96,7 @@ const MoreDropDown: React.FC<MoreDropDrownProps> = ({fileName, downloadUrl}) => 
                 className="flex items-center w-full p-2 text-xs font-medium cursor-pointer gap-2 whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors"
                 onClick={() => setOpen(false)}
               >
-                <FiDownload /> <Download downloadUrl={downloadUrl}/>
+                <FiDownload /> <Download fileName={fileName}   fullPath={fullPath} />
               </motion.li>
 
               <motion.li

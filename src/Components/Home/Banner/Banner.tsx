@@ -1,7 +1,5 @@
 "use client"
 import Lottie from 'lottie-react';
-import img from '../../../assests/Banner/banner.png'
-import Image from "next/image";
 import Link from "next/link";
 // import Image from "next/image";
 // import bannerbg from "../../../assests/images/banner.jpg";
