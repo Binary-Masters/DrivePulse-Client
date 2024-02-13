@@ -3,16 +3,17 @@ import FolderModal from "./FolderModal";
 import { FaFolderPlus } from "react-icons/fa";
 import useAuth from "@/Hooks/useAuth";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
+import useGetFiles from "@/Hooks/useGetFiles";
 
 
 interface FolderButtonProps {
 	path: string;
-	refetch: () => void;
 }
 
-const FolderButton: React.FC<FolderButtonProps> = ({ path, refetch }) => {
+const FolderButton: React.FC<FolderButtonProps> = ({ path }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const axiosPublic = useAxiosPublic();
+	const { refetchFiles } = useGetFiles();
 	const { user } = useAuth();
 
 	const openModal = () => {
@@ -38,7 +39,7 @@ const FolderButton: React.FC<FolderButtonProps> = ({ path, refetch }) => {
 
 		try {
 			await axiosPublic.post("/files", folderMetadata);
-			refetch();
+			refetchFiles();
 			closeModal();
 		} catch (error) {
 			console.error("Error creating folder:", error);

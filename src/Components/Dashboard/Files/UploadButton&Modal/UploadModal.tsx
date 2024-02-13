@@ -11,9 +11,9 @@ import useAuth from "@/Hooks/useAuth";
 
 const UploadModal: React.FC = () => {
 	const [file, setFile] = useState<File | null>(null);
-	const { uploadFile, path } = useStorage();
+	const { uploadFile } = useStorage();
 	const axiosPublic = useAxiosPublic();
-	const [, , refetch] = useGetFiles(); // NOTE: hook creates an instance of desired component
+	const { refetchFiles } = useGetFiles(); 
 	const { user } = useAuth();
 	const owner = { 
 		email: user.email,
@@ -45,6 +45,7 @@ const UploadModal: React.FC = () => {
 										icon: "success",
 										confirmButtonText: "OK",
 									});
+									refetchFiles();
 
 									// Post file metadata to database
 									axiosPublic
@@ -64,7 +65,7 @@ const UploadModal: React.FC = () => {
 									icon: "error",
 									confirmButtonText: "OK",
 								}).then(({ isConfirmed }) => {
-									isConfirmed && refetch();
+									isConfirmed && refetchFiles();
 								})
 							}
 						})

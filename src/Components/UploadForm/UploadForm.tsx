@@ -7,11 +7,13 @@ import Swal from "sweetalert2";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import generateChecksum from "@/Utils/Checksum/generateChecksum";
 import useAuth from "@/Hooks/useAuth";
+import useGetFiles from "@/Hooks/useGetFiles";
 
 const UploadForm: React.FC = () => {
 	const [file, setFile] = useState<File | null>(null);
 	const { user } = useAuth();
 	const { uploadFile } = useStorage();
+	const { refetchFiles } = useGetFiles();
 	const axiosPublic = useAxiosPublic();
 	const owner = { 
 		uid: user.uid,
@@ -36,6 +38,7 @@ const UploadForm: React.FC = () => {
 										icon: "success",
 										confirmButtonText: "OK",
 									});
+									refetchFiles();
 
 									// Post file metadata to database
 									axiosPublic
