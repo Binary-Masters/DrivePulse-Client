@@ -30,7 +30,6 @@ const FilesPage: React.FC = () => {
 
 
 
-	console.log('hello', filesData)
 	// Fetching file data for appropriate user
 
 	const nodeClickHandler = (type: string, fullPath: string) => {
@@ -140,7 +139,7 @@ const FilesPage: React.FC = () => {
 									onClick={() => nodeClickHandler(type, fullPath)}
 									className="text-white cursor-pointer hover:bg-slate-400"
 								>
-									<td className=" text-2xl pl-5 font-medium whitespace-nowrap">
+									<td className="pl-5 text-2xl font-medium whitespace-nowrap">
 										{icons?.map((elem) => {
 											if (elem.contentType === contentType)
 												return <elem.icon />;

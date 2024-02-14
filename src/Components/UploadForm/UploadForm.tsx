@@ -15,10 +15,10 @@ const UploadForm: React.FC = () => {
 	const { uploadFile } = useStorage();
 	const { refetchFiles } = useGetFiles();
 	const axiosPublic = useAxiosPublic();
-	const owner = { 
+	const owner = {
 		uid: user.uid,
 		email: user.email,
-	}
+	};
 
 	const handleFileUpload = () => {
 		try {
@@ -32,14 +32,6 @@ const UploadForm: React.FC = () => {
 							if (!data.exists) {
 								// Upload to cloud
 								uploadFile(file).then((snapshot) => {
-									Swal.fire({
-										title: "Success",
-										text: "File uploaded successfully",
-										icon: "success",
-										confirmButtonText: "OK",
-									});
-									// refetchFiles();
-
 									// Post file metadata to database
 									axiosPublic
 										.post("/files", {
@@ -47,9 +39,15 @@ const UploadForm: React.FC = () => {
 											owner,
 											...snapshot.metadata,
 										})
-										.then((response) =>
-											console.log(response)
-										)
+										.then((response) => {
+											Swal.fire({
+												title: "Success",
+												text: "File uploaded successfully",
+												icon: "success",
+												confirmButtonText: "OK",
+											});
+											refetchFiles();
+										})
 										.catch((err) => console.log(err));
 								});
 							} else {

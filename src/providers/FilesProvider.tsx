@@ -46,7 +46,6 @@ export default function FilesProvider({
   });
 
   const filesInfo = { filesData, isFilesLoading, refetchFiles };
-  console.log("getting files data", filesData);
   return (
     <FilesContext.Provider value={filesInfo}>
       {children}
