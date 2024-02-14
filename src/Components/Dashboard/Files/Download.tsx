@@ -1,4 +1,3 @@
-import React from "react";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
 const download = 'https://cdn.create.vista.com/api/media/small/96171264/stock-photo-solitude-tree-with-birds'
