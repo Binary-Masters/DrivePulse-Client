@@ -11,8 +11,8 @@ import useAuth from "@/Hooks/useAuth";
 const PieChartContent = () => {
   const [userData] = useGetSingleUser();
   const {user} = useAuth()
-  // const [filesData, loading, refetch] = useGetFiles();
-  // console.log(filesData);
+  const { filesData, isFilesLoading, refetchFiles } = useGetFiles();
+  console.log(filesData);
   const value = 0.66;
   const value2 = 0.9;
 
@@ -56,8 +56,8 @@ const PieChartContent = () => {
           <p className="text-blue-400 uppercase font-semibold">Welcome back,</p>
           <h2 className="text-3xl text-slate-200 font-bold">{user?.displayName}</h2>
           <p className="text-gray-300 font-medium">
-            Glad to see you again! <br />
-            Ask me anything.
+            Share your file <br />
+            And make your day.
           </p>
         </div>
         <Link href={"/dashboard/profile"}>

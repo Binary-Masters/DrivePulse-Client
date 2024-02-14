@@ -38,7 +38,7 @@ const UploadForm: React.FC = () => {
                     icon: "success",
                     confirmButtonText: "OK",
                   });
-                  refetchFiles();
+                //   refetchFiles();
 
                   // Post file metadata to database
                   axiosPublic
