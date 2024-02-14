@@ -27,7 +27,7 @@ const HostedInfo = () => {
         <div 
           key={item?.id}
           style={{backdropFilter:"blur(150px)" }}
-          className="card p-5 rounded-md border-2 border-[#08072f] space-y-3 bg-[#08072f]">
+          className="hostedCard p-5 rounded-md border-2 border-[#08072f] space-y-3 bg-[#08072f]">
           <h2 className="relative z-20 mb-5 left-4 top-2 text-slate-200">{item?.icon}</h2>
           <div className="card_icon text-3xl  w-14 h-14 rounded-full absolute top-0 z-10 bg-slate-700"></div>
           <div className="card__title text-2xl font-semibold z-10 text-slate-300">
