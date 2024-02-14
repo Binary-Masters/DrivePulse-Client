@@ -20,25 +20,25 @@ const UploadForm: React.FC = () => {
     email: user.email,
   };
 
-  const handleFileUpload = () => {
-    try {
-      if (file) {
-        // Check database for duplicate files under current user
-        // Ensures cloud and server synchronization
-        generateChecksum(file).then((checksum) => {
-          axiosPublic
-            .post("/files/lookup", { checksum, owner })
-            .then(({ data }) => {
-              if (!data.exists) {
-                // Upload to cloud
-                uploadFile(file).then((snapshot) => {
-                  Swal.fire({
-                    title: "Success",
-                    text: "File uploaded successfully",
-                    icon: "success",
-                    confirmButtonText: "OK",
-                  });
-                //   refetchFiles();
+	const handleFileUpload = () => {
+		try {
+			if (file) {
+				// Check database for duplicate files under current user
+				// Ensures cloud and server synchronization
+				generateChecksum(file).then((checksum) => {
+					axiosPublic
+						.post("/files/lookup", { checksum, owner })
+						.then(({ data }) => {
+							if (!data.exists) {
+								// Upload to cloud
+								uploadFile(file).then((snapshot) => {
+									Swal.fire({
+										title: "Success",
+										text: "File uploaded successfully",
+										icon: "success",
+										confirmButtonText: "OK",
+									});
+									// refetchFiles();
 
                   // Post file metadata to database
                   axiosPublic
