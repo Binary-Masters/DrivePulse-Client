@@ -8,9 +8,10 @@ import useGetFiles from "@/Hooks/useGetFiles";
 
 interface FolderButtonProps {
 	path: string;
+	refetch:any;
 }
 
-const FolderButton: React.FC<FolderButtonProps> = ({ path }) => {
+const FolderButton: React.FC<FolderButtonProps> = ({ path, refetch }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const axiosPublic = useAxiosPublic();
 	const { refetchFiles } = useGetFiles();
@@ -53,13 +54,13 @@ const FolderButton: React.FC<FolderButtonProps> = ({ path }) => {
 				className="text-xs md:text-[16px]  border-0 btn  bg-primary text-white hover:bg-blue-600 transition-all duration-300"
 				onClick={openModal}
 			>
-				<FaFolderPlus className="text-xl"/> 
+				<FaFolderPlus className="text-xl" />
 				<span className="hidden md:block">New Folder</span>
 			</button>
-			<FolderModal 
-			isOpen={isModalOpen}
-			onRequestClose={closeModal}
-			onSubmit={handleCreateFolder}
+			<FolderModal
+				isOpen={isModalOpen}
+				onRequestClose={closeModal}
+				onSubmit={handleCreateFolder}
 			/>
 		</>
 	);
