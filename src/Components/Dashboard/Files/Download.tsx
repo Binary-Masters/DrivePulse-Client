@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+
 
 interface DownloadProps {
   downloadUrl: string;
 }
 
 const Download: React.FC<DownloadProps> = ({ downloadUrl }) => {
-  const handleDownload = () => {
+  const handleDownload = (downloadUrl) => {
+    console.log(downloadUrl);
     fetch(downloadUrl)
       .then((res) => res.blob())
       .then((blob) => {
@@ -26,11 +26,11 @@ const Download: React.FC<DownloadProps> = ({ downloadUrl }) => {
   return (
     <div>
       {downloadUrl ? (
-        <a href={downloadUrl} download>
+        <a href={downloadUrl} target="_blank" download>
           Download
         </a>
       ) : (
-        <button onClick={handleDownload}>Download</button>
+        <button onClick={() => handleDownload(downloadUrl)}>Download</button>
       )}
     </div>
   );
