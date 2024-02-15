@@ -1,13 +1,15 @@
 'use client'
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 interface RenameModalProps {
     id: string;
     name: string;
+    refetchFiles:any;
 }
 
-const RenameModal: React.FC<RenameModalProps> = ({ id, name }) => {
+const RenameModal: React.FC<RenameModalProps> = ({ id, name,refetchFiles }) => {
     const closeModal = (e: React.MouseEvent<HTMLButtonElement>) => {
         const modalElement = document.getElementById('my_modal_4');
         if (modalElement) {
@@ -34,6 +36,20 @@ const RenameModal: React.FC<RenameModalProps> = ({ id, name }) => {
         axiosPublic.patch('/rename-file', fileMetaData)
             .then(res => {
                 console.log(res);
+                Swal.fire({
+                    // title: "Congratulations!",
+                    text: "File Renamed successfully",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                  })
+                refetchFiles();
+                const modalElement = document.getElementById('my_modal_4');
+                if (modalElement) {
+                    (modalElement as HTMLDialogElement).close();
+                }
+            })
+            .catch(err=>{
+                console.log(err);
             })
     }
 

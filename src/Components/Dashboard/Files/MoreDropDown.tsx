@@ -18,9 +18,10 @@ interface MoreDropDrownProps {
 	bucket: string;
 	id: string;
 	name: string;
+	refetchFiles:any;
 }
 
-const MoreDropDown: React.FC<MoreDropDrownProps> = ({ fileName, downloadUrl, fullPath, bucket, id, name}) => {
+const MoreDropDown: React.FC<MoreDropDrownProps> = ({ fileName, downloadUrl, fullPath, bucket, id, name,refetchFiles}) => {
 	const [open, setOpen] = useState<boolean>(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -117,6 +118,7 @@ const MoreDropDown: React.FC<MoreDropDrownProps> = ({ fileName, downloadUrl, ful
 							<RenameModal
 								id={id}
 								name={name}
+								refetchFiles={refetchFiles}
 							/>
 						</motion.ul>
 					)}

@@ -22,13 +22,13 @@ const FilesPage: React.FC = () => {
 	const axiosPublic = useAxiosPublic();
 	const { user } = useAuth();
 	const { path, setPath, deleteFile } = useStorage();
-	// const [filesData, isFilesLoading, refetch,refetchFiles] = useGetFiles();
-	const filesDataResult = useGetFiles();
-	const filesData = filesDataResult.filesData;
-	const isFilesLoading = filesDataResult.isFilesLoading;
-	const refetch = filesDataResult.refetch;
-	const refetchFiles = filesDataResult.refetchFiles;
-	console.log(filesData);
+	const {filesData, isFilesLoading, refetch,refetchFiles} = useGetFiles();
+	// const filesDataResult = useGetFiles();
+	// const filesData = filesDataResult.filesData;
+	// const isFilesLoading = filesDataResult.isFilesLoading;
+	// const refetch = filesDataResult.refetch;
+	// const refetchFiles = filesDataResult.refetchFiles;
+	// console.log(filesData);
 
 
 
@@ -133,7 +133,7 @@ const FilesPage: React.FC = () => {
 						{/* optional chaining update */}
 						{filesData?.map(
 							(
-								{ _id, name, timeCreated, size, type, fullPath, contentType, bucket, checksum, owner, updated, rootDirectory, parentPath },
+								{ _id, name, timeCreated, size, type, fullPath, contentType, bucket },
 								i
 							) => (
 								<tr
@@ -176,6 +176,7 @@ const FilesPage: React.FC = () => {
 												bucket={bucket}
 												id={_id}
 												name={name}
+												refetchFiles={refetchFiles}
 											/>
 										</button>
 									</td>
