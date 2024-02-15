@@ -52,12 +52,12 @@ const SideNave = () => {
       icon: <FaUsers />,
       path: "/dashboard/users-management",
     },
-    {
-      id: 5,    
-      name: "Trash",
-      icon: <FaUsers />,
-      path: "/dashboard/trash",
-    },
+    // {
+    //   id: 5,    
+    //   name: "Trash",
+    //   icon: <FaUsers />,
+    //   path: "/dashboard/trash",
+    // },
   ];
 
   const userMenuList = adminMenuList.filter((route) => route.id < 4); //user menu list before id 4
