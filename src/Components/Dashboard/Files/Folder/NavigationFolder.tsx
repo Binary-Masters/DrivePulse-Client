@@ -51,13 +51,16 @@ const NavigationFolder: React.FC = () => {
 			{folderHistoryArr.map(
 				({ currentPath, currentDirectory, subDirectoryLevel }, i) => (
 					<span
-						className="cursor-pointer hover:underline"
 						onClick={() => handleClick(currentPath)}
 						key={subDirectoryLevel}
 					>
 						<span className="flex items-center gap-2">
-							<span>{currentDirectory}</span>
-							<span className="text-base text-white/40">{i ? "/" : ""}</span>
+							<span className="cursor-pointer hover:underline">
+								{currentDirectory}
+							</span>
+							<span className="text-base text-white/40">
+								{i ? "/" : ""}
+							</span>
 						</span>
 					</span>
 				)
