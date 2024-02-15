@@ -17,26 +17,31 @@ const NavigationFolder: React.FC = () => {
 		[]
 	);
 
-	// const handleClick = () => {
-	// 	setPath(parentPath);
-	// };
-
 	// Creates a history of already visisted folders
-	// useEffect(() => {
-	// 	let tempPath = path;
-	// 	const tempHistory: HistoryEntry[] = [];
-	// 	while (tempPath !== "/") {
-	// 		const historyEntry = getFolderPathData(tempPath, "folder", user);
-	// 		tempHistory.push(historyEntry);
-	// 		tempPath = historyEntry.parentPath;
-	// 	}
+	useEffect(() => {
+		let tempPath = path;
+		const tempHistory: HistoryEntry[] = [];
+		const rootEntry = {
+			currentPath: "/",
+			parentPath: "",
+			currentDirectory: "/",
+			subDirectoryLevel: 0,
+		};
 		
-	// 	setFolderHistoryArr(tempHistory);
-	// }, [user, path]);
-	// console.log(folderHistoryArr);
+		while (tempPath !== "/") {
+			const historyEntry = getFolderPathData(tempPath, "folder", user);
+			tempHistory.unshift(historyEntry);
+			tempPath = historyEntry.parentPath;
+		}
+		tempHistory.unshift(rootEntry);
+
+		setFolderHistoryArr(tempHistory);
+	}, [user, path]);
+	console.log(path);
+	console.log(folderHistoryArr);
 
 	return (
-		<div className="flex items-center text-xl text-white gap-2">
+		<div className="flex items-center text-xl text-white debug gap-2">
 			{folderHistoryArr.map(
 				({
 					currentPath,
