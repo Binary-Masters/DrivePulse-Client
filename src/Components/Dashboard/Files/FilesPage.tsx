@@ -1,6 +1,5 @@
 "use client";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
-import { IoCreateOutline } from "react-icons/io5";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { MdDelete } from "react-icons/md";
 import FolderButton from "./Folder/FolderButton";
@@ -15,7 +14,7 @@ import useAuth from "@/Hooks/useAuth";
 import Swal from "sweetalert2";
 import Loading from "@/app/loading";
 import { useState } from "react";
-import Link from "next/link";
+import { Key } from "lucide-react";
 
 const FilesPage: React.FC = () => {
   const [downloadUrl, setDownloadUrl] = useState<string>("");
@@ -23,16 +22,9 @@ const FilesPage: React.FC = () => {
   const axiosPublic = useAxiosPublic();
   const { user } = useAuth();
   const { path, setPath, deleteFile } = useStorage();
-  // const [filesData, isFilesLoading, refetch,refetchFiles] = useGetFiles();
-  const filesDataResult = useGetFiles();
-  const filesData = filesDataResult.filesData;
-  const isFilesLoading = filesDataResult.isFilesLoading;
-  const refetch = filesDataResult.refetch;
-  const refetchFiles = filesDataResult.refetchFiles;
-  const filterNotifyData = filesData.filter((item) => item.owner.status === 0);
-  console.log(filterNotifyData);
+  const { filesData, isFilesLoading, refetchFiles } = useGetFiles();
+  console.log(filesData);
   // Fetching file data for appropriate user
-
   const nodeClickHandler = (type: string, fullPath: string) => {
     if (type === "folder") {
       const { currentPath } = getFolderPathData(fullPath, type, user);
@@ -109,7 +101,7 @@ const FilesPage: React.FC = () => {
         <NavigationFolder />
 
         <div className="flex justify-end pt-2 pb-8 mr-5 gap-5">
-          <FolderButton path={path} refetch={refetch} /> <UploadButton />
+          <FolderButton path={path} /> <UploadButton />
         </div>
       </div>
       <div
@@ -130,26 +122,23 @@ const FilesPage: React.FC = () => {
           <tbody>
             {/* optional chaining update */}
             {filesData?.map(
-              (
-                {
-                  _id,
-                  name,
-                  timeCreated,
-                  size,
-                  type,
-                  fullPath,
-                  contentType,
-                  bucket,
-                },
-                i
-              ) => (
+              ({
+                _id,
+                name,
+                timeCreated,
+                size,
+                type,
+                fullPath,
+                contentType,
+                bucket,
+              }) => (
                 <tr
                   key={_id}
                   // update just hover .
                   onClick={() => nodeClickHandler(type, fullPath)}
                   className="text-white cursor-pointer hover:bg-slate-400"
                 >
-                  <td className=" text-2xl pl-5 font-medium whitespace-nowrap">
+                  <td className="pl-5 text-2xl font-medium whitespace-nowrap">
                     {icons?.map((elem) => {
                       if (elem.contentType === contentType)
                         return <elem.icon />;

@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import useAuth from "@/Hooks/useAuth";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import useStorage from "@/Hooks/useStorage";
@@ -10,7 +10,7 @@ interface FileData {
   owner: {
     uid: string;
     email: string;
-    status:number;
+    status: number;
   };
   type: string;
   bucket: string;
@@ -37,7 +37,7 @@ export default function FilesProvider({
     isLoading: isFilesLoading,
     refetch: refetchFiles,
   } = useQuery({
-    queryKey: ["files"],
+    queryKey: ["files", path],
     queryFn: async () => {
       const res = await axiosPublic.get(
         `/files?rootdir=${user?.uid}&path=${path}`
@@ -47,10 +47,7 @@ export default function FilesProvider({
   });
 
   const filesInfo = { filesData, isFilesLoading, refetchFiles };
-  console.log("getting files data", filesData);
   return (
-    <FilesContext.Provider value={filesInfo}>
-      {children}
-    </FilesContext.Provider>
+    <FilesContext.Provider value={filesInfo}>{children}</FilesContext.Provider>
   );
 }
