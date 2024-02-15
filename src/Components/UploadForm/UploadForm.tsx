@@ -18,27 +18,28 @@ const UploadForm: React.FC = () => {
   const owner = {
     uid: user.uid,
     email: user.email,
+    status: 0,
   };
 
-	const handleFileUpload = () => {
-		try {
-			if (file) {
-				// Check database for duplicate files under current user
-				// Ensures cloud and server synchronization
-				generateChecksum(file).then((checksum) => {
-					axiosPublic
-						.post("/files/lookup", { checksum, owner })
-						.then(({ data }) => {
-							if (!data.exists) {
-								// Upload to cloud
-								uploadFile(file).then((snapshot) => {
-									Swal.fire({
-										title: "Success",
-										text: "File uploaded successfully",
-										icon: "success",
-										confirmButtonText: "OK",
-									});
-									// refetchFiles();
+  const handleFileUpload = () => {
+    try {
+      if (file) {
+        // Check database for duplicate files under current user
+        // Ensures cloud and server synchronization
+        generateChecksum(file).then((checksum) => {
+          axiosPublic
+            .post("/files/lookup", { checksum, owner })
+            .then(({ data }) => {
+              if (!data.exists) {
+                // Upload to cloud
+                uploadFile(file).then((snapshot) => {
+                  Swal.fire({
+                    title: "Success",
+                    text: "File uploaded successfully",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                  });
+                  // refetchFiles();
 
                   // Post file metadata to database
                   axiosPublic
@@ -84,14 +85,16 @@ const UploadForm: React.FC = () => {
             boxShadow: "1px 1px 20px #24207b",
           }}
           htmlFor="dropzone-file"
-          className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg shadow-lg cursor-pointer ">
+          className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg shadow-lg cursor-pointer "
+        >
           <div className="flex flex-col items-center justify-center pt-5 pb-6">
             <svg
               className="w-10 h-10 mb-4 text-primary "
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
-              viewBox="0 0 20 16">
+              viewBox="0 0 20 16"
+            >
               <path
                 stroke="currentColor"
                 strokeLinecap="round"
@@ -118,7 +121,8 @@ const UploadForm: React.FC = () => {
       {file && (
         <div
           style={{ backdropFilter: "blur(150px)" }}
-          className="relative flex items-center justify-between max-w-3xl p-5 mx-auto mt-5 border border-gray-400 shadow-md rounded-md">
+          className="relative flex items-center justify-between max-w-3xl p-5 mx-auto mt-5 border border-gray-400 shadow-md rounded-md"
+        >
           <div className="flex items-center gap-1">
             <File className="text-3xl text-primary" />{" "}
             <h2 className="font-medium text-gray-300">{file?.name}</h2>
@@ -128,7 +132,8 @@ const UploadForm: React.FC = () => {
           </h3>
           <button
             onClick={() => setFile(null)}
-            className="absolute right-1 top-[14px] btn-sm btn btn-circle text-xl">
+            className="absolute right-1 top-[14px] btn-sm btn btn-circle text-xl"
+          >
             <MdClose />
           </button>
         </div>
@@ -137,7 +142,8 @@ const UploadForm: React.FC = () => {
         <button
           disabled={!file}
           onClick={handleFileUpload}
-          className="px-6 py-2 text-xl text-center text-white rounded-full bg-primary text hover:bg-blue-600 transition-all duration-300 disabled:bg-gray-300">
+          className="px-6 py-2 text-xl text-center text-white rounded-full bg-primary text hover:bg-blue-600 transition-all duration-300 disabled:bg-gray-300"
+        >
           Upload
         </button>
       </div>

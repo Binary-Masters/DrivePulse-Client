@@ -18,6 +18,7 @@ const UploadModal: React.FC = () => {
 	const owner = { 
 		email: user.email,
 		uid: user.uid,
+		status:0,
 	}
 
 	const closeModal = () => {
