@@ -7,6 +7,7 @@ import SideNave from "@/Components/SideNave/SideNave";
 import useAuth from "@/Hooks/useAuth";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
+import Notification from "@/Components/Dashboard/Files/Notifications/Notification";
 
 const DashboardNav = () => {
   const [isToggle, setIsToggle] = useState(false);
@@ -79,6 +80,10 @@ const DashboardNav = () => {
             </button>
           </span>
         </div>
+
+        <div>
+          <Notification />
+        </div>
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button">
             <div className="flex items-center gap-2 btn btn-ghost">
@@ -118,9 +123,8 @@ const DashboardNav = () => {
 
       {/* Sidebar */}
       <div
-        className={`absolute transition-all duration-500 top-[${navbarHeight}]  ${
-          isToggle ? "block" : "hidden"
-        } flex-col w-[60%] min-w-[280px] h-full  md:hidden`}
+        className={`absolute transition-all duration-500 top-[${navbarHeight}]  ${isToggle ? "block" : "hidden"
+          } flex-col w-[60%] min-w-[280px] h-full  md:hidden`}
       >
         <SideNave />
       </div>
