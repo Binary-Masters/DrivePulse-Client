@@ -12,17 +12,28 @@ import CopyLink from "./Copy";
 import Download from "./Download";
 
 interface MoreDropDrownProps {
-  fileName: string;
-  downloadUrl: string;
-  fullPath:string;
-  bucket: string
+	fileName: string;
+	downloadUrl: string;
+	fullPath: string;
+	bucket: string;
+	id: string;
+	name: string;
+	timeCreated: string;
+	size: number;
+	type: string;
+	contentType: string;
+	checksum: string;
+	owner: any;
+	updated: string;
+	rootDirectory: string;
+	parentPath: string;
 }
 
-const MoreDropDown: React.FC<MoreDropDrownProps> = ({fileName, downloadUrl, fullPath, bucket}) => {
-  const [open, setOpen] = useState<boolean>(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+const MoreDropDown: React.FC<MoreDropDrownProps> = ({ fileName, downloadUrl, fullPath, bucket, id, name, timeCreated, size, type, contentType, checksum, owner, updated, rootDirectory, parentPath }) => {
+	const [open, setOpen] = useState<boolean>(false);
+	const dropdownRef = useRef<HTMLDivElement>(null);
 
-// mouse event to outside click close dropdown
+	// mouse event to outside click close dropdown
 	useEffect(() => {
 		const handleOutsideClick = (event: MouseEvent) => {
 			if (
@@ -38,14 +49,14 @@ const MoreDropDown: React.FC<MoreDropDrownProps> = ({fileName, downloadUrl, full
 		};
 	}, []);
 
-  const openModal = () => {
-    const modalElement = document.getElementById("my_modal_2");
-    if (modalElement) {
-      (modalElement as HTMLDialogElement).showModal();
-    } else {
-      console.error("Modal element not found");
-    }
-  };
+	const openModal = () => {
+		const modalElement = document.getElementById("my_modal_2");
+		if (modalElement) {
+			(modalElement as HTMLDialogElement).showModal();
+		} else {
+			console.error("Modal element not found");
+		}
+	};
 
 	const renameModal = () => {
 		const modalElement = document.getElementById("my_modal_4");
@@ -56,20 +67,20 @@ const MoreDropDown: React.FC<MoreDropDrownProps> = ({fileName, downloadUrl, full
 		}
 	};
 
-  return (
-    <div >
-      <motion.div 
-              ref={dropdownRef}
-              animate={open ? "open" : "closed"} 
-              className="relative" >
-        <button
-          onClick={() => setOpen((pv) => !pv)}
-          className="flex items-center px-3 py-2 gap-2 rounded-md bg-indigo-50 hover:bg-indigo-100 transition-colors"
-        >
-          <motion.span variants={iconVariants}>
-            <MdArrowDropDownCircle />
-          </motion.span>
-        </button>
+	return (
+		<div >
+			<motion.div
+				ref={dropdownRef}
+				animate={open ? "open" : "closed"}
+				className="relative" >
+				<button
+					onClick={() => setOpen((pv) => !pv)}
+					className="flex items-center px-3 py-2 gap-2 rounded-md bg-indigo-50 hover:bg-indigo-100 transition-colors"
+				>
+					<motion.span variants={iconVariants}>
+						<MdArrowDropDownCircle />
+					</motion.span>
+				</button>
 
 				{/* dropdown */}
 				<AnimatePresence>
@@ -99,12 +110,12 @@ const MoreDropDown: React.FC<MoreDropDrownProps> = ({fileName, downloadUrl, full
 								downloadUrl={downloadUrl}
 							/>
 
-              <motion.li
-                className="flex items-center w-full p-2 text-xs font-medium cursor-pointer gap-2 whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors"
-                onClick={() => setOpen(false)}
-              >
-                <FiDownload /> <Download fileName={fileName} fullPath={fullPath} bucket={bucket}/>
-              </motion.li>
+							<motion.li
+								className="flex items-center w-full p-2 text-xs font-medium cursor-pointer gap-2 whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors"
+								onClick={() => setOpen(false)}
+							>
+								<FiDownload /> <Download fileName={fileName} fullPath={fullPath} bucket={bucket} />
+							</motion.li>
 
 							<motion.li
 								className="flex items-center w-full p-2 text-xs font-medium cursor-pointer gap-2 whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors"
@@ -112,7 +123,20 @@ const MoreDropDown: React.FC<MoreDropDrownProps> = ({fileName, downloadUrl, full
 							>
 								<MdDriveFileRenameOutline /> Rename
 							</motion.li>
-							<RenameModal />
+							<RenameModal
+								fullPath={fullPath}
+								bucket={bucket}
+								id={id}
+								name={name}
+								timeCreated={timeCreated}
+								size={size}
+								type={type}
+								contentType={contentType}
+								checksum={checksum}
+								owner={owner}
+								updated={updated}
+								rootDirectory={rootDirectory}
+								parentPath={parentPath} />
 						</motion.ul>
 					)}
 				</AnimatePresence>

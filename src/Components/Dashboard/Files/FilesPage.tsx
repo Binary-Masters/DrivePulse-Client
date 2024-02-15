@@ -15,7 +15,6 @@ import useAuth from "@/Hooks/useAuth";
 import Swal from "sweetalert2";
 import Loading from "@/app/loading";
 import { useState } from "react";
-import Link from "next/link";
 
 const FilesPage: React.FC = () => {
 	const [downloadUrl, setDownloadUrl] = useState<string>("");
@@ -29,66 +28,67 @@ const FilesPage: React.FC = () => {
 	const isFilesLoading = filesDataResult.isFilesLoading;
 	const refetch = filesDataResult.refetch;
 	const refetchFiles = filesDataResult.refetchFiles;
+	console.log(filesData);
 
 
 
 	console.log('hello', filesData)
 	// Fetching file data for appropriate user
 
-  const nodeClickHandler = (type: string, fullPath: string) => {
-    if (type === "folder") {
-      const { currentPath } = getFolderPathData(fullPath, type, user);
-      setPath(currentPath);
-      refetchFiles();
-    } else console.log("This is a file");
-  };
+	const nodeClickHandler = (type: string, fullPath: string) => {
+		if (type === "folder") {
+			const { currentPath } = getFolderPathData(fullPath, type, user);
+			setPath(currentPath);
+			refetchFiles();
+		} else console.log("This is a file");
+	};
 
-  const handleDeleteFile = (fullPath: string) => {
-    const filePath = fullPath.split("/");
-    const myPath = filePath[filePath.length - 1];
+	const handleDeleteFile = (fullPath: string) => {
+		const filePath = fullPath.split("/");
+		const myPath = filePath[filePath.length - 1];
 
-    Swal.fire({
-      title: "Are you sure?",
-      text: `You Want To Delete ${myPath} File `,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        deleteFile(fullPath)
-          .then(() => {
-            axiosPublic
-              .delete(`/files?fullPath=${fullPath}`)
-              .then((result) => {
-                if (result.data.deletedCount > 0) {
-                  Swal.fire({
-                    title: "Deleted!",
-                    text: `Your ${myPath} file has been deleted`,
-                    icon: "success",
-                  });
-                  refetchFiles();
-                } else {
-                  Swal.fire({
-                    title: "Oppss!",
-                    text: "Something Went Wrong Please Try Again",
-                    icon: "error",
-                  });
-                }
-              })
-              .catch();
-          })
-          .catch();
-      }
-    });
-  };
+		Swal.fire({
+			title: "Are you sure?",
+			text: `You Want To Delete ${myPath} File `,
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Yes, delete it!",
+		}).then((result) => {
+			if (result.isConfirmed) {
+				deleteFile(fullPath)
+					.then(() => {
+						axiosPublic
+							.delete(`/files?fullPath=${fullPath}`)
+							.then((result) => {
+								if (result.data.deletedCount > 0) {
+									Swal.fire({
+										title: "Deleted!",
+										text: `Your ${myPath} file has been deleted`,
+										icon: "success",
+									});
+									refetchFiles();
+								} else {
+									Swal.fire({
+										title: "Oppss!",
+										text: "Something Went Wrong Please Try Again",
+										icon: "error",
+									});
+								}
+							})
+							.catch();
+					})
+					.catch();
+			}
+		});
+	};
 
-  // Swal.fire({
-  //   title: "Deleted!",
-  //   text: "Your file has been deleted.",
-  //   icon: "success",
-  // });
+	// Swal.fire({
+	//   title: "Deleted!",
+	//   text: "Your file has been deleted.",
+	//   icon: "success",
+	// });
 
 	const handelShowModal = async (fullPath) => {
 		const storage = getStorage();
@@ -133,7 +133,7 @@ const FilesPage: React.FC = () => {
 						{/* optional chaining update */}
 						{filesData?.map(
 							(
-								{ _id, name, timeCreated, size, type, fullPath, contentType, bucket },
+								{ _id, name, timeCreated, size, type, fullPath, contentType, bucket, checksum, owner, updated, rootDirectory, parentPath },
 								i
 							) => (
 								<tr
@@ -174,6 +174,17 @@ const FilesPage: React.FC = () => {
 												fullPath={fullPath}
 												downloadUrl={downloadUrl}
 												bucket={bucket}
+												id={_id}
+												name={name}
+												timeCreated={timeCreated}
+												size={size}
+												type={type}
+												contentType={contentType}
+												checksum={checksum}
+												owner={owner}
+												updated={updated}
+												rootDirectory={rootDirectory}
+												parentPath={parentPath}
 											/>
 										</button>
 									</td>
