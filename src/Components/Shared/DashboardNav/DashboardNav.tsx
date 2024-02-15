@@ -7,6 +7,7 @@ import SideNave from "@/Components/SideNave/SideNave";
 import useAuth from "@/Hooks/useAuth";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
+import Notification from "@/Components/Dashboard/Files/Notifications/Notification";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 
 const DashboardNav = () => {
@@ -98,6 +99,10 @@ const DashboardNav = () => {
               </svg>
             </button>
           </span>
+        </div>
+
+        <div>
+          <Notification />
         </div>
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button">

@@ -1,13 +1,12 @@
+import { FaGlobeAsia, FaLock } from "react-icons/fa";
 import {
-  FaFacebook,
-  FaGlobeAsia,
-  FaLink,
-  FaLock,
-} from "react-icons/fa";
-import { CiMail } from "react-icons/ci";
+  FacebookMessengerIcon,
+  FacebookMessengerShareButton,
+  EmailIcon,
+  EmailShareButton,
+} from "react-share";
 import CopyLink from "./Copy";
 import "firebase/storage";
-import { useState } from "react";
 
 // interface ShareModalProps {
 //   fileName: string;
@@ -21,7 +20,6 @@ interface ShareModalProps {
 }
 
 const ShareModal: React.FC<ShareModalProps> = ({ fileName, downloadUrl }) => {
-
   const closeModal = () => {
     const modalElement = document.getElementById("my_modal_2");
     if (modalElement) {
@@ -42,7 +40,9 @@ const ShareModal: React.FC<ShareModalProps> = ({ fileName, downloadUrl }) => {
         </form>
         <div className="space-y-2">
           <h2 className="text-2xl font-semibold">Share this file</h2>
-          <p className="text-lg text-gray-700">{fileName ? fileName : 'share.png'}</p>
+          <p className="text-lg text-gray-700">
+            {fileName ? fileName : "share.png"}
+          </p>
           <hr className="bg-gray-400 h-[1px]" />
           <label htmlFor="">Share Link</label>
           <input
@@ -65,8 +65,15 @@ const ShareModal: React.FC<ShareModalProps> = ({ fileName, downloadUrl }) => {
           <hr className="bg-gray-400 h-[1px]" />
           <h2 className="text-xl font-medium">Share With</h2>
           <div className="flex gap-5 mb-5">
-            <FaFacebook className="text-blue-600 text-3xl" />{" "}
-            <CiMail className="text-gray-600 text-3xl" />
+            <FacebookMessengerShareButton
+              url={downloadUrl}
+              appId="840871220840045"
+            >
+              <FacebookMessengerIcon size={32} round={true} />
+            </FacebookMessengerShareButton>
+            <EmailShareButton url={downloadUrl}>
+              <EmailIcon size={32} round={true} />
+            </EmailShareButton>
           </div>
           <hr className="bg-gray-400 h-[1px]" />
           <div className="form-control mt-6 flex flex-row justify-end gap-2 ">
