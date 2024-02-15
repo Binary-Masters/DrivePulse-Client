@@ -45,6 +45,12 @@ const SideNave = () => {
       icon: <FaUsers />,
       path: "/dashboard/users-management",
     },
+    // {
+    //   id: 5,    
+    //   name: "Trash",
+    //   icon: <FaUsers />,
+    //   path: "/dashboard/trash",
+    // },
   ];
 
   const userMenuList = adminMenuList.filter(route => route.id < 4)  //user menu list before id 4
@@ -72,7 +78,7 @@ const SideNave = () => {
   ];
 
   return (
-    <div className="h-screen w-[60%] md:w-64 fixed z-50 shadow-sm bg-[#0e1642] mt-20 md:mt-0 overflow-y-auto">
+    <div className="min-h-screen w-[60%] md:w-64 fixed z-50 shadow-sm bg-[#0e1642] mt-20 md:mt-0 overflow-y-auto">
       <div className="hidden p-3 md:block">
         <div className="flex items-center gap-1">
           <Image
@@ -94,9 +100,9 @@ const SideNave = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col mt-5 gap-4">
+      <div className="flex flex-col mt-5 gap-2">
         {
-          currentUser?.type === 'admin' ? <div>
+          currentUser?.type === 'admin' ? <>
             {adminMenuList.map((item, index) => (
               <Link
                 href={item?.path}
@@ -112,9 +118,9 @@ const SideNave = () => {
                 </button>
               </Link>
             ))}
-          </div>
+          </>
             :
-            <div>
+            <>
               {userMenuList.map((item, index) => (
                 <Link
                   href={item?.path}
@@ -130,11 +136,11 @@ const SideNave = () => {
                   </button>
                 </Link>
               ))}
-            </div>
+            </>
         }
       </div>
-      <hr className="mt-10" />
-      <div className="flex flex-col mt-5 gap-4">
+      <hr className="my-5" />
+      <div className="flex flex-col gap-2">
         {anotherMenu.map((item, index) => (
           <Link
             href={item?.path}

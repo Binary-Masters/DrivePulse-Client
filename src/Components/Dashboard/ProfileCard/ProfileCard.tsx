@@ -9,7 +9,7 @@ const ProfileCard = () => {
   // use hook call
   const [userData, loading, refetch] = useGetSingleUser();
 
-  console.log(userData?.name,'user info')
+  // console.log(userData?.name,'user info')
   return (
     <div>
       <div className="card w-80  h-96 bg-base-100 shadow-xl">

@@ -1,5 +1,6 @@
 "use client";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
+import { IoCreateOutline } from "react-icons/io5";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { MdDelete } from "react-icons/md";
 import FolderButton from "./Folder/FolderButton";
@@ -27,6 +28,7 @@ const FilesPage: React.FC = () => {
 	const isFilesLoading = filesDataResult.isFilesLoading;
 	const refetch = filesDataResult.refetch;
 	const refetchFiles = filesDataResult.refetchFiles;
+	console.log(filesData);
 
 
 
@@ -131,7 +133,7 @@ const FilesPage: React.FC = () => {
 						{/* optional chaining update */}
 						{filesData?.map(
 							(
-								{ _id, name, timeCreated, size, type, fullPath, contentType, bucket,parentPath },
+								{ _id, name, timeCreated, size, type, fullPath, contentType, bucket, checksum, owner, updated, rootDirectory, parentPath },
 								i
 							) => (
 								<tr
@@ -172,6 +174,17 @@ const FilesPage: React.FC = () => {
 												fullPath={fullPath}
 												downloadUrl={downloadUrl}
 												bucket={bucket}
+												id={_id}
+												name={name}
+												timeCreated={timeCreated}
+												size={size}
+												type={type}
+												contentType={contentType}
+												checksum={checksum}
+												owner={owner}
+												updated={updated}
+												rootDirectory={rootDirectory}
+												parentPath={parentPath}
 											/>
 										</button>
 									</td>
