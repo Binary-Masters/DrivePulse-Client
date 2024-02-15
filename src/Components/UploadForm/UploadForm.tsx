@@ -26,6 +26,7 @@ const UploadForm: React.FC = () => {
 				// Check database for duplicate files under current user
 				// Ensures cloud and server synchronization
 				generateChecksum(file).then((checksum) => {
+          console.log('Checksum',checksum);
 					axiosPublic
 						.post("/files/lookup", { checksum, owner })
 						.then(({ data }) => {
