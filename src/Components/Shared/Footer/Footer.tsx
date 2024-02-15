@@ -1,10 +1,6 @@
 // "use client"
-import Image from 'next/image'
-import './styles.css'
 
-import { FaRegStar } from "react-icons/fa6";
-import { MdMarkEmailRead } from "react-icons/md";
-import { FaArrowRight } from "react-icons/fa";
+import './styles.css'
 import { FaDiscord } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
 import { FaWhatsapp } from "react-icons/fa6";

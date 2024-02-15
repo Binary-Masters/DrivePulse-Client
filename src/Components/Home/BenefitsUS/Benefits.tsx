@@ -1,7 +1,5 @@
 "use client";
-import axios from "axios";
 import { Tilt } from "react-tilt";
-import { useEffect, useState } from "react";
 import {
   BsBook,
   BsBriefcaseFill,

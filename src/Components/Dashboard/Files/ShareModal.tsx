@@ -3,12 +3,11 @@ import {
   FaGlobeAsia,
   FaLink,
   FaLock,
-  FaMailBulk,
 } from "react-icons/fa";
 import { CiMail } from "react-icons/ci";
 import CopyLink from "./Copy";
-import { useState } from "react";
 import "firebase/storage";
+import { useState } from "react";
 
 // interface ShareModalProps {
 //   fileName: string;
@@ -22,6 +21,7 @@ interface ShareModalProps {
 }
 
 const ShareModal: React.FC<ShareModalProps> = ({ fileName, downloadUrl }) => {
+
   const closeModal = () => {
     const modalElement = document.getElementById("my_modal_2");
     if (modalElement) {
@@ -42,7 +42,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ fileName, downloadUrl }) => {
         </form>
         <div className="space-y-2">
           <h2 className="text-2xl font-semibold">Share this file</h2>
-          <p className="text-lg text-gray-700">{fileName}</p>
+          <p className="text-lg text-gray-700">{fileName ? fileName : 'share.png'}</p>
           <hr className="bg-gray-400 h-[1px]" />
           <label htmlFor="">Share Link</label>
           <input
@@ -69,10 +69,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ fileName, downloadUrl }) => {
             <CiMail className="text-gray-600 text-3xl" />
           </div>
           <hr className="bg-gray-400 h-[1px]" />
-          <div className="form-control mt-6 flex flex-row justify-between gap-2 ">
-            <button className="flex gap-2 text-blue-600 bg-white border border-sky-500 focus:outline-none hover:bg-gray-100 focus:ring-1 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
-              <FaLink /> <CopyLink downloadUrl={downloadUrl} />{" "}
-            </button>
+          <div className="form-control mt-6 flex flex-row justify-end gap-2 ">
             <button className="text-white bg-gradient-to-br from-sky-500 to-blue-600 hover:bg-gradient-to-bl rounded-lg focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-5 py-2.5 text-center me-2 mb-2">
               Done
             </button>
