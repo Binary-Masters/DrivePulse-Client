@@ -45,8 +45,6 @@ const NavigationFolder: React.FC = () => {
 
 		setFolderHistoryArr(tempHistory);
 	}, [user, path]);
-	console.log(path);
-	console.log(folderHistoryArr);
 
 	return (
 		<div className="flex items-center text-xl text-white gap-2">

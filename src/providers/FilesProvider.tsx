@@ -36,7 +36,7 @@ export default function FilesProvider({
 		isLoading: isFilesLoading,
 		refetch: refetchFiles,
 	} = useQuery({
-		queryKey: ["files"],
+		queryKey: ["files", path],
 		queryFn: async () => {
 			const res = await axiosPublic.get(
 				`/files?rootdir=${user?.uid}&path=${path}`
@@ -46,6 +46,7 @@ export default function FilesProvider({
 	});
 
 	const filesInfo = { filesData, isFilesLoading, refetchFiles };
+	console.log(filesInfo);
 	return (
 		<FilesContext.Provider value={filesInfo}>
 			{children}
