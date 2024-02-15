@@ -1,5 +1,5 @@
 "use client";
-import { Menu } from "lucide-react";
+import { Menu, UserSearch } from "lucide-react";
 import Image from "next/image";
 import img from "@/assests/images/blank-head-profile-pic-for-a-man.jpg";
 import { useState, useEffect, useRef } from "react";
@@ -8,13 +8,20 @@ import useAuth from "@/Hooks/useAuth";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
+import Search from "@/app/dashboard/search/page";
+
 
 const DashboardNav = () => {
+  
   const [isToggle, setIsToggle] = useState(false);
+  // test just 
+  const [search, setsearch] = useState('');
+  console.log(search) 
   const { user, logout } = useAuth();
   // console.log(user.uid);
   const router = useRouter();
   const axiosPublic = useAxiosPublic();
+  
 
   // Modifies sidebar position with navbar height
   const navbarRef = useRef<HTMLDivElement | null>(null);
@@ -43,6 +50,7 @@ const DashboardNav = () => {
     e.preventDefault();
     console.log(e.target.value);
     const searchText = e.target.value;
+    setsearch(searchText)
     const userId = user?.uid;
     // const search = {
     //   data: {
@@ -50,8 +58,12 @@ const DashboardNav = () => {
     //     userId: user?.uid
     //   }
     // }
+    
     const files = await axiosPublic.get(`/get-search-files?searchText=${searchText}&&userId=${userId}`)
     console.log(files);
+  
+
+   
   }
 
 
