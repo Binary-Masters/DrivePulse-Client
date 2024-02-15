@@ -64,7 +64,7 @@ const RenameModal: React.FC<RenameModalProps> = ({ id, name,refetchFiles }) => {
                 <h3 className="font-bold text-black text-lg mb-5">Rename</h3>
                 <form>
                     <div className="form-control">
-                        <input onChange={handleRenameText} type="text" placeholder="Type here" className="input input-bordered w-full" />
+                        <input onChange={handleRenameText} type="text" placeholder="Rename file with .extension" className="input input-bordered w-full" />
                     </div>
 
                 </form>
