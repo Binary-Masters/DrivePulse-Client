@@ -17,16 +17,11 @@ interface Items {
 const SideNave = () => {
   const pathname = usePathname();
   const [users, loading, refetch] = useGetAllUsers(); //get user from mongodb
-<<<<<<< HEAD
   const { user } = useAuth(); //current or loggedin user
+  // console.log(user);
   const currentUser = users.find(
     (singleUser) => singleUser.email === user.email
   );
-=======
-  const { user } = useAuth();   //current or loggedin user
-  // console.log(user);
-  const currentUser = users.find(singleUser => singleUser.email === user.email);
->>>>>>> aa58820f9bdf2bebd01b0fc4a4c446febad4017b
   const adminMenuList: Items[] = [
     {
       id: 1,
@@ -53,7 +48,7 @@ const SideNave = () => {
       path: "/dashboard/users-management",
     },
     // {
-    //   id: 5,    
+    //   id: 5,
     //   name: "Trash",
     //   icon: <FaUsers />,
     //   path: "/dashboard/trash",
@@ -109,15 +104,9 @@ const SideNave = () => {
           </div>
         </div>
       </div>
-<<<<<<< HEAD
-      <div className="flex flex-col mt-5 gap-4">
-        {currentUser?.type === "admin" ? (
-          <div>
-=======
       <div className="flex flex-col mt-5 gap-2">
-        {
-          currentUser?.type === 'admin' ? <>
->>>>>>> aa58820f9bdf2bebd01b0fc4a4c446febad4017b
+        {currentUser?.type === "admin" ? (
+          <>
             {adminMenuList.map((item, index) => (
               <Link
                 href={item?.path}
@@ -127,24 +116,18 @@ const SideNave = () => {
                 } `}
               >
                 <button
-<<<<<<< HEAD
                   className={`flex items-center gap-2 w-full hover:bg-gray-600 px-4 py-2 rounded-md  font-medium `}
                 >
-                  <h2 className="text-2xl bg-primary text-white p-2 rounded-xl">
-=======
-                  className={`flex items-center gap-2 w-full hover:bg-gray-600 px-4 py-2 rounded-md  font-medium `}>
                   <h2 className="p-2 text-2xl text-white bg-primary rounded-xl">
->>>>>>> aa58820f9bdf2bebd01b0fc4a4c446febad4017b
                     {item?.icon}
                   </h2>
                   <h2 className="font-medium">{item?.name}</h2>
                 </button>
               </Link>
             ))}
-<<<<<<< HEAD
-          </div>
+          </>
         ) : (
-          <div>
+          <>
             {userMenuList.map((item, index) => (
               <Link
                 href={item?.path}
@@ -156,37 +139,15 @@ const SideNave = () => {
                 <button
                   className={`flex items-center gap-2 w-full hover:bg-gray-600 px-4 py-2 rounded-md  font-medium `}
                 >
-                  <h2 className="text-2xl bg-primary text-white p-2 rounded-xl">
+                  <h2 className="p-2 text-2xl text-white bg-primary rounded-xl">
                     {item?.icon}
                   </h2>
                   <h2 className="font-medium">{item?.name}</h2>
                 </button>
               </Link>
             ))}
-          </div>
-        )}
-=======
           </>
-            :
-            <>
-              {userMenuList.map((item, index) => (
-                <Link
-                  href={item?.path}
-                  key={item?.id}
-                  className={`${pathname === item.path ? "text-primary" : "text-slate-200"
-                    } `}>
-                  <button
-                    className={`flex items-center gap-2 w-full hover:bg-gray-600 px-4 py-2 rounded-md  font-medium `}>
-                    <h2 className="p-2 text-2xl text-white bg-primary rounded-xl">
-                      {item?.icon}
-                    </h2>
-                    <h2 className="font-medium">{item?.name}</h2>
-                  </button>
-                </Link>
-              ))}
-            </>
-        }
->>>>>>> aa58820f9bdf2bebd01b0fc4a4c446febad4017b
+        )}
       </div>
       <hr className="my-5" />
       <div className="flex flex-col gap-2">
@@ -199,14 +160,9 @@ const SideNave = () => {
             } `}
           >
             <button
-<<<<<<< HEAD
               className={`flex items-center gap-2 w-full hover:bg-gray-600 px-4 py-2 rounded-md  font-medium `}
             >
-              <h2 className="text-2xl bg-primary text-white p-2 rounded-xl">
-=======
-              className={`flex items-center gap-2 w-full hover:bg-gray-600 px-4 py-2 rounded-md  font-medium `}>
               <h2 className="p-2 text-2xl text-white bg-primary rounded-xl">
->>>>>>> aa58820f9bdf2bebd01b0fc4a4c446febad4017b
                 {item?.icon}
               </h2>
               <h2 className="font-medium">{item?.name}</h2>
