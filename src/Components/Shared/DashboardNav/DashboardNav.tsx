@@ -51,10 +51,11 @@ const DashboardNav = () => {
     //     userId: user?.uid
     //   }
     // }
-    const files = await axiosPublic.get(`/get-search-files?searchText=${searchText}&&userId=${userId}`)
+    const files = await axiosPublic.get(
+      `/get-search-files?searchText=${searchText}&&userId=${userId}`
+    );
     console.log(files);
-  }
-
+  };
 
   return (
     <>
@@ -143,8 +144,9 @@ const DashboardNav = () => {
 
       {/* Sidebar */}
       <div
-        className={`absolute transition-all duration-500 top-[${navbarHeight}]  ${isToggle ? "block" : "hidden"
-          } flex-col w-[60%] min-w-[280px] h-full  md:hidden`}
+        className={`absolute transition-all duration-500 top-[${navbarHeight}]  ${
+          isToggle ? "block" : "hidden"
+        } flex-col w-[60%] min-w-[280px] h-full  md:hidden`}
       >
         <SideNave />
       </div>
