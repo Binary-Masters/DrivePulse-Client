@@ -2,6 +2,6 @@
     {
       "origin": ["*"],
       "method": ["GET"],
-      "maxAgeSeconds": 300
+      "maxAgeSeconds": 3600
     }
   ]

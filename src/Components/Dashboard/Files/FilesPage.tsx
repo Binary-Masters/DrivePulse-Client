@@ -21,7 +21,7 @@ const FilesPage: React.FC = () => {
 	const axiosPublic = useAxiosPublic();
 	const { user } = useAuth();
 	const { path, setPath, deleteFile } = useStorage();
-	const {filesData, isFilesLoading, refetchFiles} = useGetFiles();
+	const { filesData, isFilesLoading, refetchFiles } = useGetFiles();
 
 	// Fetching file data for appropriate user
 	const nodeClickHandler = (type: string, fullPath: string) => {
@@ -46,7 +46,6 @@ const FilesPage: React.FC = () => {
 			confirmButtonText: "Yes, delete it!",
 		}).then((result) => {
 			if (result.isConfirmed) {
-				console.log(fullPath);
 				deleteFile(fullPath)
 					.then(() => {
 						axiosPublic
@@ -122,40 +121,58 @@ const FilesPage: React.FC = () => {
 					<tbody>
 						{/* optional chaining update */}
 						{filesData?.map(
-							(
-								{ _id, name, timeCreated, size, type, fullPath, contentType, bucket },
-							) => (
+							({
+								_id,
+								name,
+								timeCreated,
+								size,
+								type,
+								fullPath,
+								contentType,
+								bucket,
+							}) => (
 								<tr
 									key={_id}
 									// update just hover .
-									onClick={() => nodeClickHandler(type, fullPath)}
+									onClick={() =>
+										nodeClickHandler(type, fullPath)
+									}
 									className="text-white cursor-pointer hover:bg-slate-400"
 								>
 									<td className="pl-5 text-2xl font-medium whitespace-nowrap">
 										{icons?.map((elem) => {
-											if (elem.contentType === contentType)
+											if (
+												elem.contentType === contentType
+											)
 												return <elem.icon />;
 										})}
 									</td>
 									<td className="px-6 py-4 ">{name}</td>
-									<td className="px-6 py-4">{timeCreated.slice(0, 10)}</td>
+									<td className="px-6 py-4">
+										{timeCreated.slice(0, 10)}
+									</td>
 									<td className="px-6 py-4">
 										{(size / 1024 / 1024).toFixed(2)} MB
 									</td>
 									<td className="px-6 py-4">
 										<button
 											className={`text-3xl font-medium text-red-600  dark:text-red-500 hover:font-bold`}
-											onClick={() => handleDeleteFile(fullPath)}
+											onClick={() =>
+												handleDeleteFile(fullPath)
+											}
 										>
 											<MdDelete />
 										</button>
 									</td>
 									<td
-										className={`px-6 py-4 ${type === "folder" && "hidden"
-											} items-center`}
+										className={`px-6 py-4 ${
+											type === "folder" && "hidden"
+										} items-center`}
 									>
 										<button
-											onClick={() => handelShowModal(fullPath)}
+											onClick={() =>
+												handelShowModal(fullPath)
+											}
 											className="text-2xl text-gray-500"
 										>
 											<MoreDropDown

@@ -17,9 +17,11 @@ interface Items {
 const SideNave = () => {
   const pathname = usePathname();
   const [users, loading, refetch] = useGetAllUsers(); //get user from mongodb
-  const { user } = useAuth();   //current or loggedin user
+  const { user } = useAuth(); //current or loggedin user
   // console.log(user);
-  const currentUser = users.find(singleUser => singleUser.email === user.email);
+  const currentUser = users.find(
+    (singleUser) => singleUser.email === user.email
+  );
   const adminMenuList: Items[] = [
     {
       id: 1,
@@ -40,14 +42,20 @@ const SideNave = () => {
       path: "/dashboard/files",
     },
     {
-      id: 4,    //Only Admin can see this route
+      id: 4, //Only Admin can see this route
       name: "Users-Management",
       icon: <FaUsers />,
       path: "/dashboard/users-management",
     },
+    // {
+    //   id: 5,
+    //   name: "Trash",
+    //   icon: <FaUsers />,
+    //   path: "/dashboard/trash",
+    // },
   ];
 
-  const userMenuList = adminMenuList.filter(route => route.id < 4)  //user menu list before id 4
+  const userMenuList = adminMenuList.filter((route) => route.id < 4); //user menu list before id 4
   // console.log(userMenuList);
 
   const anotherMenu: Items[] = [
@@ -72,7 +80,7 @@ const SideNave = () => {
   ];
 
   return (
-    <div className="h-screen w-[60%] md:w-64 fixed z-50 shadow-sm bg-[#0e1642] mt-20 md:mt-0 overflow-y-auto">
+    <div className="min-h-screen w-[60%] md:w-64 fixed z-50 shadow-sm bg-[#0e1642] mt-20 md:mt-0 overflow-y-auto">
       <div className="hidden p-3 md:block">
         <div className="flex items-center gap-1">
           <Image
@@ -83,28 +91,33 @@ const SideNave = () => {
           <div className="">
             <h2
               style={{ letterSpacing: "2px" }}
-              className="font-bold text-blue-400 text-[20px] md:text-2xl">
+              className="font-bold text-blue-400 text-[20px] md:text-2xl"
+            >
               DRIVE
             </h2>
             <p
               style={{ letterSpacing: "4px" }}
-              className="text-[14px] md:text-[20px] font-medium md:-mt-2 -mt-3 text-slate-300">
+              className="text-[14px] md:text-[20px] font-medium md:-mt-2 -mt-3 text-slate-300"
+            >
               PULSE
             </p>
           </div>
         </div>
       </div>
-      <div className="flex flex-col mt-5 gap-4">
-        {
-          currentUser?.type === 'admin' ? <div>
+      <div className="flex flex-col mt-5 gap-2">
+        {currentUser?.type === "admin" ? (
+          <>
             {adminMenuList.map((item, index) => (
               <Link
                 href={item?.path}
                 key={item?.id}
-                className={`${pathname === item.path ? "text-primary" : "text-slate-200"
-                  } `}>
+                className={`${
+                  pathname === item.path ? "text-primary" : "text-slate-200"
+                } `}
+              >
                 <button
-                  className={`flex items-center gap-2 w-full hover:bg-gray-600 px-4 py-2 rounded-md  font-medium `}>
+                  className={`flex items-center gap-2 w-full hover:bg-gray-600 px-4 py-2 rounded-md  font-medium `}
+                >
                   <h2 className="p-2 text-2xl text-white bg-primary rounded-xl">
                     {item?.icon}
                   </h2>
@@ -112,37 +125,43 @@ const SideNave = () => {
                 </button>
               </Link>
             ))}
-          </div>
-            :
-            <div>
-              {userMenuList.map((item, index) => (
-                <Link
-                  href={item?.path}
-                  key={item?.id}
-                  className={`${pathname === item.path ? "text-primary" : "text-slate-200"
-                    } `}>
-                  <button
-                    className={`flex items-center gap-2 w-full hover:bg-gray-600 px-4 py-2 rounded-md  font-medium `}>
-                    <h2 className="p-2 text-2xl text-white bg-primary rounded-xl">
-                      {item?.icon}
-                    </h2>
-                    <h2 className="font-medium">{item?.name}</h2>
-                  </button>
-                </Link>
-              ))}
-            </div>
-        }
+          </>
+        ) : (
+          <>
+            {userMenuList.map((item, index) => (
+              <Link
+                href={item?.path}
+                key={item?.id}
+                className={`${
+                  pathname === item.path ? "text-primary" : "text-slate-200"
+                } `}
+              >
+                <button
+                  className={`flex items-center gap-2 w-full hover:bg-gray-600 px-4 py-2 rounded-md  font-medium `}
+                >
+                  <h2 className="p-2 text-2xl text-white bg-primary rounded-xl">
+                    {item?.icon}
+                  </h2>
+                  <h2 className="font-medium">{item?.name}</h2>
+                </button>
+              </Link>
+            ))}
+          </>
+        )}
       </div>
-      <hr className="mt-10" />
-      <div className="flex flex-col mt-5 gap-4">
+      <hr className="my-5" />
+      <div className="flex flex-col gap-2">
         {anotherMenu.map((item, index) => (
           <Link
             href={item?.path}
             key={item?.id}
-            className={`${pathname === item.path ? "text-primary" : "text-slate-200"
-              } `}>
+            className={`${
+              pathname === item.path ? "text-primary" : "text-slate-200"
+            } `}
+          >
             <button
-              className={`flex items-center gap-2 w-full hover:bg-gray-600 px-4 py-2 rounded-md  font-medium `}>
+              className={`flex items-center gap-2 w-full hover:bg-gray-600 px-4 py-2 rounded-md  font-medium `}
+            >
               <h2 className="p-2 text-2xl text-white bg-primary rounded-xl">
                 {item?.icon}
               </h2>
