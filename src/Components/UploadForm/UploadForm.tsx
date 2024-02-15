@@ -21,57 +21,58 @@ const UploadForm: React.FC = () => {
     status: 0,
   };
 
-  const handleFileUpload = () => {
-    try {
-      if (file) {
-        // Check database for duplicate files under current user
-        // Ensures cloud and server synchronization
-        generateChecksum(file).then((checksum) => {
-          axiosPublic
-            .post("/files/lookup", { checksum, owner })
-            .then(({ data }) => {
-              if (!data.exists) {
-                // Upload to cloud
-                uploadFile(file).then((snapshot) => {
-                  Swal.fire({
-                    title: "Success",
-                    text: "File uploaded successfully",
-                    icon: "success",
-                    confirmButtonText: "OK",
-                  });
-                  // refetchFiles();
-
-                  // Post file metadata to database
-                  axiosPublic
-                    .post("/files", {
-                      checksum,
-                      owner,
-                      ...snapshot.metadata,
-                    })
-                    .then((response) => console.log(response))
-                    .catch((err) => console.log(err));
-                });
-              } else {
-                Swal.fire({
-                  title: "File Already Exists",
-                  icon: "error",
-                  confirmButtonText: "OK",
-                });
-              }
-            })
-            .catch((err) => {
-              Swal.fire({
-                title: err.message,
-                icon: "error",
-                confirmButtonText: "OK",
-              });
-            });
-        });
-      }
-    } catch (error) {
-      console.log("Couldn't upload file");
-    }
-  };
+	const handleFileUpload = () => {
+		try {
+			if (file) {
+				// Check database for duplicate files under current user
+				// Ensures cloud and server synchronization
+				generateChecksum(file).then((checksum) => {
+          console.log('Checksum',checksum);
+					axiosPublic
+						.post("/files/lookup", { checksum, owner })
+						.then(({ data }) => {
+							if (!data.exists) {
+								// Upload to cloud
+								uploadFile(file).then((snapshot) => {
+									// Post file metadata to database
+									axiosPublic
+										.post("/files", {
+											checksum,
+											owner,
+											...snapshot.metadata,
+										})
+										.then((response) => {
+											Swal.fire({
+												title: "Success",
+												text: "File uploaded successfully",
+												icon: "success",
+												confirmButtonText: "OK",
+											});
+											refetchFiles();
+										})
+										.catch((err) => console.log(err));
+								});
+							} else {
+								Swal.fire({
+									title: "File Already Exists",
+									icon: "error",
+									confirmButtonText: "OK",
+								});
+							}
+						})
+						.catch((err) => {
+							Swal.fire({
+								title: err.message,
+								icon: "error",
+								confirmButtonText: "OK",
+							});
+						});
+				});
+			}
+		} catch (error) {
+			console.log("Couldn't upload file");
+		}
+	};
 
   return (
     <div className="mx-3">
