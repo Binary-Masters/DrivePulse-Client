@@ -21,17 +21,9 @@ const FilesPage: React.FC = () => {
 	const axiosPublic = useAxiosPublic();
 	const { user } = useAuth();
 	const { path, setPath, deleteFile } = useStorage();
-	// const [filesData, isFilesLoading, refetch,refetchFiles] = useGetFiles();
-	const filesDataResult = useGetFiles();
-	const filesData = filesDataResult.filesData;
-	const isFilesLoading = filesDataResult.isFilesLoading;
-	const refetch = filesDataResult.refetch;
-	const refetchFiles = filesDataResult.refetchFiles;
-
-
+	const {filesData, isFilesLoading, refetchFiles} = useGetFiles();
 
 	// Fetching file data for appropriate user
-
 	const nodeClickHandler = (type: string, fullPath: string) => {
 		if (type === "folder") {
 			const { currentPath } = getFolderPathData(fullPath, type, user);
@@ -54,6 +46,7 @@ const FilesPage: React.FC = () => {
 			confirmButtonText: "Yes, delete it!",
 		}).then((result) => {
 			if (result.isConfirmed) {
+				console.log(fullPath);
 				deleteFile(fullPath)
 					.then(() => {
 						axiosPublic
@@ -108,7 +101,7 @@ const FilesPage: React.FC = () => {
 				<NavigationFolder />
 
 				<div className="flex justify-end pt-2 pb-8 mr-5 gap-5">
-					<FolderButton path={path} refetch={refetch} /> <UploadButton />
+					<FolderButton path={path} /> <UploadButton />
 				</div>
 			</div>
 			<div
@@ -131,7 +124,6 @@ const FilesPage: React.FC = () => {
 						{filesData?.map(
 							(
 								{ _id, name, timeCreated, size, type, fullPath, contentType, bucket },
-								i
 							) => (
 								<tr
 									key={_id}

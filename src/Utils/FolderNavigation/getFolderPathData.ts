@@ -21,7 +21,7 @@ const getFolderPathData = (path: string, type: string, user: User | null): Paren
 	}
 	
 	// Data
-	const currentPath = `/${pathArr.join("/")}`;
+	const currentPath = `${pathArr.join("/") || "/"}`;
 	const currentDirectory = pathArr[pathArr.length - 2] || "/";
 
 	pathArr.pop(); // Removing current node
