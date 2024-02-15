@@ -138,10 +138,13 @@ const FilesPage: React.FC = () => {
 											className="text-2xl text-gray-500"
 										>
 											<MoreDropDown
-												fileName={fileName}
+												fileName={name}
 												fullPath={fullPath}
 												downloadUrl={downloadUrl}
 												bucket={bucket}
+												id={_id}
+												name={name}
+												refetchFiles={refetchFiles}
 											/>
 										</button>
 									</td>

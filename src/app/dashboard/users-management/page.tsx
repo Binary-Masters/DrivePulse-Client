@@ -65,7 +65,7 @@ const UsersManagement = () => {
                 if (res.status === 200) {
                     Swal.fire({
                         title: "Congratulations!",
-                        text: "User is now an Admin",
+                        text: "Admin is now an user",
                         icon: "success",
                         confirmButtonText: "OK",
                     })

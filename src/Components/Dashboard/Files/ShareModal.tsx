@@ -5,7 +5,6 @@ import {
   EmailIcon,
   EmailShareButton,
 } from "react-share";
-import CopyLink from "./Copy";
 import "firebase/storage";
 
 // interface ShareModalProps {
@@ -77,7 +76,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ fileName, downloadUrl }) => {
           </div>
           <hr className="bg-gray-400 h-[1px]" />
           <div className="form-control mt-6 flex flex-row justify-end gap-2 ">
-            <button className="text-white bg-gradient-to-br from-sky-500 to-blue-600 hover:bg-gradient-to-bl rounded-lg focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-5 py-2.5 text-center me-2 mb-2">
+            <button onClick={closeModal} className="text-white bg-gradient-to-br from-sky-500 to-blue-600 hover:bg-gradient-to-bl rounded-lg focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-5 py-2.5 text-center me-2 mb-2">
               Done
             </button>
           </div>
