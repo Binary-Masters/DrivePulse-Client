@@ -11,7 +11,7 @@ import UploadButton from "./UploadButton&Modal/UploadButton";
 import MoreDropDown from "./MoreDropDown";
 import getFolderPathData from "@/Utils/FolderNavigation/getFolderPathData";
 import useAuth from "@/Hooks/useAuth";
-import Swal from "sweetalert2";
+import handleDeleteFile from "@/Utils/Files/handleDeleteNode/handleDeleteNode";
 import Loading from "@/app/loading";
 import { useState } from "react";
 
@@ -31,53 +31,15 @@ const FilesPage: React.FC = () => {
 			refetchFiles();
 		} else console.log("This is a file");
 	};
-
-	const handleDeleteFile = (fullPath: string) => {
-		const filePath = fullPath.split("/");
-		const myPath = filePath[filePath.length - 1];
-
-		Swal.fire({
-			title: "Are you sure?",
-			text: `You Want To Delete ${myPath} File `,
-			icon: "warning",
-			showCancelButton: true,
-			confirmButtonColor: "#3085d6",
-			cancelButtonColor: "#d33",
-			confirmButtonText: "Yes, delete it!",
-		}).then((result) => {
-			if (result.isConfirmed) {
-				deleteFile(fullPath)
-					.then(() => {
-						axiosPublic
-							.delete(`/files?fullPath=${fullPath}`)
-							.then((result) => {
-								if (result.data.deletedCount > 0) {
-									Swal.fire({
-										title: "Deleted!",
-										text: `Your ${myPath} file has been deleted`,
-										icon: "success",
-									});
-									refetchFiles();
-								} else {
-									Swal.fire({
-										title: "Oppss!",
-										text: "Something Went Wrong Please Try Again",
-										icon: "error",
-									});
-								}
-							})
-							.catch();
-					})
-					.catch();
-			}
-		});
-	};
-
-	// Swal.fire({
-	//   title: "Deleted!",
-	//   text: "Your file has been deleted.",
-	//   icon: "success",
-	// });
+	
+	// to pass hook props down to plain js utilies
+	const hookPropObj = {
+		user,
+		setPath,
+		deleteFile,
+		axiosInstance: axiosPublic,
+		refetchFiles,
+	}
 
 	const handelShowModal = async (fullPath) => {
 		const storage = getStorage();
@@ -158,7 +120,7 @@ const FilesPage: React.FC = () => {
 										<button
 											className={`text-3xl font-medium text-red-600  dark:text-red-500 hover:font-bold`}
 											onClick={() =>
-												handleDeleteFile(fullPath)
+												handleDeleteFile(hookPropObj, fullPath, type)
 											}
 										>
 											<MdDelete />
