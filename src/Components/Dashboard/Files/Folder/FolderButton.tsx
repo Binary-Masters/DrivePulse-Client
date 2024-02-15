@@ -25,6 +25,7 @@ const FolderButton: React.FC<FolderButtonProps> = ({ path, refetch }) => {
 		setIsModalOpen(false);
 	};
 
+
 	const handleCreateFolder = async (data: { folderName: string }) => {
 		//if needed to used logic here for backend
 		const folderMetadata = {
@@ -37,6 +38,7 @@ const FolderButton: React.FC<FolderButtonProps> = ({ path, refetch }) => {
 			name: data.folderName,
 			size: 0,
 		};
+		console.log(user?.email)
 
 		try {
 			await axiosPublic.post("/files", folderMetadata);

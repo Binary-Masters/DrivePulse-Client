@@ -131,7 +131,7 @@ const FilesPage: React.FC = () => {
 						{/* optional chaining update */}
 						{filesData?.map(
 							(
-								{ _id, name, timeCreated, size, type, fullPath, contentType, bucket },
+								{ _id, name, timeCreated, size, type, fullPath, contentType, bucket,parentPath },
 								i
 							) => (
 								<tr

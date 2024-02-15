@@ -19,7 +19,7 @@ const UploadForm: React.FC = () => {
 		uid: user.uid,
 		email: user.email,
 	}
-
+	
 	const handleFileUpload = () => {
 		try {
 			if (file) {
