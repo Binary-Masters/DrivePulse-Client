@@ -8,13 +8,12 @@ import useGetFiles from "@/Hooks/useGetFiles";
 
 interface FolderButtonProps {
 	path: string;
-	refetch:any;
 }
 
-const FolderButton: React.FC<FolderButtonProps> = ({ path, refetch }) => {
+const FolderButton: React.FC<FolderButtonProps> = ({ path }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const axiosPublic = useAxiosPublic();
-	const { refetchFiles } = useGetFiles();
+	const { refetchFiles, filesData } = useGetFiles();
 	const { user } = useAuth();
 
 	const openModal = () => {
@@ -26,7 +25,7 @@ const FolderButton: React.FC<FolderButtonProps> = ({ path, refetch }) => {
 	};
 
 	const handleCreateFolder = async (data: { folderName: string }) => {
-		//if needed to used logic here for backend
+		// Preparing database entry
 		const folderMetadata = {
 			checksum: "",
 			type: "folder",
@@ -37,15 +36,15 @@ const FolderButton: React.FC<FolderButtonProps> = ({ path, refetch }) => {
 			name: data.folderName,
 			size: 0,
 		};
+		console.log(folderMetadata);
 
-		try {
-			await axiosPublic.post("/files", folderMetadata);
+		axiosPublic.post("/files", folderMetadata)
+		.then(() => {
 			refetchFiles();
 			closeModal();
-		} catch (error) {
-			console.error("Error creating folder:", error);
-			// Handle error as needed
-		}
+			console.log(filesData);
+		})
+		.catch(err => console.log(err));
 	};
 
 	return (

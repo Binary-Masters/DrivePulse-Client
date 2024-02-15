@@ -1,4 +1,3 @@
-import React from 'react';
 import { GiConfirmed } from "react-icons/gi";
 import "./styles.css"
 const SignUpToFree = () => {

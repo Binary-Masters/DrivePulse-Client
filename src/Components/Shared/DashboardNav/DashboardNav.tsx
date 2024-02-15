@@ -8,11 +8,14 @@ import useAuth from "@/Hooks/useAuth";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import Notification from "@/Components/Dashboard/Files/Notifications/Notification";
+import useAxiosPublic from "@/Hooks/useAxiosPublic";
 
 const DashboardNav = () => {
   const [isToggle, setIsToggle] = useState(false);
   const { user, logout } = useAuth();
+  // console.log(user.uid);
   const router = useRouter();
+  const axiosPublic = useAxiosPublic();
 
   // Modifies sidebar position with navbar height
   const navbarRef = useRef<HTMLDivElement | null>(null);
@@ -37,6 +40,22 @@ const DashboardNav = () => {
     });
   };
 
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    console.log(e.target.value);
+    const searchText = e.target.value;
+    const userId = user?.uid;
+    // const search = {
+    //   data: {
+    //     searchText,
+    //     userId: user?.uid
+    //   }
+    // }
+    const files = await axiosPublic.get(`/get-search-files?searchText=${searchText}&&userId=${userId}`)
+    console.log(files);
+  }
+
+
   return (
     <>
       <div
@@ -53,6 +72,7 @@ const DashboardNav = () => {
           </label>
 
           <input
+            onChange={handleSearch}
             type="text"
             id="Search"
             placeholder="Search files..."

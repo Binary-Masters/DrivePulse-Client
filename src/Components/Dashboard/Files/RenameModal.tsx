@@ -6,6 +6,11 @@ const RenameModal: React.FC = () => {
             (modalElement as HTMLDialogElement).close();
         }
     };
+
+    const handleFileRename =()=>{
+        alert('Working on File renaming section')
+    }
+
     return (
         <dialog id="my_modal_4" className="modal max-w-xs mx-auto">
             <div className="modal-box">
@@ -22,7 +27,7 @@ const RenameModal: React.FC = () => {
 
                     <div className="form-control mt-6 flex flex-row right-2 gap-2 ">
                         <button onClick={closeModal} className="btn">cancel</button>
-                        <button className="btn ">ok</button>
+                        <button onClick={handleFileRename} className="btn">ok</button>
                     </div>
                 </form>
 
