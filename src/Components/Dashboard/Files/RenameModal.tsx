@@ -1,29 +1,20 @@
 'use client'
+import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import { useState } from "react";
 
 interface RenameModalProps {
-    fullPath: string;
-    bucket: string;
     id: string;
     name: string;
-    timeCreated: string;
-    size: number;
-    type: string;
-    contentType: string;
-    checksum: string;
-    owner: any;
-    updated: string;
-    rootDirectory: string;
-    parentPath: string;
 }
 
-const RenameModal: React.FC<RenameModalProps> = ({ fullPath, bucket, id, name, timeCreated, size, type, contentType, checksum, owner, updated, rootDirectory, parentPath }) => {
+const RenameModal: React.FC<RenameModalProps> = ({ id, name }) => {
     const closeModal = (e: React.MouseEvent<HTMLButtonElement>) => {
         const modalElement = document.getElementById('my_modal_4');
         if (modalElement) {
             (modalElement as HTMLDialogElement).close();
         }
     };
+    const axiosPublic = useAxiosPublic();
     const [renameText, setRenameText] = useState(name);
     // getting rename field text
     const handleRenameText = (e) => {
@@ -36,21 +27,14 @@ const RenameModal: React.FC<RenameModalProps> = ({ fullPath, bucket, id, name, t
     // File Rename
     const handleFileRename = () => {
         const fileMetaData = {
-            fullPath,
-            bucket,
             id,
             name: renameText,
-            timeCreated,
-            size,
-            type,
-            contentType,
-            checksum,
-            owner,
-            updated,
-            rootDirectory,
-            parentPath,
         }
-        console.log(fileMetaData);
+        // console.log(fileMetaData);
+        axiosPublic.patch('/rename-file', fileMetaData)
+            .then(res => {
+                console.log(res);
+            })
     }
 
     return (

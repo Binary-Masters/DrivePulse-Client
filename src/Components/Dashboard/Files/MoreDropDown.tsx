@@ -18,18 +18,9 @@ interface MoreDropDrownProps {
 	bucket: string;
 	id: string;
 	name: string;
-	timeCreated: string;
-	size: number;
-	type: string;
-	contentType: string;
-	checksum: string;
-	owner: any;
-	updated: string;
-	rootDirectory: string;
-	parentPath: string;
 }
 
-const MoreDropDown: React.FC<MoreDropDrownProps> = ({ fileName, downloadUrl, fullPath, bucket, id, name, timeCreated, size, type, contentType, checksum, owner, updated, rootDirectory, parentPath }) => {
+const MoreDropDown: React.FC<MoreDropDrownProps> = ({ fileName, downloadUrl, fullPath, bucket, id, name}) => {
 	const [open, setOpen] = useState<boolean>(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -124,19 +115,9 @@ const MoreDropDown: React.FC<MoreDropDrownProps> = ({ fileName, downloadUrl, ful
 								<MdDriveFileRenameOutline /> Rename
 							</motion.li>
 							<RenameModal
-								fullPath={fullPath}
-								bucket={bucket}
 								id={id}
 								name={name}
-								timeCreated={timeCreated}
-								size={size}
-								type={type}
-								contentType={contentType}
-								checksum={checksum}
-								owner={owner}
-								updated={updated}
-								rootDirectory={rootDirectory}
-								parentPath={parentPath} />
+							/>
 						</motion.ul>
 					)}
 				</AnimatePresence>

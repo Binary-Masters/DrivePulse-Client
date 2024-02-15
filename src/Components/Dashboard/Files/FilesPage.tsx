@@ -176,15 +176,6 @@ const FilesPage: React.FC = () => {
 												bucket={bucket}
 												id={_id}
 												name={name}
-												timeCreated={timeCreated}
-												size={size}
-												type={type}
-												contentType={contentType}
-												checksum={checksum}
-												owner={owner}
-												updated={updated}
-												rootDirectory={rootDirectory}
-												parentPath={parentPath}
 											/>
 										</button>
 									</td>
