@@ -11,15 +11,15 @@ import useAuth from "@/Hooks/useAuth";
 
 const UploadModal: React.FC = () => {
 	const [file, setFile] = useState<File | null>(null);
-	const { uploadFile } = useStorage();
+	const { uploadFile, getFileURL } = useStorage();
 	const axiosPublic = useAxiosPublic();
-	const { refetchFiles, filesData } = useGetFiles();
+	const { refetchFiles } = useGetFiles();
 	const { user } = useAuth();
 	const owner = {
 		email: user.email,
 		uid: user.uid,
-		status:0,
-	}
+		status: 0,
+	};
 
 	const closeModal = () => {
 		const modalElement = document.getElementById("my_modal_1");
@@ -39,13 +39,23 @@ const UploadModal: React.FC = () => {
 						.then(({ data }) => {
 							if (!data.exists) {
 								// Upload to cloud
-								uploadFile(file).then((snapshot) => {
+								uploadFile(file).then( async (snapshot) => {
+									const fileType =
+										snapshot.metadata.contentType;
+									const filePath = snapshot.metadata.fullPath;
+									let thumbnail = "";
+
+									// For image thumbnail
+									if (fileType.startsWith("image/")) {
+										thumbnail = await getFileURL(filePath);
+									}
 
 									// Post file metadata to database
 									axiosPublic
 										.post("/files", {
 											checksum,
 											owner,
+											thumbnail,
 											...snapshot.metadata,
 										})
 										.then((response) => {
@@ -54,7 +64,7 @@ const UploadModal: React.FC = () => {
 												text: "File uploaded successfully",
 												icon: "success",
 												confirmButtonText: "OK",
-											})
+											});
 											refetchFiles();
 										})
 										.catch((err) => console.log(err));
