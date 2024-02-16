@@ -7,8 +7,10 @@ import SideNave from "@/Components/SideNave/SideNave";
 import useAuth from "@/Hooks/useAuth";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
+import Notification from "@/Components/Dashboard/Files/Notifications/Notification";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import Search from "@/app/dashboard/search/page";
+import { Console } from "console";
 
 
 const DashboardNav = () => {
@@ -65,6 +67,15 @@ const DashboardNav = () => {
 
    
   }
+  const navigateToSearch = () => {
+    router.push(`/dashboard/search/${search}?serach=${search}`);
+  };
+// key press features and redireck 
+
+const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  console.log(event.key)
+  return navigateToSearch()
+};
 
 
   return (
@@ -84,6 +95,7 @@ const DashboardNav = () => {
 
           <input
             onChange={handleSearch}
+            onKeyPress={handleKeyPress}
             type="text"
             id="Search"
             placeholder="Search files..."
@@ -110,6 +122,10 @@ const DashboardNav = () => {
               </svg>
             </button>
           </span>
+        </div>
+
+        <div>
+          <Notification />
         </div>
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button">
