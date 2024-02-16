@@ -83,7 +83,7 @@ const DashboardNav = () => {
 
           <input
             onChange={handleSearch}
-            onKeyPress={handleKeyPress}
+            // onKeyPress={handleKeyPress}
             type="text"
             id="Search"
             placeholder="Search files..."
