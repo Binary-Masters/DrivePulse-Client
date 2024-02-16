@@ -66,6 +66,18 @@ const DashboardNav = () => {
     console.log(files);
   };
 
+  // navigate to dashboardProfile
+  const navigateToSearch = () => {
+    router.push(`/dashboard/search/${search}?search=${search}`);
+  };
+  // key press features
+
+	const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+		if (event.key) {
+			return navigateToSearch()
+		}
+	};
+
   return (
     <>
       <div
@@ -83,7 +95,7 @@ const DashboardNav = () => {
 
           <input
             onChange={handleSearch}
-            // onKeyPress={handleKeyPress}
+            onKeyPress={handleKeyPress}
             type="text"
             id="Search"
             placeholder="Search files..."
@@ -102,7 +114,7 @@ const DashboardNav = () => {
                 stroke="currentColor"
                 className="w-4 h-4"
               >
-                
+
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
