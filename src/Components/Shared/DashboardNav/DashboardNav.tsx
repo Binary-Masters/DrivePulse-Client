@@ -60,23 +60,11 @@ const DashboardNav = () => {
     //     userId: user?.uid
     //   }
     // }
-    
-    const files = await axiosPublic.get(`/get-search-files?searchText=${searchText}&&userId=${userId}`)
+    const files = await axiosPublic.get(
+      `/get-search-files?searchText=${searchText}&&userId=${userId}`
+    );
     console.log(files);
-  
-
-   
-  }
-  const navigateToSearch = () => {
-    router.push(`/dashboard/search/${search}?serach=${search}`);
   };
-// key press features and redireck 
-
-const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-  console.log(event.key)
-  return navigateToSearch()
-};
-
 
   return (
     <>
@@ -166,8 +154,9 @@ const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
 
       {/* Sidebar */}
       <div
-        className={`absolute transition-all duration-500 top-[${navbarHeight}]  ${isToggle ? "block" : "hidden"
-          } flex-col w-[60%] min-w-[280px] h-full  md:hidden`}
+        className={`absolute transition-all duration-500 top-[${navbarHeight}]  ${
+          isToggle ? "block" : "hidden"
+        } flex-col w-[60%] min-w-[280px] h-full  md:hidden`}
       >
         <SideNave />
       </div>
