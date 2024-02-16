@@ -1,6 +1,5 @@
 "use client";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
-import { IoCreateOutline } from "react-icons/io5";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { MdDelete, MdImage } from "react-icons/md";
 import FolderButton from "./Folder/FolderButton";
@@ -12,7 +11,7 @@ import UploadButton from "./UploadButton&Modal/UploadButton";
 import MoreDropDown from "./MoreDropDown";
 import getFolderPathData from "@/Utils/FolderNavigation/getFolderPathData";
 import useAuth from "@/Hooks/useAuth";
-import Swal from "sweetalert2";
+import handleDeleteFile from "@/Utils/Files/handleDeleteNode/handleDeleteNode";
 import Loading from "@/app/loading";
 import { useState } from "react";
 import Link from "next/link";
@@ -21,6 +20,7 @@ import folderIcon from "../../../assests/icons/folder.png";
 import Image from "next/image";
 
 import FolderMoreInfo from "@/Components/FolderMorInfo/FolderMoreInfo";
+import { IoCreateOutline } from "react-icons/io5";
 
 const FilesPage: React.FC = () => {
   const [isView, setIsView] = useState("list");
@@ -47,52 +47,14 @@ const FilesPage: React.FC = () => {
     } else console.log("This is a file");
   };
 
-  const handleDeleteFile = (fullPath: string) => {
-    const filePath = fullPath.split("/");
-    const myPath = filePath[filePath.length - 1];
-
-    Swal.fire({
-      title: "Are you sure?",
-      text: `You Want To Delete ${myPath} File `,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        deleteFile(fullPath)
-          .then(() => {
-            axiosPublic
-              .delete(`/files?fullPath=${fullPath}`)
-              .then((result) => {
-                if (result.data.deletedCount > 0) {
-                  Swal.fire({
-                    title: "Deleted!",
-                    text: `Your ${myPath} file has been deleted`,
-                    icon: "success",
-                  });
-                  refetchFiles();
-                } else {
-                  Swal.fire({
-                    title: "Oppss!",
-                    text: "Something Went Wrong Please Try Again",
-                    icon: "error",
-                  });
-                }
-              })
-              .catch();
-          })
-          .catch();
-      }
-    });
+  // to pass hook props down to plain js utilies
+  const hookPropObj = {
+    user,
+    setPath,
+    deleteFile,
+    axiosInstance: axiosPublic,
+    refetchFiles,
   };
-
-  // Swal.fire({
-  //   title: "Deleted!",
-  //   text: "Your file has been deleted.",
-  //   icon: "success",
-  // });
 
   const handelShowModal = async (fullPath) => {
     const storage = getStorage();
@@ -108,12 +70,16 @@ const FilesPage: React.FC = () => {
   if (isFilesLoading) {
     return <Loading />;
   }
-
-  // callback fn called in drop down view component
   const handleIsViewChange = (newView) => {
     setIsView(newView);
   };
-// console.log(isView);
+ 
+  
+
+  
+
+
+
   return (
     <div className="pt-20">
       <div className="flex items-center justify-between my-5 mx-3">
@@ -122,7 +88,7 @@ const FilesPage: React.FC = () => {
 
         <div className="flex items-center gap-3">
           <DropDownView onIsViewChange={handleIsViewChange} />
-          <FolderButton path={path} refetch={refetch} />
+          <FolderButton path={path} />
           <UploadButton />
           <Link
             className="text-xs md:text-[16px]  border-0 btn bg-primary text-white hover:bg-blue-600 transition-all duration-300"
@@ -183,7 +149,7 @@ const FilesPage: React.FC = () => {
                   <td className="px-6 py-4">
                     <button
                       className={`text-3xl font-medium text-red-600  dark:text-red-500 hover:font-bold`}
-                      onClick={() => handleDeleteFile(fullPath)}>
+                      onClick={() => handleDeleteFile(hookPropObj, fullPath, type)}>
                       <MdDelete />
                     </button>
                   </td>
@@ -195,11 +161,14 @@ const FilesPage: React.FC = () => {
                       onClick={() => handelShowModal(fullPath)}
                       className="text-2xl text-gray-500 ">
                       <MoreDropDown
-                        fileName={fileName}
-                        fullPath={fullPath}
-                        downloadUrl={downloadUrl}
-                        bucket={bucket}
-                      />
+												fileName={name}
+												fullPath={fullPath}
+												downloadUrl={downloadUrl}
+												bucket={bucket}
+												id={_id}
+												name={name}
+												refetchFiles={refetchFiles}
+											/>
                     </button>
                   </td>
                 </tr>

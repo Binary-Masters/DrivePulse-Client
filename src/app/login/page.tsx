@@ -95,14 +95,15 @@ const Login = () => {
               text: "Logged in successfully",
               icon: "success",
               confirmButtonText: "OK",
-            })
-              router.push("/dashboard");
-              setLoading(false);
-          
+            });
+            router.push("/dashboard");
+            setLoading(false);
           })
           .catch((err) => {
             console.log(err);
           });
+        router.push("/dashboard");
+        setLoading(false);
       })
       .catch((error) => {
         Swal.fire({
@@ -133,14 +134,15 @@ const Login = () => {
               text: "Logged in successfully",
               icon: "success",
               confirmButtonText: "OK",
-            })
-              router.push("/dashboard");
-              setLoading(false);
-            
+            });
+            router.push("/dashboard");
+            setLoading(false);
           })
           .catch((err) => {
             console.log(err);
           });
+        router.push("/dashboard");
+        setLoading(false);
       })
       .catch((error) => {
         Swal.fire({

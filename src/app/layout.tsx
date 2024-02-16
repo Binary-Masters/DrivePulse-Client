@@ -12,24 +12,24 @@ import AuthProvider from "@/providers/AuthProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title: "DrivePulse",
-	description: "This Is A File Sharing Website",
+  title: "DrivePulse",
+  description: "This Is A File Sharing Website",
 };
 
 interface RootLayoutProps {
-	children: ReactNode;
+  children: ReactNode;
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
-	return (
-		<ReactTanstackProvider>
-			<html lang="en" data-theme="light">
-				<body className={inter.className}>
-					<div className="min-h-screen">
-							<AuthProvider>{children}</AuthProvider>
-					</div>
-				</body>
-			</html>
-		</ReactTanstackProvider>
-	);
+  return (
+    <html lang="en" data-theme="light">
+      <body className={inter.className}>
+        <div className="min-h-screen">
+          <ReactTanstackProvider>
+            <AuthProvider>{children}</AuthProvider>
+          </ReactTanstackProvider>
+        </div>
+      </body>
+    </html>
+  );
 }

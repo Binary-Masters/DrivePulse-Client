@@ -13,11 +13,12 @@ const UploadModal: React.FC = () => {
 	const [file, setFile] = useState<File | null>(null);
 	const { uploadFile } = useStorage();
 	const axiosPublic = useAxiosPublic();
-	const { refetchFiles } = useGetFiles(); 
+	const { refetchFiles, filesData } = useGetFiles();
 	const { user } = useAuth();
-	const owner = { 
+	const owner = {
 		email: user.email,
 		uid: user.uid,
+		status:0,
 	}
 
 	const closeModal = () => {
@@ -39,13 +40,6 @@ const UploadModal: React.FC = () => {
 							if (!data.exists) {
 								// Upload to cloud
 								uploadFile(file).then((snapshot) => {
-									Swal.fire({
-										title: "Success",
-										text: "File uploaded successfully",
-										icon: "success",
-										confirmButtonText: "OK",
-									});
-									refetchFiles();
 
 									// Post file metadata to database
 									axiosPublic
@@ -54,9 +48,15 @@ const UploadModal: React.FC = () => {
 											owner,
 											...snapshot.metadata,
 										})
-										.then((response) =>
-											console.log(response)
-										)
+										.then((response) => {
+											Swal.fire({
+												title: "Success",
+												text: "File uploaded successfully",
+												icon: "success",
+												confirmButtonText: "OK",
+											})
+											refetchFiles();
+										})
 										.catch((err) => console.log(err));
 								});
 							} else {
@@ -66,7 +66,7 @@ const UploadModal: React.FC = () => {
 									confirmButtonText: "OK",
 								}).then(({ isConfirmed }) => {
 									isConfirmed && refetchFiles();
-								})
+								});
 							}
 						})
 						.catch((err) => {
