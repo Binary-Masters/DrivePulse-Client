@@ -1,5 +1,7 @@
 "use client";
 import LoadingAnimation from "@/Components/Animation/LoadingAnimation/LoadingAnimation";
+import useGetAllUsers from "@/Hooks/useGetAllUsers";
+import useGetFiles from "@/Hooks/useGetFiles";
 import useGetSingleUser from "@/Hooks/useGetSingleUser";
 import Link from "next/link";
 import { FaRegTrashAlt, FaUserFriends } from "react-icons/fa";
@@ -7,7 +9,10 @@ import { LuFileSpreadsheet } from "react-icons/lu";
 
 const Analytics = () => {
   const [user, loading, refetch] = useGetSingleUser();
-  console.log(user);
+  const filesDataResult = useGetFiles();
+	const filesData = filesDataResult.filesData;
+  const [users]  = useGetAllUsers()
+  // console.log(users?.length);
   if (loading) {
     return <LoadingAnimation />;
   }
@@ -16,7 +21,7 @@ const Analytics = () => {
     {
       id: 1,
       icon: <LuFileSpreadsheet />,
-      number: 20,
+      number: filesData?.length,
       desc: "Total files",
       // details:'total-files'
     },
@@ -29,7 +34,7 @@ const Analytics = () => {
     {
       id: 3,
       icon: <FaUserFriends />,
-      number: 50,
+      number: users?.length,
       desc: "Total Friends",
     }
   ];
