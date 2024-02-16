@@ -2,7 +2,7 @@
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import { IoCreateOutline } from "react-icons/io5";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdImage } from "react-icons/md";
 import FolderButton from "./Folder/FolderButton";
 import useStorage from "@/Hooks/useStorage";
 import icons from "./icons";
@@ -16,24 +16,28 @@ import Swal from "sweetalert2";
 import Loading from "@/app/loading";
 import { useState } from "react";
 import Link from "next/link";
+import DropDownView from "@/Components/DropDownView/DropDownView";
+import folderIcon from "../../../assests/icons/folder.png";
+import Image from "next/image";
+
+import FolderMoreInfo from "@/Components/FolderMorInfo/FolderMoreInfo";
 
 const FilesPage: React.FC = () => {
-	const [downloadUrl, setDownloadUrl] = useState<string>("");
-	const [fileName, setFileName] = useState<string>("");
-	const axiosPublic = useAxiosPublic();
-	const { user } = useAuth();
-	const { path, setPath, deleteFile } = useStorage();
-	// const [filesData, isFilesLoading, refetch,refetchFiles] = useGetFiles();
-	const filesDataResult = useGetFiles();
-	const filesData = filesDataResult.filesData;
-	const isFilesLoading = filesDataResult.isFilesLoading;
-	const refetch = filesDataResult.refetch;
-	const refetchFiles = filesDataResult.refetchFiles;
+  const [isView, setIsView] = useState("list");
+  const [downloadUrl, setDownloadUrl] = useState<string>("");
+  const [fileName, setFileName] = useState<string>("");
+  const axiosPublic = useAxiosPublic();
+  const { user } = useAuth();
+  const { path, setPath, deleteFile } = useStorage();
+  // const [filesData, isFilesLoading, refetch,refetchFiles] = useGetFiles();
+  const filesDataResult = useGetFiles();
+  const filesData = filesDataResult.filesData;
+  const isFilesLoading = filesDataResult.isFilesLoading;
+  const refetch = filesDataResult.refetch;
+  const refetchFiles = filesDataResult.refetchFiles;
 
-
-
-	console.log('hello', filesData)
-	// Fetching file data for appropriate user
+  console.log("hello", filesData);
+  // Fetching file data for appropriate user
 
   const nodeClickHandler = (type: string, fullPath: string) => {
     if (type === "folder") {
@@ -90,101 +94,168 @@ const FilesPage: React.FC = () => {
   //   icon: "success",
   // });
 
-	const handelShowModal = async (fullPath) => {
-		const storage = getStorage();
-		try {
-			const url = await getDownloadURL(ref(storage, fullPath));
-			const filePath = fullPath.split("/");
-			setFileName(filePath[1]);
-			setDownloadUrl(url);
-		} catch (err) {
-			console.error("Error fetching download URL:", err);
-		}
-	};
-	if (isFilesLoading) {
-		return <Loading />;
-	}
-	return (
-		<div className="pt-20">
-			<div className="flex items-center justify-between">
-				{/* navigate component here */}
-				<NavigationFolder />
+  const handelShowModal = async (fullPath) => {
+    const storage = getStorage();
+    try {
+      const url = await getDownloadURL(ref(storage, fullPath));
+      const filePath = fullPath.split("/");
+      setFileName(filePath[1]);
+      setDownloadUrl(url);
+    } catch (err) {
+      console.error("Error fetching download URL:", err);
+    }
+  };
+  if (isFilesLoading) {
+    return <Loading />;
+  }
 
-				<div className="flex justify-end pt-2 pb-8 mr-5 gap-5">
-					<FolderButton path={path} refetch={refetch} /> <UploadButton />
-				</div>
-			</div>
-			<div
-				style={{ backdropFilter: "blur(200px)" }}
-				className="relative h-screen overflow-x-auto shadow-md sm:rounded-lg"
-			>
-				<table className="w-full text-sm text-left text-gray-500 rtl:text-right ">
-					<thead className="text-xs uppercase text-slate-200 bg-primary ">
-						<tr>
-							<th className="px-6 py-3"></th>
-							<th className="px-6 py-3">Name</th>
-							<th className="px-6 py-3">Modified</th>
-							<th className="px-6 py-3">Size</th>
-							<th className="px-6 py-3">Action</th>
-							<th className="px-6 py-3">More</th>
-						</tr>
-					</thead>
-					<tbody>
-						{/* optional chaining update */}
-						{filesData?.map(
-							(
-								{ _id, name, timeCreated, size, type, fullPath, contentType, bucket },
-								i
-							) => (
-								<tr
-									key={_id}
-									// update just hover .
-									onClick={() => nodeClickHandler(type, fullPath)}
-									className="text-white cursor-pointer hover:bg-slate-400"
-								>
-									<td className=" text-2xl pl-5 font-medium whitespace-nowrap">
-										{icons?.map((elem) => {
-											if (elem.contentType === contentType)
-												return <elem.icon />;
-										})}
-									</td>
-									<td className="px-6 py-4 ">{name}</td>
-									<td className="px-6 py-4">{timeCreated.slice(0, 10)}</td>
-									<td className="px-6 py-4">
-										{(size / 1024 / 1024).toFixed(2)} MB
-									</td>
-									<td className="px-6 py-4">
-										<button
-											className={`text-3xl font-medium text-red-600  dark:text-red-500 hover:font-bold`}
-											onClick={() => handleDeleteFile(fullPath)}
-										>
-											<MdDelete />
-										</button>
-									</td>
-									<td
-										className={`px-6 py-4 ${type === "folder" && "hidden"
-											} items-center`}
-									>
-										<button
-											onClick={() => handelShowModal(fullPath)}
-											className="text-2xl text-gray-500"
-										>
-											<MoreDropDown
-												fileName={fileName}
-												fullPath={fullPath}
-												downloadUrl={downloadUrl}
-												bucket={bucket}
-											/>
-										</button>
-									</td>
-								</tr>
-							)
-						)}
-					</tbody>
-				</table>
-			</div>
-		</div>
-	);
+  // callback fn called in drop down view component
+  const handleIsViewChange = (newView) => {
+    setIsView(newView);
+  };
+// console.log(isView);
+  return (
+    <div className="pt-20">
+      <div className="flex items-center justify-between my-5 mx-3">
+        {/* navigate component here */}
+        <NavigationFolder />
+
+        <div className="flex items-center gap-3">
+          <DropDownView onIsViewChange={handleIsViewChange} />
+          <FolderButton path={path} refetch={refetch} />
+          <UploadButton />
+          <Link
+            className="text-xs md:text-[16px]  border-0 btn bg-primary text-white hover:bg-blue-600 transition-all duration-300"
+            href={"/dashboard/create-file"}>
+            <IoCreateOutline className="text-xl  " />
+            <span className="hidden md:block">Create File</span>
+          </Link>
+        </div>
+      </div>
+      {/* list view */}
+      {
+        isView === "list" && <div
+        style={{ backdropFilter: "blur(200px)" }}
+        className="relative h-screen overflow-x-auto shadow-md sm:rounded-lg">
+        <table className="w-full text-sm text-left text-gray-500 rtl:text-right ">
+          <thead className="text-xs uppercase text-slate-200 bg-primary ">
+            <tr>
+              <th className="px-6 py-3"></th>
+              <th className="px-6 py-3">Name</th>
+              <th className="px-6 py-3">Modified</th>
+              <th className="px-6 py-3">Size</th>
+              <th className="px-6 py-3">Action</th>
+              <th className="px-6 py-3">More</th>
+            </tr>
+          </thead>
+          <tbody>
+            {/* optional chaining update */}
+            {filesData?.map(
+              (
+                {
+                  _id,
+                  name,
+                  timeCreated,
+                  size,
+                  type,
+                  fullPath,
+                  contentType,
+                  bucket,
+                },
+                i
+              ) => (
+                <tr
+                  key={_id}
+                  // update just hover .
+                  onClick={() => nodeClickHandler(type, fullPath)}
+                  className="text-white cursor-pointer hover:bg-slate-700">
+                  <td className=" text-2xl pl-5 font-medium whitespace-nowrap">
+                    {icons?.map((elem) => {
+                      if (elem.contentType === contentType)
+                        return <elem.icon />;
+                    })}
+                  </td>
+                  <td className="px-6 py-4 ">{name}</td>
+                  <td className="px-6 py-4">{timeCreated.slice(0, 10)}</td>
+                  <td className="px-6 py-4">
+                    {(size / 1024 / 1024).toFixed(2)} MB
+                  </td>
+                  <td className="px-6 py-4">
+                    <button
+                      className={`text-3xl font-medium text-red-600  dark:text-red-500 hover:font-bold`}
+                      onClick={() => handleDeleteFile(fullPath)}>
+                      <MdDelete />
+                    </button>
+                  </td>
+                  <td
+                    className={`px-6 py-4 ${
+                      type === "folder" && "hidden"
+                    } items-center`}>
+                    <button
+                      onClick={() => handelShowModal(fullPath)}
+                      className="text-2xl text-gray-500 ">
+                      <MoreDropDown
+                        fileName={fileName}
+                        fullPath={fullPath}
+                        downloadUrl={downloadUrl}
+                        bucket={bucket}
+                      />
+                    </button>
+                  </td>
+                </tr>
+              )
+            )}
+          </tbody>
+        </table>
+      </div>
+      }
+      {/* medium icon view */}
+      {
+        isView === "medium" && <div className="grid grid-rows-4 md:grid-cols-6 lg:grid-cols-10 gap-5 mx-3">
+        {filesData?.map((file, index) => (
+          <div
+            onClick={() => nodeClickHandler(file?.type, file?.fullPath)}
+            className="cursor-pointer relative"
+            key={index}>
+            <div className="w-full">
+              <Image src={folderIcon} alt="icon" className="w-full h-full" />
+              {/* <MdImage className="text-[100px] text-white"/> */}
+            </div>
+            <div>
+              <h2 className="text-white">{(file?.name).slice(0, 10)}</h2>
+            </div>
+            <div className=" absolute -right-4 top-4 text-white text-xl">
+              <FolderMoreInfo info={file} fileName={fileName} downloadUrL={downloadUrl
+			}/>
+            </div>
+          </div>
+        ))}
+      </div>
+      }
+      {/* large icons view */}
+      {
+        isView === "large" && <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-5 mx-3">
+        {filesData?.map((file, index) => (
+          <div
+            onClick={() => nodeClickHandler(file?.type, file?.fullPath)}
+            className="cursor-pointer relative"
+            key={index}>
+            <div>
+              <Image src={folderIcon} alt="icon" className="w-full h-full" />
+            </div>
+            <div>
+              <h2 className="text-white">{(file?.name).slice(0, 10)}</h2>
+            </div>
+            <div className=" absolute -right-5 top-4 text-white text-2xl">
+              <FolderMoreInfo info={file} fileName={fileName} downloadUrL={downloadUrl
+			}/>
+            </div>
+          </div>
+        ))}
+      </div>
+      }
+    </div>
+  );
 };
 
 export default FilesPage;
