@@ -17,7 +17,7 @@ import {
 	GithubAuthProvider,
 	sendEmailVerification,
 	updateEmail,
-	deleteUser,
+	deleteUser
 } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
 // import { FacebookAuthProvider } from "firebase/auth";
@@ -186,9 +186,9 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 // hold your user 
 
 	// Delete User
-	const deleteAnyUser = (aUser:any) => {
+	const deleteAnyUser = (user:any) => {
 		setLoading(true);
-		return deleteUser(aUser)
+		return deleteUser(user)
 	}
 
 	useEffect(() => {

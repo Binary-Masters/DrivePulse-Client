@@ -1,5 +1,5 @@
 "use client";
-import { Menu } from "lucide-react";
+import { Menu, UserSearch } from "lucide-react";
 import Image from "next/image";
 import img from "@/assests/images/blank-head-profile-pic-for-a-man.jpg";
 import { useState, useEffect, useRef } from "react";
@@ -7,11 +7,23 @@ import SideNave from "@/Components/SideNave/SideNave";
 import useAuth from "@/Hooks/useAuth";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
+import Notification from "@/Components/Dashboard/Files/Notifications/Notification";
+import useAxiosPublic from "@/Hooks/useAxiosPublic";
+import Search from "@/app/dashboard/search/page";
+import { Console } from "console";
+
 
 const DashboardNav = () => {
+  
   const [isToggle, setIsToggle] = useState(false);
+  // test just 
+  const [search, setsearch] = useState('');
+  console.log(search) 
   const { user, logout } = useAuth();
+  // console.log(user.uid);
   const router = useRouter();
+  const axiosPublic = useAxiosPublic();
+  
 
   // Modifies sidebar position with navbar height
   const navbarRef = useRef<HTMLDivElement | null>(null);
@@ -36,6 +48,36 @@ const DashboardNav = () => {
     });
   };
 
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    console.log(e.target.value);
+    const searchText = e.target.value;
+    setsearch(searchText)
+    const userId = user?.uid;
+    // const search = {
+    //   data: {
+    //     searchText,
+    //     userId: user?.uid
+    //   }
+    // }
+    const files = await axiosPublic.get(
+      `/get-search-files?searchText=${searchText}&&userId=${userId}`
+    );
+    console.log(files);
+  };
+
+  // navigate to dashboardProfile
+  const navigateToSearch = () => {
+    router.push(`/dashboard/search/${search}?search=${search}`);
+  };
+  // key press features
+
+	const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+		if (event.key) {
+			return navigateToSearch()
+		}
+	};
+
   return (
     <>
       <div
@@ -52,6 +94,8 @@ const DashboardNav = () => {
           </label>
 
           <input
+            onChange={handleSearch}
+            onKeyPress={handleKeyPress}
             type="text"
             id="Search"
             placeholder="Search files..."
@@ -70,6 +114,7 @@ const DashboardNav = () => {
                 stroke="currentColor"
                 className="w-4 h-4"
               >
+
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -78,6 +123,10 @@ const DashboardNav = () => {
               </svg>
             </button>
           </span>
+        </div>
+
+        <div>
+          <Notification />
         </div>
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button">

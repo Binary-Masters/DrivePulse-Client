@@ -1,45 +1,47 @@
-import React, { useState } from "react";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
+const download = 'https://cdn.create.vista.com/api/media/small/96171264/stock-photo-solitude-tree-with-birds'
 interface DownloadProps {
+  fileName: string;
   fullPath: string;
+  bucket: string
 }
 
-const Download: React.FC<DownloadProps> = ({ fullPath }) => {
-  const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
+const Download: React.FC<DownloadProps> = ({ fileName, fullPath,bucket  }) => {
+  const handleDownload = async () => {
+    try {
+      const storage = getStorage();
+      const downloadURL = await getDownloadURL(ref(storage, fullPath));
+      // console.log(downloadURL);
+      // const downloadUrl = downloadURL.toString();
+      // console.log(downloadUrl);
+      
+      // const downloadURL = `https://firebasestorage.googleapis.com/v0/b/${bucket}/o/${encodeURIComponent(fullPath)}?alt=media`;
 
-  const handleDownload = () => {
-    const storage = getStorage();
-    getDownloadURL(ref(storage, fullPath))
-      .then((url) => {
-        console.log(url);
-        setDownloadUrl(url); // Update the downloadUrl state
-        fetch(url)
-          .then((res) => res.blob())
-          .then((blob) => {
-            const blobUrl = window.URL.createObjectURL(new Blob([blob]));
-            const aTag = document.createElement("a");
-            aTag.href = blobUrl;
-            aTag.setAttribute("download", blobUrl);
-            document.body.appendChild(aTag);
-            aTag.click();
-            aTag.remove();
-          });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  
+      fetch(downloadURL)
+        .then((res) => res.blob())
+        .then((blob) => {
+          const blobUrl = window.URL.createObjectURL(blob);
+          const aTag = document.createElement("a");
+          aTag.href = blobUrl;
+          aTag.setAttribute("download", fileName); 
+          document.body.appendChild(aTag);
+          aTag.click();
+          aTag.remove();
+        })
+        .catch((err) => {
+          console.error("Error downloading file:", err);
+        });
+    } catch (error) {
+      console.error("Error getting download URL:", error);
+    }
+
+  }
 
   return (
     <div>
-      {downloadUrl ? (
-        <a href={downloadUrl} download>
-          Download
-        </a>
-      ) : (
-        <button onClick={handleDownload}>Download</button>
-      )}
+      <button onClick={handleDownload}>Download</button>
     </div>
   );
 };

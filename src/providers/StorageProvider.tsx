@@ -6,6 +6,7 @@ import {
 	getStorage,
 	ref,
 	uploadBytes,
+	getDownloadURL, 
 } from "firebase/storage";
 import React, { ReactElement, ReactNode, createContext, useState } from "react";
 
@@ -14,13 +15,12 @@ interface StorageInfo {
 	deleteFile: (fullPath: string) => Promise<void>;
 	setPath: React.Dispatch<React.SetStateAction<string>>;
 	storageLoading: boolean;
-	setStorageLoading: React.Dispatch<React.SetStateAction<boolean>>
+	setStorageLoading: React.Dispatch<React.SetStateAction<boolean>>;
 	path: string;
+	getFileURL: (fullPath: string) => Promise<string>;
 }
 
 export const StorageContext = createContext<any>({});
-
-
 
 export default function StorageProvider({
 	children,
@@ -29,11 +29,17 @@ export default function StorageProvider({
 	const [path, setPath] = useState<string>("/");
 	const [storageLoading, setStorageLoading] = useState<boolean>(true);
 	const storage = getStorage();
+	const root = user?.uid; // Root directory
+
+	const getFileURL = async (fullPath: string): Promise<string> => {
+		const reference = ref(storage, fullPath);
+		const URL = await getDownloadURL(reference);
+		return URL;
+	};
 
 	const uploadFile = async (file: File): Promise<UploadResult> => {
 		setStorageLoading(true);
 
-		const root = user.email; // Root directory
 		const storagePath = ref(storage, `${root + path + file.name}`);
 		return uploadBytes(storagePath, file);
 	};
@@ -48,6 +54,7 @@ export default function StorageProvider({
 	const storageInfo: StorageInfo = {
 		uploadFile,
 		setPath,
+		getFileURL,
 		deleteFile,
 		path,
 		storageLoading,
