@@ -5,11 +5,16 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import useGetSingleUser from "@/Hooks/useGetSingleUser";
 import { Cell, Legend, Pie, PieChart, Tooltip } from "recharts";
+import Link from "next/link";
+import useGetFiles from "@/Hooks/useGetFiles";
+import useAuth from "@/Hooks/useAuth";
 const PieChartContent = () => {
   const [userData] = useGetSingleUser();
-  // console.log(userData?.type);
-  const value = 0.66;
-  const value2 = 0.9;
+  const {user} = useAuth()
+  const { filesData } = useGetFiles();
+  console.log(filesData);
+  const value = filesData?.length;
+  const value2 = 100 - filesData?.length;
 
   const data = [
     { name: "Total Storage", value: 5000 },
@@ -49,23 +54,24 @@ const PieChartContent = () => {
       <div className="w-full lg:w-[40%] dashboard-home-user h-[250px] rounded-md py-10 pl-5">
         <div className="space-y-1 mb-10">
           <p className="text-blue-400 uppercase font-semibold">Welcome back,</p>
-          <h2 className="text-3xl text-slate-200 font-bold">Sadid Hasan</h2>
+          <h2 className="text-3xl text-slate-200 font-bold">{user?.displayName}</h2>
           <p className="text-gray-300 font-medium">
-            Glad to see you again! <br />
-            Ask me anything.
+            Share your file <br />
+            And make your day.
           </p>
         </div>
+        <Link href={"/dashboard/profile"}>
         <button className="text-slate-300 font-semibold cursor-pointer flex items-center gap-1">
           See Profile <FaArrowRight />
-        </button>
+        </button></Link>
       </div>
       <div className="w-full lg:w-[30%] progress-background rounded-md h-[250px] shadow-md p-6 relative">
         <div className=" flex justify-center">
           <div className="w-[180px]">
             <CircularProgressbar
               value={value}
-              maxValue={1}
-              text={`${value * 100}%`}
+              maxValue={100}
+              text={`${value}%`}
               strokeWidth={6}
               background={false}
               styles={buildStyles({
@@ -80,7 +86,7 @@ const PieChartContent = () => {
           <div
             style={{ boxShadow: "1px 1px 30px #24207b" }}
             className="text-xl w-[90%] font-semibold text-slate-300 bg-[#090d2b]  py-3 px-10 rounded-md  shadow-lg absolute bottom-3">
-            <h2 className="text-center">Total file host 9+</h2>
+            <h2 className="text-center">Total file host {filesData?.length}</h2>
           </div>
         </div>
       </div>
@@ -131,8 +137,8 @@ const PieChartContent = () => {
             <div className="w-[180px]">
               <CircularProgressbar
                 value={value2}
-                maxValue={1}
-                text={`${value2 * 100}%`}
+                maxValue={100}
+                text={`${value2}%`}
                 strokeWidth={6}
                 background={false}
                 styles={buildStyles({
