@@ -1,5 +1,5 @@
 "use client";
-import { Menu, UserSearch } from "lucide-react";
+import { Menu } from "lucide-react";
 import Image from "next/image";
 import img from "@/assests/images/blank-head-profile-pic-for-a-man.jpg";
 import { useState, useEffect, useRef } from "react";
@@ -9,8 +9,6 @@ import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import Notification from "@/Components/Dashboard/Files/Notifications/Notification";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
-import Search from "@/app/dashboard/search/page";
-import { Console } from "console";
 
 
 const DashboardNav = () => {
@@ -18,7 +16,6 @@ const DashboardNav = () => {
   const [isToggle, setIsToggle] = useState(false);
   // test just 
   const [search, setsearch] = useState('');
-  console.log(search) 
   const { user, logout } = useAuth();
   // console.log(user.uid);
   const router = useRouter();
@@ -82,10 +79,10 @@ const DashboardNav = () => {
     <>
       <div
         ref={navbarRef}
-        className="flex z-50  w-full max-w-5xl mx-auto fixed top-2 items-center justify-between px-4 py-2 glass shadow gap-2 rounded-lg ml-5"
+        className="fixed z-50 flex items-center justify-between w-full max-w-5xl px-4 py-2 mx-auto ml-5 rounded-lg shadow top-2 glass gap-2"
       >
         <button onClick={() => setIsToggle(!isToggle)}>
-          <Menu className="md:hidden text-white" />
+          <Menu className="text-white md:hidden" />
         </button>
         <div className="relative">
           <label htmlFor="Search" className="sr-only">

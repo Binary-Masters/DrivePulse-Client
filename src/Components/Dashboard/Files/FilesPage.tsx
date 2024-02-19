@@ -1,46 +1,40 @@
 "use client";
-import useAxiosPublic from "@/Hooks/useAxiosPublic";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
-import { MdDelete, MdImage } from "react-icons/md";
-import FolderButton from "./Folder/FolderButton";
-import useStorage from "@/Hooks/useStorage";
+
+// icons
 import icons from "./icons";
+import { MdDelete } from "react-icons/md";
+import { IoCreateOutline } from "react-icons/io5";
+
+// Utils
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import handleDeleteFile from "@/Utils/Files/handleDeleteNode/handleDeleteNode";
+import nodeClickHandler from "@/Utils/Files/nodeClickHandler";
+
+// Components
+import Link from "next/link";
+import FolderButton from "./Folder/FolderButton";
 import NavigationFolder from "./Folder/NavigationFolder";
-import useGetFiles from "@/Hooks/useGetFiles";
 import UploadButton from "./UploadButton&Modal/UploadButton";
 import MoreDropDown from "./MoreDropDown";
-import getFolderPathData from "@/Utils/FolderNavigation/getFolderPathData";
-import useAuth from "@/Hooks/useAuth";
-import handleDeleteFile from "@/Utils/Files/handleDeleteNode/handleDeleteNode";
 import Loading from "@/app/loading";
-import { useState } from "react";
-import Link from "next/link";
 import DropDownView from "@/Components/DropDownView/DropDownView";
-import folderIcon from "../../../assests/icons/folder.png";
-import Image from "next/image";
 
-import FolderMoreInfo from "@/Components/FolderMorInfo/FolderMoreInfo";
-import { IoCreateOutline } from "react-icons/io5";
-import NodePreview from "./Preview/NodePreview";
+// Hooks
+import useAxiosPublic from "@/Hooks/useAxiosPublic";
+import useStorage from "@/Hooks/useStorage";
+import useGetFiles from "@/Hooks/useGetFiles";
+import useAuth from "@/Hooks/useAuth";
+import { useState } from "react";
+import ViewLayout from "./Views/ViewLayout";
 
 const FilesPage: React.FC = () => {
-	const [isView, setIsView] = useState("list");
+	const [view, setView] = useState("list");
 	const [downloadUrl, setDownloadUrl] = useState<string>("");
 	const [fileName, setFileName] = useState<string>("");
 	const axiosPublic = useAxiosPublic();
 	const { user } = useAuth();
 	const { path, setPath, deleteFile } = useStorage();
 	const { filesData, isFilesLoading, refetchFiles } = useGetFiles();
-
-	// Fetching file data for appropriate user
-
-	const nodeClickHandler = (type: string, fullPath: string) => {
-		if (type === "folder") {
-			const { currentPath } = getFolderPathData(fullPath, type, user);
-			setPath(currentPath);
-			refetchFiles();
-		} else console.log("This is a file");
-	};
 
 	// to pass hook props down to plain js utilies
 	const hookPropObj = {
@@ -49,6 +43,9 @@ const FilesPage: React.FC = () => {
 		deleteFile,
 		axiosInstance: axiosPublic,
 		refetchFiles,
+		filesData,
+		downloadUrl,
+		fileName,
 	};
 
 	const handelShowModal = async (fullPath) => {
@@ -66,7 +63,7 @@ const FilesPage: React.FC = () => {
 		return <Loading />;
 	}
 	const handleIsViewChange = (newView) => {
-		setIsView(newView);
+		setView(newView);
 	};
 
 	return (
@@ -89,7 +86,7 @@ const FilesPage: React.FC = () => {
 				</div>
 			</div>
 			{/* list view */}
-			{isView === "list" && (
+			{view === "list" && (
 				<div
 					style={{ backdropFilter: "blur(200px)" }}
 					className="relative h-screen overflow-x-auto shadow-md sm:rounded-lg"
@@ -125,7 +122,11 @@ const FilesPage: React.FC = () => {
 										key={_id}
 										// update just hover .
 										onClick={() =>
-											nodeClickHandler(type, fullPath)
+											nodeClickHandler(
+												hookPropObj,
+												type,
+												fullPath
+											)
 										}
 										className="text-white cursor-pointer hover:bg-slate-700"
 									>
@@ -188,97 +189,7 @@ const FilesPage: React.FC = () => {
 					</table>
 				</div>
 			)}
-			{/* medium icon view */}
-			{isView === "medium" && (
-				<div className="items-center mx-3 grid grid-rows-4 md:grid-cols-6 lg:grid-cols-10 gap-8">
-					{filesData?.map((file, index) => (
-						<div
-							onClick={() =>
-								nodeClickHandler(file?.type, file?.fullPath)
-							}
-							className="relative cursor-pointer"
-							key={index}
-						>
-							<div className="w-full">
-								{file.contentType.startsWith("image/") ? (
-									<NodePreview 
-										thumbnail={file.thumbnail}
-										height={ 100 }
-										width={ 100 }
-									/>
-								) : (
-									icons?.map((elem) => {
-										if (
-											elem.contentType ===
-											file.contentType
-										)
-											return (
-												<elem.icon className="w-full h-full text-white" />
-											);
-									})
-								)}
-								{/* <MdImage className="text-[100px] text-white"/> */}
-							</div>
-							<div>
-								<h2 className="text-white">
-									{(file?.name).slice(0, 10)}
-								</h2>
-							</div>
-							<div className="absolute text-xl text-white -right-4 top-4">
-								<FolderMoreInfo
-									info={file}
-									fileName={fileName}
-									downloadUrL={downloadUrl}
-								/>
-							</div>
-						</div>
-					))}
-				</div>
-			)}
-			{/* large icons view */}
-			{isView === "large" && (
-				<div className="items-center mx-3 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
-					{filesData?.map((file, index) => (
-						<div
-							onClick={() =>
-								nodeClickHandler(file?.type, file?.fullPath)
-							}
-							className="relative cursor-pointer"
-							key={index}
-						>
-							<div className="w-full">
-								{file.contentType.startsWith("image/") ? (
-									<NodePreview 
-										thumbnail={file.thumbnail}
-										height={ 130 }
-										width={ 130 }
-									/>
-								) : (
-									icons?.map((elem) => {
-										if (
-											elem.contentType ===
-											file.contentType
-										)
-											return (
-												<elem.icon className="w-full h-full text-white" />
-											);
-									})
-								)}
-								<h2 className="text-white">
-									{(file?.name).slice(0, 10)}
-								</h2>
-							</div>
-							<div className="absolute text-2xl text-white -right-5 top-4">
-								<FolderMoreInfo
-									info={file}
-									fileName={fileName}
-									downloadUrL={downloadUrl}
-								/>
-							</div>
-						</div>
-					))}
-				</div>
-			)}
+			<ViewLayout hookPropObj={hookPropObj} view={view} />
 		</div>
 	);
 };
