@@ -57,8 +57,7 @@ const DashboardNav = () => {
     //     userId: user?.uid
     //   }
     // }
-    const files = await axiosPublic.get(
-      `/get-search-files?searchText=${searchText}&&userId=${userId}`
+    const files = await axiosPublic.get(`/get-search-files?searchText=${searchText}&&userId=${userId}`
     );
     console.log(files);
   };
