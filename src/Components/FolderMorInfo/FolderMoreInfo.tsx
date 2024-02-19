@@ -6,6 +6,8 @@ import { useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import MoreDropDown from "../Dashboard/Files/MoreDropDown";
+
+
 const FolderMoreInfo = ({ info, fileName,downloadUrL}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   // console.log(info?.length);
@@ -46,9 +48,9 @@ const FolderMoreInfo = ({ info, fileName,downloadUrL}) => {
                 <TabPanel className={"ml-20"}>
                   {/* <h2>Any content 1</h2> */}
                   <MoreDropDown fileName={fileName}
-                        fullPath={fullPath}
-                        downloadUrl={downloadUrL}
-                        bucket={bucket}/>
+                  fullPath={fullPath}
+                  downloadUrl={downloadUrL}
+                  bucket={bucket} id={""} name={""} refetchFiles={undefined}/>
                 </TabPanel>
                 <TabPanel className="text-slate-200 space-y-3">
                   <h3>Name: {name}</h3>

@@ -81,7 +81,7 @@ const Filesearch: React.FC<FilesearchProps> = ({ params, searchParams }) => {
       className="relative h-screen overflow-x-auto shadow-md sm:rounded-lg classes pt-20"
     >
       <p className="text-white text-3xl mx-auto flex  justify-center items-center my-3">
-        Search your file
+        Your Searched File
       </p>
 
       <table className=" w-full text-sm text-left text-gray-500 rtl:text-right ">
