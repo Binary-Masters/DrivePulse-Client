@@ -77,7 +77,7 @@ const Edit = () => {
             <form onSubmit={updateValue} className="card-body ">
               <div className="flex ">
               <p className="text-center text-3xl">Update Information</p>
-              
+              <Link href='/dashboard/profile'><button className=" absolute  top-0 right-0 p-3  "><TiDelete className="h-10 w-12 mb-6"/></button></Link>
               </div>
 
               <div className="grid grid-cols-2 w-auto gap-6 ">
