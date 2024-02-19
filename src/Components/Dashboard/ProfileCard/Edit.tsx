@@ -5,7 +5,9 @@ import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import useGetSingleUser from "@/Hooks/useGetSingleUser";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
-
+// import { CgProfile } from "react-icons/cg";
+import { TiDelete } from "react-icons/ti";
+import Link from "next/link";
 
 const Edit = () => {
     const axiosPublic = useAxiosPublic();
@@ -73,7 +75,10 @@ const Edit = () => {
         <div className="hero-content flex-col ">
           <div className="card flex-shrink-0  shadow-2xl bg-slate-100 w-auto ">
             <form onSubmit={updateValue} className="card-body ">
+              <div className="flex ">
               <p className="text-center text-3xl">Update Information</p>
+              
+              </div>
 
               <div className="grid grid-cols-2 w-auto gap-6 ">
                 <div className="form-control">
