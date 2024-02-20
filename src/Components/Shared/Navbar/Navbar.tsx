@@ -50,7 +50,7 @@ export default function Navbar() {
           <FaBars className="text-xl cursor-pointer md:hidden min-w-1" />
         </p>
         <div className="flex items-center gap-1">
-        <Image src={logo} className="w-[30px] h-[30px] md:w-[60px] md:h-[70px]" alt="DrivePulse Logo" />
+        <Image src={logo} className="w-[30px] h-[30px] md:w-[52px] md:h-[60px]" alt="DrivePulse Logo" />
         <div className="">
           <h2 style={{letterSpacing:"2px"}} className="font-bold text-blue-400 text-[20px] md:text-3xl">DRIVE</h2>
           <p style={{letterSpacing:"7px"}} className="text-[14px] md:text-[22px] font-medium md:-mt-2 -mt-3">PULSE</p>
