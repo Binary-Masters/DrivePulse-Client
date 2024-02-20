@@ -17,12 +17,17 @@ const Notification = () => {
 
   const handelSeenNotifyFiles = () => {
     setOpen(false);
-    axiosPublic.patch(`/notify?uid=${user?.uid}`).then().catch();
+    axiosPublic
+      .patch(`/notify?uid=${user?.uid}`)
+      .then(() => {
+        refetchFiles();
+      })
+      .catch();
 
     refetchFiles();
   };
   if (isFilesLoading) {
-    return <Loading />;
+    return "";
   }
   return (
     <div className="dropdown">
