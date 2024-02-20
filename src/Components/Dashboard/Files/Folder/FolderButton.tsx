@@ -24,6 +24,7 @@ const FolderButton: React.FC<FolderButtonProps> = ({ path }) => {
 		setIsModalOpen(false);
 	};
 
+
 	const handleCreateFolder = async (data: { folderName: string }) => {
 		// Preparing database entry
 		const folderMetadata = {
@@ -36,6 +37,7 @@ const FolderButton: React.FC<FolderButtonProps> = ({ path }) => {
 			name: data.folderName,
 			size: 0,
 		};
+		console.log(user?.email)
 		console.log(folderMetadata);
 
 		axiosPublic.post("/files", folderMetadata)

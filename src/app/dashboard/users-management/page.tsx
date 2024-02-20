@@ -106,6 +106,7 @@ const UsersManagement = () => {
                             icon: "success",
                             confirmButtonText: "OK",
                         })
+                        refetch();
                     })
                     .catch(error => {
                         console.log(error);

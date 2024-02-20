@@ -11,10 +11,10 @@ import useAuth from "@/Hooks/useAuth";
 const PieChartContent = () => {
   const [userData] = useGetSingleUser();
   const {user} = useAuth()
-  const { filesData, isFilesLoading, refetchFiles } = useGetFiles();
+  const { filesData } = useGetFiles();
   console.log(filesData);
-  const value = 0.66;
-  const value2 = 0.9;
+  const value = filesData?.length;
+  const value2 = 100 - filesData?.length;
 
   const data = [
     { name: "Total Storage", value: 5000 },
@@ -70,8 +70,8 @@ const PieChartContent = () => {
           <div className="w-[180px]">
             <CircularProgressbar
               value={value}
-              maxValue={1}
-              text={`${value * 100}%`}
+              maxValue={100}
+              text={`${value}%`}
               strokeWidth={6}
               background={false}
               styles={buildStyles({
@@ -86,7 +86,7 @@ const PieChartContent = () => {
           <div
             style={{ boxShadow: "1px 1px 30px #24207b" }}
             className="text-xl w-[90%] font-semibold text-slate-300 bg-[#090d2b]  py-3 px-10 rounded-md  shadow-lg absolute bottom-3">
-            <h2 className="text-center">Total file host 9+</h2>
+            <h2 className="text-center">Total file host {filesData?.length}</h2>
           </div>
         </div>
       </div>
@@ -137,8 +137,8 @@ const PieChartContent = () => {
             <div className="w-[180px]">
               <CircularProgressbar
                 value={value2}
-                maxValue={1}
-                text={`${value2 * 100}%`}
+                maxValue={100}
+                text={`${value2}%`}
                 strokeWidth={6}
                 background={false}
                 styles={buildStyles({

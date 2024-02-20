@@ -20,7 +20,6 @@ const handleDeleteFile = (
 		confirmButtonText: "Yes, delete it!",
 	}).then((result) => {
 		if (result.isConfirmed) {
-			console.log(type, fullPath);
 			type === "file" && deleteFileFunc(hookPropObj, fullPath);
 			type === "folder" && deleteFolderFunc(hookPropObj, fullPath);
 		}
