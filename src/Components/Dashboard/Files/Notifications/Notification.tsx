@@ -18,7 +18,7 @@ const Notification = () => {
   const handelSeenNotifyFiles = () => {
     setOpen(false);
     axiosPublic
-      .patch(`/notify?uid=${user?.uid}`)
+      .patch(`/notify-file?uid=${user?.uid}`)
       .then(() => {
         refetchFiles();
       })
@@ -27,7 +27,7 @@ const Notification = () => {
     refetchFiles();
   };
   if (isFilesLoading) {
-    return "";
+    return <h1>Loading...</h1>;
   }
   return (
     <div className="dropdown">

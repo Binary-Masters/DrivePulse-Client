@@ -16,10 +16,11 @@ import Loading from "@/app/loading";
 import { useState } from "react";
 import Link from "next/link";
 import DropDownView from "@/Components/DropDownView/DropDownView";
-
+import { useRouter } from "next/navigation";
 import FolderMoreInfo from "@/Components/FolderMorInfo/FolderMoreInfo";
 import { IoCreateOutline } from "react-icons/io5";
 import NodePreview from "./Preview/NodePreview";
+import Swal from "sweetalert2";
 
 const FilesPage: React.FC = () => {
   const [isView, setIsView] = useState("list");
@@ -29,9 +30,11 @@ const FilesPage: React.FC = () => {
   const { user } = useAuth();
   const { path, setPath, deleteFile } = useStorage();
   const { filesData, isFilesLoading, refetchFiles } = useGetFiles();
-
+  const router = useRouter();
   // Fetching file data for appropriate user
-
+  const filterLocalStoreData = filesData.filter(
+    (item) => item.owner.store === "Local"
+  );
   const nodeClickHandler = (type: string, fullPath: string) => {
     if (type === "folder") {
       const { currentPath } = getFolderPathData(fullPath, type, user);
@@ -48,7 +51,9 @@ const FilesPage: React.FC = () => {
     axiosInstance: axiosPublic,
     refetchFiles,
   };
-
+  // 	onClick={() =>
+  // 		handleDeleteFile(hookPropObj, fullPath, type)
+  // }
   const handelShowModal = async (fullPath) => {
     const storage = getStorage();
     try {
@@ -65,6 +70,41 @@ const FilesPage: React.FC = () => {
   }
   const handleIsViewChange = (newView) => {
     setIsView(newView);
+  };
+  const handleDeleteFile = (fullPath, id) => {
+    const filePath = fullPath.split("/");
+    const myPath = filePath[filePath.length - 1];
+    Swal.fire({
+      title: "Are you sure?",
+      text: `You want to delete ${myPath} `,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosPublic
+          .patch(`/store-file?id=${id}`, { store: "Trush" })
+          .then(() => {
+            refetchFiles();
+            Swal.fire({
+              title: `${myPath} has been deleted`,
+              text: `Want To Go Trush Page`,
+              icon: "success",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Yes, Go!",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                router.push("/analytics/totaltrash");
+              }
+            });
+          })
+          .catch();
+      }
+    });
   };
 
   return (
@@ -105,7 +145,7 @@ const FilesPage: React.FC = () => {
             </thead>
             <tbody>
               {/* optional chaining update */}
-              {filesData?.map(
+              {filterLocalStoreData?.map(
                 (
                   {
                     _id,
@@ -141,9 +181,7 @@ const FilesPage: React.FC = () => {
                     <td className="px-6 py-4">
                       <button
                         className={`text-3xl font-medium text-red-600  dark:text-red-500 hover:font-bold`}
-                        onClick={() =>
-                          handleDeleteFile(hookPropObj, fullPath, type)
-                        }
+                        onClick={() => handleDeleteFile(fullPath, _id)}
                       >
                         <MdDelete />
                       </button>

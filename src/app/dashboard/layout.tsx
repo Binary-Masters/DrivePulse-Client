@@ -2,7 +2,6 @@ import DashboardNav from "@/Components/Shared/DashboardNav/DashboardNav";
 import SideNave from "@/Components/SideNave/SideNave";
 import React from "react";
 import PrivateRoute from "@/Components/Routes/PrivateRoute";
-import FilesProvider from "@/providers/FilesProvider";
 
 const layout = ({ children }) => {
   return (
@@ -12,10 +11,8 @@ const layout = ({ children }) => {
           <SideNave />
         </div>
         <div className="md:ml-64">
-          <FilesProvider>
-            <DashboardNav />
-            {children}
-          </FilesProvider>
+          <DashboardNav />
+          {children}
         </div>
       </div>
     </PrivateRoute>
