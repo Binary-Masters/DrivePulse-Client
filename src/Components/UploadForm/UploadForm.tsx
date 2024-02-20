@@ -12,12 +12,13 @@ import useGetFiles from "@/Hooks/useGetFiles";
 const UploadForm: React.FC = () => {
 	const [file, setFile] = useState<File | null>(null);
 	const { user } = useAuth();
-	const { uploadFile } = useStorage();
+	const { uploadFile, getFileURL } = useStorage();
 	const { refetchFiles } = useGetFiles();
 	const axiosPublic = useAxiosPublic();
 	const owner = {
 		uid: user.uid,
 		email: user.email,
+		status: 0,
 	};
 
 	const handleFileUpload = () => {
@@ -31,12 +32,22 @@ const UploadForm: React.FC = () => {
 						.then(({ data }) => {
 							if (!data.exists) {
 								// Upload to cloud
-								uploadFile(file).then((snapshot) => {
+								uploadFile(file).then( async (snapshot) => {
+									const fileType = snapshot.metadata.contentType;
+									const filePath = snapshot.metadata.fullPath;
+									let thumbnail = "";
+									
+									// For image thumbnail
+									if(fileType.startsWith("image/")) {
+										thumbnail = await getFileURL(filePath);
+									}
+									
 									// Post file metadata to database
 									axiosPublic
 										.post("/files", {
 											checksum,
 											owner,
+											thumbnail,
 											...snapshot.metadata,
 										})
 										.then((response) => {

@@ -41,8 +41,9 @@ const FileUpladChart = () => {
       ];
       
     return (
-        <div className="flex flex-col md:flex-row gap-3 pt-3">
-    <div className="w-full md:w-[60%] h-[300px] chart-bg p-5 rounded-md">
+        <div className="">
+          {/* md:w-[60%] */}
+    <div className="w-full  h-[300px] chart-bg p-5 rounded-md">
         <h2 className='text-slate-300 font-medium mb-5'>Weekly file hosting history:</h2>
     <ResponsiveContainer width="100%" height="80%">
         <AreaChart
@@ -64,10 +65,10 @@ const FileUpladChart = () => {
         </AreaChart>
       </ResponsiveContainer>
     </div>
-    <div className="md:w-[40%] h-[300px] chart-bg p-6 rounded-md">
+    {/* <div className="md:w-[40%] h-[300px] chart-bg p-6 rounded-md">
         <h3 className='text-2xl text-slate-300 font-semibold'>Next event comming soon...</h3>
         <p className='text-slate-400 font-medium'>At 10,February 2024</p>
-    </div>
+    </div> */}
     </div>
     );
 };
