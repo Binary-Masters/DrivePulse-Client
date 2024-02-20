@@ -5,7 +5,6 @@ import {
   EmailIcon,
   EmailShareButton,
 } from "react-share";
-import CopyLink from "./Copy";
 import "firebase/storage";
 
 // interface ShareModalProps {
