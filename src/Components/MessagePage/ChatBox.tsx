@@ -13,9 +13,12 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
   const [newMessage, setNewMessage] = useState("");
   useEffect(() => {
     const userId = chat?.members?.find((id) => id !== currentUser);
+    console.log(userId);
     const getUserData = async () => {
       try {
+        if(userId === undefined || !userId) return 
         const { data } = await getUser(userId);
+        console.log(userId);
         setUserData(data);
         // console.log(data);
       } catch (err) {

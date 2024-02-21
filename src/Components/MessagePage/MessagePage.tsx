@@ -7,7 +7,7 @@ import useGetSingleUser from "@/Hooks/useGetSingleUser";
 import { userChats } from "@/api/ChatRequest";
 import { io } from "socket.io-client";
 const MessagePage = () => {
-  const socket = useRef();
+  const socket = useRef<any>();
   const [chats, setChets] = useState([]);
   const [userData] = useGetSingleUser();
   // console.log(userData);
@@ -19,7 +19,7 @@ const MessagePage = () => {
   // send message to socket
   useEffect(() => {
     if (sendMessage !== null) {
-      socket.current.emit("send-message", sendMessage);
+      (socket.current as any).emit("send-message", sendMessage);
     }
   }, [sendMessage]);
 
@@ -62,8 +62,8 @@ const MessagePage = () => {
         />
       </div>
       <div className="w-[30%] ml-[70%] border p-5">
-        {chats.map((chat) => (
-          <div key={chat._id} onClick={() => setCurrentChat(chat)}>
+        {chats.map((chat,i) => (
+          <div key={i + 1} onClick={() => setCurrentChat(chat)}>
             <Conversation
               onlineUsers={onlineUsers}
               data={chat}
