@@ -86,7 +86,7 @@ const FilesPage: React.FC = () => {
               confirmButtonText: "Yes, Go!",
             }).then((result) => {
               if (result.isConfirmed) {
-                router.push("/analytics/totaltrash");
+                router.push("/dashboard/totaltrushfiles");
               }
             });
           })
