@@ -229,6 +229,7 @@ const FilesPage: React.FC = () => {
 									info={file}
 									fileName={fileName}
 									downloadUrL={downloadUrl}
+									refetchFiles={refetchFiles}
 								/>
 							</div>
 						</div>
@@ -273,6 +274,7 @@ const FilesPage: React.FC = () => {
 									info={file}
 									fileName={fileName}
 									downloadUrL={downloadUrl}
+									refetchFiles={refetchFiles}
 								/>
 							</div>
 						</div>
