@@ -11,7 +11,6 @@ import UploadButton from "./UploadButton&Modal/UploadButton";
 import MoreDropDown from "./MoreDropDown";
 import getFolderPathData from "@/Utils/FolderNavigation/getFolderPathData";
 import useAuth from "@/Hooks/useAuth";
-import handleDeleteFile from "@/Utils/Files/handleDeleteNode/handleDeleteNode";
 import Loading from "@/app/loading";
 import { useState } from "react";
 import Link from "next/link";
@@ -43,17 +42,6 @@ const FilesPage: React.FC = () => {
     } else console.log("This is a file");
   };
 
-  // to pass hook props down to plain js utilies
-  const hookPropObj = {
-    user,
-    setPath,
-    deleteFile,
-    axiosInstance: axiosPublic,
-    refetchFiles,
-  };
-  // 	onClick={() =>
-  // 		handleDeleteFile(hookPropObj, fullPath, type)
-  // }
   const handelShowModal = async (fullPath) => {
     const storage = getStorage();
     try {

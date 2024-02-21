@@ -26,7 +26,8 @@ const deleteFolderFunc = async (hookPropObj: any, fullPath: string) => {
         if (res.data.deletedCount > 0) {
           refetchFiles();
           Swal.fire({
-            title: `Folder deleted successfully`,
+            title: `Deleted Permanentlly !`,
+            text: "Folder Has Been Deleted",
             icon: "success",
           }).then(() => {
             setPath(parentPath);

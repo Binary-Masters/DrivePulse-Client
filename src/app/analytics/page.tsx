@@ -13,6 +13,9 @@ const Analytics = () => {
   const filesData = filesDataResult.filesData;
   const [users] = useGetAllUsers();
   const filterLocalStoreData = filesData?.filter(
+    (item) => item.owner.store === "Local"
+  );
+  const filterTrushStoreData = filesData?.filter(
     (item) => item.owner.store === "Trush"
   );
   // console.log(users?.length);
@@ -24,17 +27,17 @@ const Analytics = () => {
     {
       id: 1,
       icon: <LuFileSpreadsheet />,
-      number: filesData?.length,
+      number: filterLocalStoreData?.length,
       title: "Total Files",
-      desc: "totalfiles",
+      desc: "files",
       // details:'total-files'
     },
     {
       id: 2,
       icon: <FaRegTrashAlt />,
-      number: filterLocalStoreData.length,
+      number: filterTrushStoreData?.length,
       title: "Total Trash",
-      desc: "totaltrash",
+      desc: "totaltrushfiles",
     },
     {
       id: 3,
@@ -53,7 +56,7 @@ const Analytics = () => {
         <div className="grid  lg:grid-cols-3 gap-3">
           {adminData.map((item) => (
             <Link
-              href={`/analytics/${item.desc}`}
+              href={`/dashboard/${item.desc}`}
               style={{ boxShadow: "1px 1px 20px #24207b" }}
               key={item?.id}
               className="rounded-md bg-[#090d2b] p-5 space-y-1 flex items-center justify-between"
@@ -72,9 +75,9 @@ const Analytics = () => {
         </div>
       ) : (
         <div className="grid  lg:grid-cols-3 gap-3">
-          {userData.map((item) => (
+          {userData?.map((item) => (
             <Link
-              href={`/analytics/${item.desc}`}
+              href={`/dashboard/${item.desc}`}
               style={{ boxShadow: "1px 1px 20px #24207b" }}
               key={item?.id}
               className="rounded-md bg-[#090d2b] p-5 space-y-1 flex items-center justify-between"

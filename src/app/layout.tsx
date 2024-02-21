@@ -8,7 +8,6 @@ import "./globals.css";
 // Providers
 import ReactTanstackProvider from "../providers/ReactTanstackProvider";
 import AuthProvider from "@/providers/AuthProvider";
-import FilesProvider from "@/providers/FilesProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,9 +26,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body className={inter.className}>
         <div className="min-h-screen">
           <ReactTanstackProvider>
-            <FilesProvider>
-              <AuthProvider>{children}</AuthProvider>
-            </FilesProvider>
+            <AuthProvider>{children}</AuthProvider>
           </ReactTanstackProvider>
         </div>
       </body>
