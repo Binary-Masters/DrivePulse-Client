@@ -1,20 +1,20 @@
-"use client";
-import useGetAllUsers from "@/Hooks/useGetAllUsers";
+
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { getUser } from "../../api/ChatRequest";
 const Conversation = ({ data, currentUser, onlineUsers }) => {
+  // console.log(currentUser);
   const [conversationData, setConversationData] = useState(null);
   useEffect(() => {
     const userId = data?.members.find((id) => id !== currentUser);
-    console.log(userId);
+    // console.log(userId);
     const getUserData = async () => {
       try {
         const { data } = await getUser(userId);
         setConversationData(data);
         console.log(data);
       } catch (err) {
-        console.log(err);
+        console.log("user get data err (conversation page) -->",err);
       }
     };
     getUserData();
