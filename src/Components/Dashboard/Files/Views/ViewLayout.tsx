@@ -36,17 +36,18 @@ export default function ViewLayout({ hookPropObj, view }: ViewLayoutProps) {
 		getLayoutDataByView(view);
 	return (
 		<div className={`${gridClasses} items-center mx-3`}>
-			{filesData?.map((file, index) => (
+			{filesData?.map((file) => (
 				<div
+					key={ file._id }
 					onClick={() =>
 						nodeClickHandler(
 							hookPropObj,
 							file?.type,
-							file?.fullPath
+							file?.fullPath,
+							""
 						)
 					}
 					className="relative cursor-pointer"
-					key={index}
 				>
 					<div className="w-full">
 						{file.contentType.startsWith("image/") ? (
@@ -65,8 +66,8 @@ export default function ViewLayout({ hookPropObj, view }: ViewLayoutProps) {
 						)}
 					</div>
 					<div>
-						<h2 className="text-white">
-							{(file?.name).slice(0, 10)}
+						<h2 className="text-center text-white">
+							{(file?.name)}
 						</h2>
 					</div>
 					<div className="absolute text-xl text-white -right-4 top-4">

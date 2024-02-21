@@ -1,9 +1,9 @@
 import useAuth from "@/Hooks/useAuth";
-import { IoArrowBack } from "react-icons/io5";
 import useStorage from "@/Hooks/useStorage";
 import getFolderPathData from "@/Utils/FolderNavigation/getFolderPathData";
 import { useEffect, useState } from "react";
 import useGetFiles from "@/Hooks/useGetFiles";
+import {useRouter} from "next/navigation";
 
 interface HistoryEntry {
 	currentPath: string;
@@ -16,12 +16,14 @@ const NavigationFolder: React.FC = () => {
 	const { path, setPath } = useStorage();
 	const { user } = useAuth();
 	const { refetchFiles } = useGetFiles();
+	const router = useRouter();
 	const [folderHistoryArr, setFolderHistoryArr] = useState<HistoryEntry[]>(
 		[]
 	);
 
 	const handleClick = (current: string) => {
 		setPath(current);
+		router.push(`/dashboard/files/`)
 		refetchFiles();
 	};
 

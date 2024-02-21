@@ -16,7 +16,7 @@ interface Items {
 }
 const SideNave = () => {
   const pathname = usePathname();
-  const [users, loading, refetch] = useGetAllUsers(); //get user from mongodb
+  const [users] = useGetAllUsers(); //get user from mongodb
   const { user } = useAuth(); //current or loggedin user
   // console.log(user);
   const currentUser = users.find(
@@ -39,7 +39,7 @@ const SideNave = () => {
       id: 3,
       name: "Files",
       icon: <FileUp />,
-      path: "/dashboard/files",
+      path: "/dashboard/files/root",
     },
     {
       id: 4, //Only Admin can see this route
@@ -107,7 +107,7 @@ const SideNave = () => {
       <div className="flex flex-col mt-5 gap-2">
         {currentUser?.type === "admin" ? (
           <>
-            {adminMenuList.map((item, index) => (
+            {adminMenuList.map((item) => (
               <Link
                 href={item?.path}
                 key={item?.id}
@@ -128,7 +128,7 @@ const SideNave = () => {
           </>
         ) : (
           <>
-            {userMenuList.map((item, index) => (
+            {userMenuList.map((item) => (
               <Link
                 href={item?.path}
                 key={item?.id}
@@ -151,7 +151,7 @@ const SideNave = () => {
       </div>
       <hr className="my-5" />
       <div className="flex flex-col gap-2">
-        {anotherMenu.map((item, index) => (
+        {anotherMenu.map((item) => (
           <Link
             href={item?.path}
             key={item?.id}

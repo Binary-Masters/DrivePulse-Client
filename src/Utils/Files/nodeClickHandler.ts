@@ -1,6 +1,10 @@
 import getFolderPathData from "../FolderNavigation/getFolderPathData";
 
-const nodeClickHandler = (hookPropObj: any, type: string, fullPath: string) => {
+const nodeClickHandler = (
+	hookPropObj: any,
+	type: string,
+	fullPath: string,
+) => {
 	const { setPath, refetchFiles, user } = hookPropObj;
 	if (type === "folder") {
 		const { currentPath } = getFolderPathData(fullPath, type, user);

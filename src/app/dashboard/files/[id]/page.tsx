@@ -1,14 +1,12 @@
 import FilesPage from "@/Components/Dashboard/Files/FilesPage";
 import FilesProvider from "@/providers/FilesProvider";
 
-const files = () => {
+export default function Page({ params }: { params: { id: string } }) {
 	return (
 		<div className="min-h-screen gradient1-bg">
 			<FilesProvider>
-				<FilesPage />
+				<FilesPage id={ params.id }/>
 			</FilesProvider>
 		</div>
 	);
 };
-
-export default files;

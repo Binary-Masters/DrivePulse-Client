@@ -3,6 +3,8 @@
 import useAuth from "@/Hooks/useAuth";
 import Swal from "sweetalert2";
 import '../../app/dashboard/profile/profile.css'
+import { TiDelete } from "react-icons/ti";
+import Link from "next/link";
 const ChangePassword = () => {
   const { updateUserPassword, credential } = useAuth();
   const handleChangeSubmit = async (e) => {
@@ -30,12 +32,16 @@ const ChangePassword = () => {
       });
   };
   return (
-    <div className="w-80 h-96 bg-slate-200 rounded-2xl shadow-slate-300">
-      <h1 className=" text-3xl font-bold mt-5 text-center">Change Password</h1>
+    <div className="w-80 h-[400px] bg-slate-200 rounded-2xl shadow-slate-300 relative">
+      <div>
+      <h1 className=" text-3xl font-bold mt-10 text-center">Change Password</h1>
+      <Link href='/dashboard/profile'><button className=" absolute  top-0 right-0  "><TiDelete className="h-10 w-12 mb-6"/></button></Link>
+      </div>
       <form onSubmit={handleChangeSubmit} className="card-body">
         <div className="form-control">
           <label className="label">
             <span className="label-text">Old Password</span>
+            
           </label>
           <input
             type="password"

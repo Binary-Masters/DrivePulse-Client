@@ -10,12 +10,12 @@ import Swal from "sweetalert2";
 import Notification from "@/Components/Dashboard/Files/Notifications/Notification";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 
-
 const DashboardNav = () => {
   
   const [isToggle, setIsToggle] = useState(false);
   // test just 
   const [search, setsearch] = useState('');
+  // console.log(search) 
   const { user, logout } = useAuth();
   // console.log(user.uid);
   const router = useRouter();
@@ -49,18 +49,21 @@ const DashboardNav = () => {
     e.preventDefault();
     console.log(e.target.value);
     const searchText = e.target.value;
+// back to previous page 
+    if(e.target.value === ''){
+      window.history.back();
+       
+    }
+
     setsearch(searchText)
     const userId = user?.uid;
-    // const search = {
-    //   data: {
-    //     searchText,
-    //     userId: user?.uid
-    //   }
-    // }
-    const files = await axiosPublic.get(`/get-search-files?searchText=${searchText}&&userId=${userId}`
+    
+    const files = await axiosPublic.get(
+      `/get-search-files?searchText=${searchText}&&userId=${userId}`
     );
     console.log(files);
   };
+  
 
   // navigate to dashboardProfile
   const navigateToSearch = () => {

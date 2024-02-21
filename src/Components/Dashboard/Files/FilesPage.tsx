@@ -26,15 +26,17 @@ import useGetFiles from "@/Hooks/useGetFiles";
 import useAuth from "@/Hooks/useAuth";
 import { useState } from "react";
 import ViewLayout from "./Views/ViewLayout";
+import { useRouter } from "next/navigation";
 
-const FilesPage: React.FC = () => {
+const FilesPage: React.FC<{ id: string }> = () => {
 	const [view, setView] = useState("list");
 	const [downloadUrl, setDownloadUrl] = useState<string>("");
 	const [fileName, setFileName] = useState<string>("");
 	const axiosPublic = useAxiosPublic();
 	const { user } = useAuth();
 	const { path, setPath, deleteFile } = useStorage();
-	const { filesData, isFilesLoading, refetchFiles } = useGetFiles();
+	const router = useRouter();
+	const { filesData, isFilesLoading, refetchFiles, setId } = useGetFiles();
 
 	// to pass hook props down to plain js utilies
 	const hookPropObj = {
@@ -59,13 +61,13 @@ const FilesPage: React.FC = () => {
 			console.error("Error fetching download URL:", err);
 		}
 	};
-	if (isFilesLoading) {
-		return <Loading />;
-	}
-	const handleIsViewChange = (newView) => {
+	const handleViewChange = (newView) => {
 		setView(newView);
 	};
 
+	if (isFilesLoading) {
+		return <Loading />;
+	}
 	return (
 		<div className="pt-20">
 			<div className="flex items-center justify-between mx-3 my-5">
@@ -73,7 +75,7 @@ const FilesPage: React.FC = () => {
 				<NavigationFolder />
 
 				<div className="flex items-center gap-3">
-					<DropDownView onIsViewChange={handleIsViewChange} />
+					<DropDownView onIsViewChange={handleViewChange} />
 					<FolderButton path={path} />
 					<UploadButton />
 					<Link
@@ -121,13 +123,16 @@ const FilesPage: React.FC = () => {
 									<tr
 										key={_id}
 										// update just hover .
-										onClick={() =>
+										onClick={() => {
 											nodeClickHandler(
 												hookPropObj,
 												type,
-												fullPath
-											)
-										}
+												fullPath,
+											);
+											router.push(
+												`/dashboard/files/${_id}`
+											);
+										}}
 										className="text-white cursor-pointer hover:bg-slate-700"
 									>
 										<td className="pl-5 text-2xl font-medium whitespace-nowrap">
