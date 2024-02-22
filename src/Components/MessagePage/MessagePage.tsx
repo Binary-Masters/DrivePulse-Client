@@ -10,6 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import Image from "next/image";
 import { MdAdd } from "react-icons/md";
+
 const MessagePage = () => {
   const socket = useRef<any>();
   const [userData] = useGetSingleUser();
@@ -33,7 +34,7 @@ const MessagePage = () => {
   }, [sendMessage]);
 
   useEffect(() => {
-    socket.current = io("http://localhost:3002");
+    socket.current = io("https://drive-pulse-socket-server-klg9.vercel.app");
     socket.current.emit("new-user-add", userData?._id);
     socket.current.on("get-users", (users) => {
       setOnlineUsers(users);
@@ -51,13 +52,12 @@ const MessagePage = () => {
   const checkOnlineStatus = (chat)=>{
     const chatMember = chat.members.find(member=>member !== userData?._id);
     const online = onlineUsers.find(user=>user?.userId === chatMember);
-    console.log(online);
     return online ? true : false;
   }
 
   return (
-    <div className="flex  gap-5 px-3">
-      <div style={{backdropFilter:"blur(100px)"}} className="w-[55%] fixed h-[85vh] border-2 border-slate-500 rounded-md p-2 space-y-5 overflow-y-auto">
+    <div className="flex flex-col-reverse md:flex-row  gap-3 px-3">
+      <div style={{backdropFilter:"blur(100px)"}} className="md:w-[70%] h-[85vh] border-2 border-slate-500 rounded-md p-2 space-y-5 overflow-y-auto">
         <ChatBox
           chat={currentChat}
           setSendMessage={setSendMessage}
@@ -65,12 +65,12 @@ const MessagePage = () => {
           receiveMessage={receiveMessage}
         />
       </div>
-      <div style={{backdropFilter:"blur(100px)"}} className="w-[30%] ml-[70%] border-2 border-slate-500 rounded-md p-5">
+      <div style={{backdropFilter:"blur(100px)"}} className="md:w-[30%] border-2 border-slate-500 rounded-md p-5 overflow-x-auto md:overflow-y-auto">
         <div className="flex items-center justify-between px-3">
           <h3 className="text-slate-300 font-medium text-xl">Add Conversation</h3><span><MdAdd className="text-xl font-semibold text-slate-300" /></span>
         </div>
         <hr className="my-3"/>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-row md:flex-col gap-2">
         {chats?.map((chat, i) => (
           <div key={i} onClick={()=>setCurrentChat(chat)}>
             <Conversation data={chat} currentUser={userData._id} online={checkOnlineStatus(chat)}/>
