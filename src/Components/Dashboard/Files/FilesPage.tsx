@@ -20,6 +20,7 @@ import FolderMoreInfo from "@/Components/FolderMorInfo/FolderMoreInfo";
 import { IoCreateOutline } from "react-icons/io5";
 import NodePreview from "./Preview/NodePreview";
 import { StorageContext } from "@/providers/StorageProvider";
+import AllFilesPreview from "./AllFilesPreview";
 
 const FilesPage: React.FC = () => {
 	const [isView, setIsView] = useState("list");
@@ -76,6 +77,16 @@ const FilesPage: React.FC = () => {
 	}
 	const handleIsViewChange = (newView) => {
 		setIsView(newView);
+	};
+
+	// open file preview modal
+	const AllFilePreview = () => {
+		const modalElement = document.getElementById("my_modal_4");
+		if (modalElement) {
+			(modalElement as HTMLDialogElement).showModal();
+		} else {
+			console.error("Modal element not found");
+		}
 	};
 
 	return (
@@ -136,7 +147,7 @@ const FilesPage: React.FC = () => {
 										// update just hover .
 										className="text-white cursor-pointer hover:bg-slate-700"
 									>
-										<td onClick={() =>nodeClickHandler(type, fullPath, thumbnail)} className="pl-5 text-2xl font-medium whitespace-nowrap">
+										<td className="pl-5 text-2xl font-medium whitespace-nowrap">
 											{icons?.map((elem) => {
 												if (
 													elem.contentType ===
@@ -145,11 +156,11 @@ const FilesPage: React.FC = () => {
 													return <elem.icon />;
 											})}
 										</td>
-										<td onClick={() =>nodeClickHandler(type, fullPath, thumbnail)} className="px-6 py-4 ">{name}</td>
-										<td onClick={() =>nodeClickHandler(type, fullPath, thumbnail)} className="px-6 py-4">
+										<td onClick={() => nodeClickHandler(type, fullPath, thumbnail)} className="px-6 py-4 ">{name}</td>
+										<td onClick={() => nodeClickHandler(type, fullPath, thumbnail)} className="px-6 py-4">
 											{timeCreated.slice(0, 10)}
 										</td>
-										<td onClick={() =>nodeClickHandler(type, fullPath, thumbnail)} className="px-6 py-4">
+										<td onClick={() => nodeClickHandler(type, fullPath, thumbnail)} className="px-6 py-4">
 											{(size / 1024 / 1024).toFixed(2)} MB
 										</td>
 										<td className="px-6 py-4">
