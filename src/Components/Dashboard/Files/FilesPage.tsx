@@ -31,7 +31,7 @@ const FilesPage: React.FC = () => {
 	const { filesData, isFilesLoading, refetchFiles } = useGetFiles();
 
 	// This is for File Preview
-	const {getFileURL} = useContext(StorageContext);
+	const { getFileURL } = useContext(StorageContext);
 
 	// Fetching file data for appropriate user
 	const nodeClickHandler = async (type: string, fullPath: string, thumbnail: any) => {
@@ -42,10 +42,10 @@ const FilesPage: React.FC = () => {
 		} else console.log("This is a file");
 
 		// File Preview start here
-		const url=await getFileURL(fullPath);
+		const url = await getFileURL(fullPath);
 		console.log(url);
-		if(url){
-			window.open(url,'_blank');
+		if (url) {
+			window.open(url, '_blank');
 		}
 		// file preview code end
 
@@ -134,12 +134,9 @@ const FilesPage: React.FC = () => {
 									<tr
 										key={_id}
 										// update just hover .
-										onClick={() =>
-											nodeClickHandler(type, fullPath, thumbnail)
-										}
 										className="text-white cursor-pointer hover:bg-slate-700"
 									>
-										<td className="pl-5 text-2xl font-medium whitespace-nowrap">
+										<td onClick={() =>nodeClickHandler(type, fullPath, thumbnail)} className="pl-5 text-2xl font-medium whitespace-nowrap">
 											{icons?.map((elem) => {
 												if (
 													elem.contentType ===
@@ -148,11 +145,11 @@ const FilesPage: React.FC = () => {
 													return <elem.icon />;
 											})}
 										</td>
-										<td className="px-6 py-4 ">{name}</td>
-										<td className="px-6 py-4">
+										<td onClick={() =>nodeClickHandler(type, fullPath, thumbnail)} className="px-6 py-4 ">{name}</td>
+										<td onClick={() =>nodeClickHandler(type, fullPath, thumbnail)} className="px-6 py-4">
 											{timeCreated.slice(0, 10)}
 										</td>
-										<td className="px-6 py-4">
+										<td onClick={() =>nodeClickHandler(type, fullPath, thumbnail)} className="px-6 py-4">
 											{(size / 1024 / 1024).toFixed(2)} MB
 										</td>
 										<td className="px-6 py-4">
@@ -202,13 +199,12 @@ const FilesPage: React.FC = () => {
 				<div className="items-center mx-3 grid grid-rows-4 md:grid-cols-6 lg:grid-cols-10 gap-8">
 					{filesData?.map((file, index) => (
 						<div
-							onClick={() =>
-								nodeClickHandler(file?.type, file?.fullPath, file?.thumbnail)
-							}
 							className="relative cursor-pointer"
 							key={index}
 						>
-							<div className="w-full">
+							<div className="w-full" onClick={() =>
+								nodeClickHandler(file?.type, file?.fullPath, file?.thumbnail)
+							}>
 								{file.contentType.startsWith("image/") ? (
 									<NodePreview
 										thumbnail={file.thumbnail}
@@ -250,13 +246,12 @@ const FilesPage: React.FC = () => {
 				<div className="items-center mx-3 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
 					{filesData?.map((file, index) => (
 						<div
-							onClick={() =>
-								nodeClickHandler(file?.type, file?.fullPath, file?.thumbnail)
-							}
 							className="relative cursor-pointer"
 							key={index}
 						>
-							<div className="w-full">
+							<div className="w-full" onClick={() =>
+								nodeClickHandler(file?.type, file?.fullPath, file?.thumbnail)
+							}>
 								{file.contentType.startsWith("image/") ? (
 									<NodePreview
 										thumbnail={file.thumbnail}
