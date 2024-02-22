@@ -8,13 +8,16 @@ import InputEmoji from "react-input-emoji";
 import toast from "react-hot-toast";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import { FiSend } from "react-icons/fi";
-import Message from "./Message";
+// type defined
+interface Message {
+  text: string;
+}
 const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
   const [userData, setUserData] = useState(null);
-  const axiosPublic = useAxiosPublic()
+  const axiosPublic = useAxiosPublic();
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const scroll = useRef<HTMLDivElement>(null);
+  const scroll = useRef<any>();
   useEffect(() => {
     const userId = chat?.members?.find((id) => id !== currentUser);
     // console.log(userId);
@@ -91,15 +94,14 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
 
   // scroll to last message
   useEffect(() => {
-    scroll.current?.scrollIntoView({ behavior: "smooth" });
+    scroll.current?.scrollIntoView({ behabio: "smooth" });
   }, [messages]);
-
   return (
     <div className="relative">
       {chat ? (
         <div>
           <div>
-            {messages?.map((message) => (
+            {messages?.map((message: any) => (
               <div key={message?._id}>
                 {/* current user message */}
                 {message.senderId === currentUser ? (
@@ -149,7 +151,9 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
           </div>
           {/* sent box */}
           <div className="chat-sender sticky w-full bottom-0">
-            <button className="bg-primary text-white text-xl font-medium py-1 px-2 cursor-pointer rounded">+</button>
+            <button className="bg-primary text-white text-xl font-medium py-1 px-2 cursor-pointer rounded">
+              +
+            </button>
             <InputEmoji value={newMessage} onChange={handleChange} />
             <button
               onClick={handleSend}

@@ -39,6 +39,7 @@
     "react-tilt": "^1.0.2",
     "react-toastify": "^10.0.4",
     "recharts": "^2.11.0",
+    "socket.io": "^4.7.4",
     "socket.io-client": "^4.7.4",
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.10.4",

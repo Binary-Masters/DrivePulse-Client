@@ -13,7 +13,7 @@ const Conversation = ({ data, currentUser,online }) => {
   });
 
   return (
-    <div className=" flex items-center gap-2 cursor-pointer hover:bg-slate-700 p-2 rounded-md">
+    <div className=" flex flex-col md:flex-row items-center gap-2 cursor-pointer hover:bg-slate-700 p-2 rounded-md">
       <div className={`avatar ${online && "online"}`}>
       <div className="w-10 rounded-full border-2 border-primary">
         <Image
@@ -25,8 +25,8 @@ const Conversation = ({ data, currentUser,online }) => {
       </div>
       </div>
       <div>
-      <h3 className="text-slate-200 font-medium">{conversationData?.name || "Unknown"}</h3>
-      <p className="text-slate-400 -mt-2"><small>{online ? "online" : "offline"}</small></p>
+      <h3 className="text-slate-200 font-medium text-[12px] md:text-[18px]">{conversationData?.name || "Unknown"}</h3>
+      <p className="text-slate-400 -mt-2 text-center md:text-start"><small>{online ? "online" : "offline"}</small></p>
       </div>
     </div>
   );
