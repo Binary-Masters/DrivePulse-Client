@@ -1,5 +1,16 @@
 
 import Image from "next/image";
+
+// Message.tsx
+interface Message {
+  _id: string;
+  senderId: string;
+  text: string;
+  createdAt: Date;
+  // Add other properties as needed
+}
+
+
 const Message = () => {
   return (
     <div className="w-full">

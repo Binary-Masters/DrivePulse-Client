@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState,RefObject  } from "react";
 import { MdSend } from "react-icons/md";
 import { getUser, userChats } from "../../api/ChatRequest";
 import { addMessage, getMessages } from "../../api/MessageRequest";
@@ -8,12 +8,13 @@ import InputEmoji from "react-input-emoji";
 import toast from "react-hot-toast";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import { FiSend } from "react-icons/fi";
+import Message from "./Message";
 const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
   const [userData, setUserData] = useState(null);
   const axiosPublic = useAxiosPublic()
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const scroll = useRef()
+  const scroll = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const userId = chat?.members?.find((id) => id !== currentUser);
     // console.log(userId);
@@ -89,16 +90,17 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
   }, [receiveMessage, chat, messages]);
 
   // scroll to last message
-  useEffect(()=>{
-    scroll.current?.scrollIntoView({behabio:"smooth"})
-  },[messages])
+  useEffect(() => {
+    scroll.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   return (
     <div className="relative">
       {chat ? (
         <div>
           <div>
             {messages?.map((message) => (
-              <div  key={message?._id}>
+              <div key={message?._id}>
                 {/* current user message */}
                 {message.senderId === currentUser ? (
                   <div ref={scroll} className="w-full">

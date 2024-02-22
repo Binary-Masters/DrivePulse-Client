@@ -10,12 +10,13 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import Image from "next/image";
 import { MdAdd } from "react-icons/md";
+
 const MessagePage = () => {
   const socket = useRef<any>();
   const [userData] = useGetSingleUser();
   const axiosPublic = useAxiosPublic();
   const [currentChat, setCurrentChat] = useState(null);
-  const [onlineUsers, setOnlineUsers] = useState([]);
+  const [onlineUsers, setOnlineUsers] = useState<{ userId: string }[]>([]);
   const [sendMessage, setSendMessage] = useState(null);
   const [receiveMessage, setReceiveMessage] = useState(null);
 
@@ -33,7 +34,7 @@ const MessagePage = () => {
   }, [sendMessage]);
 
   useEffect(() => {
-    socket.current = io("http://localhost:3002");
+    socket.current = io("https://drive-pulse-socket-server-klg9.vercel.app");
     socket.current.emit("new-user-add", userData?._id);
     socket.current.on("get-users", (users) => {
       setOnlineUsers(users);
