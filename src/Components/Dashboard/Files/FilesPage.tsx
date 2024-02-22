@@ -19,7 +19,9 @@ import FolderMoreInfo from "@/Components/FolderMorInfo/FolderMoreInfo";
 import { IoCreateOutline } from "react-icons/io5";
 import NodePreview from "./Preview/NodePreview";
 import { StorageContext } from "@/providers/StorageProvider";
-import AllFilesPreview from "./AllFilesPreview";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
+import handleDeleteFile from "@/Utils/Files/handleDeleteNode/handleDeleteNode";
 
 const FilesPage: React.FC = () => {
 	const [isView, setIsView] = useState("list");
@@ -29,7 +31,7 @@ const FilesPage: React.FC = () => {
 	const { user } = useAuth();
 	const { path, setPath, deleteFile } = useStorage();
 	const { filesData, isFilesLoading, refetchFiles } = useGetFiles();
-
+	const router = useRouter();
 	// This is for File Preview
 	const { getFileURL } = useContext(StorageContext);
 
@@ -78,21 +80,11 @@ const FilesPage: React.FC = () => {
 		setIsView(newView);
 	};
 
-	// open file preview modal
-	const AllFilePreview = () => {
-		const modalElement = document.getElementById("my_modal_4");
-		if (modalElement) {
-			(modalElement as HTMLDialogElement).showModal();
-		} else {
-			console.error("Modal element not found");
-		}
-	};
-
-  return (
-    <div className="pt-20">
-      <div className="flex items-center justify-between mx-3 my-5">
-        {/* navigate component here */}
-        <NavigationFolder />
+	return (
+		<div className="pt-20">
+			<div className="flex items-center justify-between mx-3 my-5">
+				{/* navigate component here */}
+				<NavigationFolder />
 
 				<div className="flex items-center gap-3">
 					<DropDownView onIsViewChange={handleIsViewChange} />
