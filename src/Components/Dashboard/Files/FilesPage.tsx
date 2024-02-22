@@ -13,15 +13,13 @@ import getFolderPathData from "@/Utils/FolderNavigation/getFolderPathData";
 import useAuth from "@/Hooks/useAuth";
 import handleDeleteFile from "@/Utils/Files/handleDeleteNode/handleDeleteNode";
 import Loading from "@/app/loading";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Link from "next/link";
 import DropDownView from "@/Components/DropDownView/DropDownView";
-import folderIcon from "../../../assests/icons/folder.png";
-import Image from "next/image";
-
 import FolderMoreInfo from "@/Components/FolderMorInfo/FolderMoreInfo";
 import { IoCreateOutline } from "react-icons/io5";
 import NodePreview from "./Preview/NodePreview";
+import { StorageContext } from "@/providers/StorageProvider";
 
 const FilesPage: React.FC = () => {
 	const [isView, setIsView] = useState("list");
@@ -32,14 +30,25 @@ const FilesPage: React.FC = () => {
 	const { path, setPath, deleteFile } = useStorage();
 	const { filesData, isFilesLoading, refetchFiles } = useGetFiles();
 
-	// Fetching file data for appropriate user
+	// This is for File Preview
+	const {getFileURL} = useContext(StorageContext);
 
-	const nodeClickHandler = (type: string, fullPath: string) => {
+	// Fetching file data for appropriate user
+	const nodeClickHandler = async (type: string, fullPath: string, thumbnail: any) => {
 		if (type === "folder") {
 			const { currentPath } = getFolderPathData(fullPath, type, user);
 			setPath(currentPath);
 			refetchFiles();
 		} else console.log("This is a file");
+
+		// File Preview start here
+		const url=await getFileURL(fullPath);
+		console.log(url);
+		if(url){
+			window.open(url,'_blank');
+		}
+		// file preview code end
+
 	};
 
 	// to pass hook props down to plain js utilies
@@ -118,6 +127,7 @@ const FilesPage: React.FC = () => {
 										fullPath,
 										contentType,
 										bucket,
+										thumbnail
 									},
 									i
 								) => (
@@ -125,7 +135,7 @@ const FilesPage: React.FC = () => {
 										key={_id}
 										// update just hover .
 										onClick={() =>
-											nodeClickHandler(type, fullPath)
+											nodeClickHandler(type, fullPath, thumbnail)
 										}
 										className="text-white cursor-pointer hover:bg-slate-700"
 									>
@@ -160,9 +170,8 @@ const FilesPage: React.FC = () => {
 											</button>
 										</td>
 										<td
-											className={`px-6 py-4 ${
-												type === "folder" && "hidden"
-											} items-center`}
+											className={`px-6 py-4 ${type === "folder" && "hidden"
+												} items-center`}
 										>
 											<button
 												onClick={() =>
@@ -194,17 +203,17 @@ const FilesPage: React.FC = () => {
 					{filesData?.map((file, index) => (
 						<div
 							onClick={() =>
-								nodeClickHandler(file?.type, file?.fullPath)
+								nodeClickHandler(file?.type, file?.fullPath, file?.thumbnail)
 							}
 							className="relative cursor-pointer"
 							key={index}
 						>
 							<div className="w-full">
 								{file.contentType.startsWith("image/") ? (
-									<NodePreview 
+									<NodePreview
 										thumbnail={file.thumbnail}
-										height={ 100 }
-										width={ 100 }
+										height={100}
+										width={100}
 									/>
 								) : (
 									icons?.map((elem) => {
@@ -242,17 +251,17 @@ const FilesPage: React.FC = () => {
 					{filesData?.map((file, index) => (
 						<div
 							onClick={() =>
-								nodeClickHandler(file?.type, file?.fullPath)
+								nodeClickHandler(file?.type, file?.fullPath, file?.thumbnail)
 							}
 							className="relative cursor-pointer"
 							key={index}
 						>
 							<div className="w-full">
 								{file.contentType.startsWith("image/") ? (
-									<NodePreview 
+									<NodePreview
 										thumbnail={file.thumbnail}
-										height={ 130 }
-										width={ 130 }
+										height={130}
+										width={130}
 									/>
 								) : (
 									icons?.map((elem) => {

@@ -86,8 +86,8 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
         <div>
        
           <div>
-            {messages?.map((message) => (
-              <div>
+            {messages?.map((message,idx) => (
+              <div key={idx}>
                 {/* current user message */}
                 {message.senderId === currentUser ? (
                   <div className="w-full">
