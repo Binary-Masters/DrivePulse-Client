@@ -12,7 +12,7 @@ const handleDeleteFile = (
 
 	Swal.fire({
 		title: "Are you sure?",
-		text: `You want to delete ${type} ${myPath} `,
+		text: `You Want To Permanent Delete ${type} ${myPath} `,
 		icon: "warning",
 		showCancelButton: true,
 		confirmButtonColor: "#3085d6",
