@@ -5,7 +5,7 @@ import { MdClose } from "react-icons/md";
 import { useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
-import MoreDropDown from "../Dashboard/Files/MoreDropDown";
+import MoreDropDown from "../Dashboard/Files/MoreDropDown/MoreDropDown";
 
 
 const FolderMoreInfo = ({ info, fileName,downloadUrL}) => {

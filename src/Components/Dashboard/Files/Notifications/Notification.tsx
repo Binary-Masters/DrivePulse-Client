@@ -45,7 +45,7 @@ const Notification = () => {
       {open && (
         <ul
           tabIndex={0}
-          className="dropdown-content z-[1] menu p-2 shadow rounded-box w-auto md:w-56 bg-[#010c4f] text-white"
+          className="dropdown-content z-[1] menu p-2 shadow rounded-box w-auto md:w-56 bg-[#010c4f] text-white "
         >
           {
             filterNotify?.length === 0 ? (

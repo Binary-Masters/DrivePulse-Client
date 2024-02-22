@@ -12,7 +12,7 @@ import getFolderPathData from "@/Utils/FolderNavigation/getFolderPathData";
 import icons from "@/Components/Dashboard/Files/icons";
 import handleDeleteFile from "@/Utils/Files/handleDeleteNode/handleDeleteNode";
 import { MdDelete } from "react-icons/md";
-import MoreDropDown from "@/Components/Dashboard/Files/MoreDropDown";
+import MoreDropDown from "@/Components/Dashboard/Files/MoreDropDown/MoreDropDown";
 import "../../profile/profile.css";
 
 

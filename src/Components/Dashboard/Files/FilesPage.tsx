@@ -8,7 +8,7 @@ import icons from "./icons";
 import NavigationFolder from "./Folder/NavigationFolder";
 import useGetFiles from "@/Hooks/useGetFiles";
 import UploadButton from "./UploadButton&Modal/UploadButton";
-import MoreDropDown from "./MoreDropDown";
+import MoreDropDown from "./MoreDropDown/MoreDropDown";
 import getFolderPathData from "@/Utils/FolderNavigation/getFolderPathData";
 import useAuth from "@/Hooks/useAuth";
 import handleDeleteFile from "@/Utils/Files/handleDeleteNode/handleDeleteNode";
@@ -22,6 +22,7 @@ import Image from "next/image";
 import FolderMoreInfo from "@/Components/FolderMorInfo/FolderMoreInfo";
 import { IoCreateOutline } from "react-icons/io5";
 import NodePreview from "./Preview/NodePreview";
+import CreateFile from "./CreateFile/CreateFile";
 
 const FilesPage: React.FC = () => {
 	const [isView, setIsView] = useState("list");
@@ -79,13 +80,7 @@ const FilesPage: React.FC = () => {
 					<DropDownView onIsViewChange={handleIsViewChange} />
 					<FolderButton path={path} />
 					<UploadButton />
-					<Link
-						className="text-xs md:text-[16px]  border-0 btn bg-primary text-white hover:bg-blue-600 transition-all duration-300"
-						href={"/dashboard/create-file"}
-					>
-						<IoCreateOutline className="text-xl " />
-						<span className="hidden md:block">Create File</span>
-					</Link>
+					<CreateFile/>
 				</div>
 			</div>
 			{/* list view */}
