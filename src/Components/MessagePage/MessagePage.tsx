@@ -9,19 +9,22 @@ import { io } from "socket.io-client";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import Image from "next/image";
+import { MdAdd } from "react-icons/md";
 const MessagePage = () => {
   const socket = useRef<any>();
-  const [chats, setChets] = useState([]);
-  console.log(chats);
   const [userData] = useGetSingleUser();
-  const [filterChats, setFilterChats]= useState(null)
-  // console.log(userData);
-  const axiosPublic = useAxiosPublic()
+  const axiosPublic = useAxiosPublic();
   const [currentChat, setCurrentChat] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [sendMessage, setSendMessage] = useState(null);
   const [receiveMessage, setReceiveMessage] = useState(null);
 
+// get chats data with tanstackQuery
+  const {data:chats} = useQuery({
+    queryKey:["chats"],
+    queryFn: () => axiosPublic.get(`/chat/${userData?._id}`).then((response) => response.data)
+  })
+// console.log(chats);
   // send message to socket
   useEffect(() => {
     if (sendMessage !== null) {
@@ -44,37 +47,17 @@ const MessagePage = () => {
     });
   }, []);
 
-  useEffect(() => {
-    const getChats = async () => {
-      try {
-        const { data } = await userChats(userData._id);
-        setChets(data);
-        // console.log(data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getChats();
-  }, [userData]);
-  // console.log(userData);
+  //online and offline user define
+  const checkOnlineStatus = (chat)=>{
+    const chatMember = chat.members.find(member=>member !== userData?._id);
+    const online = onlineUsers.find(user=>user?.userId === chatMember);
+    console.log(online);
+    return online ? true : false;
+  }
 
-  // conversation data
-  useEffect(()=>{
-    chats.map(chat => setFilterChats(chat))
-  },[chats])
-  //  console.log(filterChats);
-  const userId = filterChats?.members.find((id) => id !== userData?._id);
-  console.log("friend id --->", userId)
-
-
-  const { data: conversationData} = useQuery({
-    queryKey: ["conversationData", userId],
-    queryFn: () => axiosPublic.get(`/single-user/${userId}`).then((response) => response.data),
-  });
-  console.log(conversationData);
   return (
     <div className="flex  gap-5 px-3">
-      <div className="w-[55%] fixed h-[85vh] border p-2 space-y-5">
+      <div style={{backdropFilter:"blur(100px)"}} className="w-[55%] fixed h-[85vh] border-2 border-slate-500 rounded-md p-2 space-y-5 overflow-y-auto">
         <ChatBox
           chat={currentChat}
           setSendMessage={setSendMessage}
@@ -82,18 +65,18 @@ const MessagePage = () => {
           receiveMessage={receiveMessage}
         />
       </div>
-      <div className="w-[30%] ml-[70%] border p-5">
-         <div onClick={()=>setCurrentChat(filterChats)} className="avatar flex items-center gap-2 cursor-pointer hover:bg-slate-700 p-2 rounded-md">
-      <div className="w-10 rounded-full">
-        <Image
-          src={conversationData?.photoURL}
-          alt=""
-          width={100}
-          height={100}
-        />
-      </div>
-      <h3 className="text-slate-200 font-medium">{conversationData?.name}</h3>
-    </div>
+      <div style={{backdropFilter:"blur(100px)"}} className="w-[30%] ml-[70%] border-2 border-slate-500 rounded-md p-5">
+        <div className="flex items-center justify-between px-3">
+          <h3 className="text-slate-300 font-medium text-xl">Add Conversation</h3><span><MdAdd className="text-xl font-semibold text-slate-300" /></span>
+        </div>
+        <hr className="my-3"/>
+        <div className="flex flex-col gap-2">
+        {chats?.map((chat, i) => (
+          <div key={i} onClick={()=>setCurrentChat(chat)}>
+            <Conversation data={chat} currentUser={userData._id} online={checkOnlineStatus(chat)}/>
+          </div>
+        ))}
+        </div>
       </div>
     </div>
   );

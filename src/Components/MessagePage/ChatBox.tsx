@@ -1,24 +1,27 @@
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MdSend } from "react-icons/md";
 import { getUser, userChats } from "../../api/ChatRequest";
 import { addMessage, getMessages } from "../../api/MessageRequest";
 import { format } from "timeago.js";
 import InputEmoji from "react-input-emoji";
+import toast from "react-hot-toast";
+import useAxiosPublic from "@/Hooks/useAxiosPublic";
+import { FiSend } from "react-icons/fi";
 const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
   const [userData, setUserData] = useState(null);
-  // console.log(userData);
-  // console.log(receiveMessage);
+  const axiosPublic = useAxiosPublic()
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const scroll = useRef()
   useEffect(() => {
     const userId = chat?.members?.find((id) => id !== currentUser);
-    console.log(userId);
+    // console.log(userId);
     const getUserData = async () => {
       try {
-        if(userId === undefined || !userId) return 
-        const { data } = await getUser(userId);
-        console.log(userId);
+        if (userId === undefined || !userId) return;
+        const { data } = await axiosPublic.get(`/single-user/${userId}`);
+        // console.log(userId);
         setUserData(data);
         // console.log(data);
       } catch (err) {
@@ -29,7 +32,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
       getUserData();
     }
     getUserData();
-  }, [currentUser, chat]);
+  }, [currentUser, chat, axiosPublic]);
   // console.log(conversations);
 
   // feching data for header
@@ -54,18 +57,22 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
 
   const handleSend = async (e) => {
     e.preventDefault();
-    const message = {
-      senderId: currentUser,
-      text: newMessage,
-      chatId: chat?._id,
-    };
-    // send message to databse
-    try {
-      const { data } = await addMessage(message);
-      setMessages([...messages, data]);
-      setNewMessage("");
-    } catch (err) {
-      console.log(err);
+    if (newMessage) {
+      const message = {
+        senderId: currentUser,
+        text: newMessage,
+        chatId: chat?._id,
+      };
+      // send message to databse
+      try {
+        const { data } = await addMessage(message);
+        setMessages([...messages, data]);
+        setNewMessage("");
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      return toast.error("Can't send empty message !");
     }
   };
   // send message socket server
@@ -75,22 +82,26 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
   }, [chat?.members, currentUser, messages, setSendMessage]);
 
   // receind message
-  useEffect(()=>{
-    if(receiveMessage !== null && receiveMessage?.chatId === chat._id){
-      setMessages([...messages,receiveMessage])
+  useEffect(() => {
+    if (receiveMessage !== null && receiveMessage?.chatId === chat._id) {
+      setMessages([...messages, receiveMessage]);
     }
-  },[receiveMessage, chat, messages])
+  }, [receiveMessage, chat, messages]);
+
+  // scroll to last message
+  useEffect(()=>{
+    scroll.current?.scrollIntoView({behabio:"smooth"})
+  },[messages])
   return (
-    <div className="">
+    <div className="relative">
       {chat ? (
         <div>
-       
           <div>
             {messages?.map((message) => (
-              <div>
+              <div  key={message?._id}>
                 {/* current user message */}
                 {message.senderId === currentUser ? (
-                  <div className="w-full">
+                  <div ref={scroll} className="w-full">
                     <div className="flex items-center gap-3 space-y-3">
                       <figure>
                         <Image
@@ -111,7 +122,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
                   </div>
                 ) : (
                   // other user message
-                  <div className="w-full">
+                  <div ref={scroll} className="w-full">
                     <div className="flex justify-end  items-center gap-3 space-y-3">
                       <div className="bg-gray-400 text-white p-2 rounded-t-md rounded-l-md">
                         {message?.text}
@@ -135,13 +146,13 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
             ))}
           </div>
           {/* sent box */}
-          <div className="chat-sender absolute w-[98%] bottom-0">
-            <div>+</div>
+          <div className="chat-sender sticky w-full bottom-0">
+            <button className="bg-primary text-white text-xl font-medium py-1 px-2 cursor-pointer rounded">+</button>
             <InputEmoji value={newMessage} onChange={handleChange} />
             <button
               onClick={handleSend}
-              className="send-button btn py-3 hover:bg-blue-600  cursor-pointer bg-primary rounded text-[18px] text-white">
-              Send <MdSend />
+              className=" my-2 px-5 py-2 flex items-center gap-1 hover:bg-blue-600  cursor-pointer bg-primary rounded text-[18px] text-white">
+              Send <FiSend />
             </button>
             <input type="file" name="" id="" style={{ display: "none" }} />
           </div>

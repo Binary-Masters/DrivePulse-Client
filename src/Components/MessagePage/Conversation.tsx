@@ -2,26 +2,20 @@ import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 
-const Conversation = ({ data, currentUser, onlineUsers }) => {
+const Conversation = ({ data, currentUser,online }) => {
   const axiosPublic = useAxiosPublic();
-  console.log("user online-->", onlineUsers);
-  console.log("conversation data--->", data);
-  console.log("current user id ---> ", currentUser);
 
-  
+  // find conversation member with id then get data
   const userId = data?.members.find((id) => id !== currentUser);
-  console.log("friend id --->", userId)
-
   const { data: conversationData} = useQuery({
     queryKey: ["conversationData", userId],
     queryFn: () => axiosPublic.get(`/single-user/${userId}`).then((response) => response.data),
   });
 
-  console.log(conversationData);
-
   return (
-    <div className="avatar flex items-center gap-2 cursor-pointer hover:bg-slate-700 p-2 rounded-md">
-      <div className="w-10 rounded-full">
+    <div className=" flex items-center gap-2 cursor-pointer hover:bg-slate-700 p-2 rounded-md">
+      <div className={`avatar ${online && "online"}`}>
+      <div className="w-10 rounded-full border-2 border-primary">
         <Image
           src={conversationData?.photoURL}
           alt=""
@@ -29,7 +23,11 @@ const Conversation = ({ data, currentUser, onlineUsers }) => {
           height={100}
         />
       </div>
-      <h3 className="text-slate-200 font-medium">{conversationData?.name || "Unkown"}</h3>
+      </div>
+      <div>
+      <h3 className="text-slate-200 font-medium">{conversationData?.name || "Unknown"}</h3>
+      <p className="text-slate-400 -mt-2"><small>{online ? "online" : "offline"}</small></p>
+      </div>
     </div>
   );
 };
