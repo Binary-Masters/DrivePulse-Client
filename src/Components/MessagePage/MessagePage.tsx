@@ -6,11 +6,17 @@ import Conversation from "./Conversation";
 import useGetSingleUser from "@/Hooks/useGetSingleUser";
 import { userChats } from "@/api/ChatRequest";
 import { io } from "socket.io-client";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosPublic from "@/Hooks/useAxiosPublic";
+import Image from "next/image";
 const MessagePage = () => {
   const socket = useRef<any>();
   const [chats, setChets] = useState([]);
+  console.log(chats);
   const [userData] = useGetSingleUser();
+  const [filterChats, setFilterChats]= useState(null)
   // console.log(userData);
+  const axiosPublic = useAxiosPublic()
   const [currentChat, setCurrentChat] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [sendMessage, setSendMessage] = useState(null);
@@ -51,6 +57,21 @@ const MessagePage = () => {
     getChats();
   }, [userData]);
   // console.log(userData);
+
+  // conversation data
+  useEffect(()=>{
+    chats.map(chat => setFilterChats(chat))
+  },[chats])
+  //  console.log(filterChats);
+  const userId = filterChats?.members.find((id) => id !== userData?._id);
+  console.log("friend id --->", userId)
+
+
+  const { data: conversationData} = useQuery({
+    queryKey: ["conversationData", userId],
+    queryFn: () => axiosPublic.get(`/single-user/${userId}`).then((response) => response.data),
+  });
+  console.log(conversationData);
   return (
     <div className="flex  gap-5 px-3">
       <div className="w-[55%] fixed h-[85vh] border p-2 space-y-5">
@@ -62,15 +83,17 @@ const MessagePage = () => {
         />
       </div>
       <div className="w-[30%] ml-[70%] border p-5">
-        {chats.map((chat,i) => (
-          <div key={i + 1} onClick={() => setCurrentChat(chat)}>
-            <Conversation
-              onlineUsers={onlineUsers}
-              data={chat}
-              currentUser={userData._id}
-            />
-          </div>
-        ))}
+         <div onClick={()=>setCurrentChat(filterChats)} className="avatar flex items-center gap-2 cursor-pointer hover:bg-slate-700 p-2 rounded-md">
+      <div className="w-10 rounded-full">
+        <Image
+          src={conversationData?.photoURL}
+          alt=""
+          width={100}
+          height={100}
+        />
+      </div>
+      <h3 className="text-slate-200 font-medium">{conversationData?.name}</h3>
+    </div>
       </div>
     </div>
   );

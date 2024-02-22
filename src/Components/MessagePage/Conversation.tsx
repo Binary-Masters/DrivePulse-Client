@@ -29,7 +29,7 @@ const Conversation = ({ data, currentUser, onlineUsers }) => {
           height={100}
         />
       </div>
-      <h3 className="text-slate-200 font-medium">{conversationData?.name}</h3>
+      <h3 className="text-slate-200 font-medium">{conversationData?.name || "Unkown"}</h3>
     </div>
   );
 };
