@@ -15,6 +15,7 @@ import { MdDelete } from "react-icons/md";
 import MoreDropDown from "@/Components/Dashboard/Files/MoreDropDown";
 import "../../profile/profile.css";
 
+
 interface FilesearchProps {
   params: {
     filesearch: string;
@@ -32,8 +33,8 @@ const Filesearch: React.FC<FilesearchProps> = ({ params, searchParams }) => {
   const [userData, loadings, refetch] = useGetfiles(searchParams.search);
   //     const [{name}]=userData
 
-  //    console.log(name)
-  console.log(userData);
+ 
+  // console.log(userData);
 
   const [downloadUrl, setDownloadUrl] = useState<string>("");
   const [fileName, setFileName] = useState<string>("");
@@ -50,6 +51,7 @@ const Filesearch: React.FC<FilesearchProps> = ({ params, searchParams }) => {
     } else console.log("This is a file");
   };
 
+  
   // to pass hook props down to plain js utilies
   const hookPropObj = {
     user,

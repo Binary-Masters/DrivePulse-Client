@@ -11,6 +11,7 @@ interface FileData {
     uid: string;
     email: string;
     status: number;
+    store: string;
   };
   type: string;
   bucket: string;
@@ -28,28 +29,26 @@ export const FilesContext = createContext<any>({});
 export default function FilesProvider({
   children,
 }): ReactElement<{ children: ReactNode }> {
-	// Fetch all user files using uid
-	const axiosPublic = useAxiosPublic();
-	const { path } = useStorage();
-	const { user } = useAuth();
-	const {
-		data: filesData = [],
-		isLoading: isFilesLoading,
-		refetch: refetchFiles,
-	} = useQuery({
-		queryKey: ["files", path],
-		queryFn: async () => {
-			const { data } = await axiosPublic.get(
-				`/files?rootdir=${user?.uid}&path=${path}`
-			);
-			return data; 
-		},
-	});
+  // Fetch all user files using uid
+  const axiosPublic = useAxiosPublic();
+  const { path } = useStorage();
+  const { user } = useAuth();
+  const {
+    data: filesData = [],
+    isLoading: isFilesLoading,
+    refetch: refetchFiles,
+  } = useQuery({
+    queryKey: ["files", path],
+    queryFn: async () => {
+      const { data } = await axiosPublic.get(
+        `/files?rootdir=${user?.uid}&path=${path}`
+      );
+      return data;
+    },
+  });
 
-	const filesInfo = { filesData, isFilesLoading, refetchFiles };
-	return (
-		<FilesContext.Provider value={filesInfo}>
-			{children}
-		</FilesContext.Provider>
-	);
+  const filesInfo = { filesData, isFilesLoading, refetchFiles };
+  return (
+    <FilesContext.Provider value={filesInfo}>{children}</FilesContext.Provider>
+  );
 }

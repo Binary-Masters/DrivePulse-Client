@@ -11,7 +11,6 @@ import UploadButton from "./UploadButton&Modal/UploadButton";
 import MoreDropDown from "./MoreDropDown";
 import getFolderPathData from "@/Utils/FolderNavigation/getFolderPathData";
 import useAuth from "@/Hooks/useAuth";
-import handleDeleteFile from "@/Utils/Files/handleDeleteNode/handleDeleteNode";
 import Loading from "@/app/loading";
 import { useContext, useState } from "react";
 import Link from "next/link";
@@ -89,11 +88,11 @@ const FilesPage: React.FC = () => {
 		}
 	};
 
-	return (
-		<div className="pt-20">
-			<div className="flex items-center justify-between mx-3 my-5">
-				{/* navigate component here */}
-				<NavigationFolder />
+  return (
+    <div className="pt-20">
+      <div className="flex items-center justify-between mx-3 my-5">
+        {/* navigate component here */}
+        <NavigationFolder />
 
 				<div className="flex items-center gap-3">
 					<DropDownView onIsViewChange={handleIsViewChange} />
