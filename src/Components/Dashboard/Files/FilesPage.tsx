@@ -23,6 +23,7 @@ import FolderMoreInfo from "@/Components/FolderMorInfo/FolderMoreInfo";
 import { IoCreateOutline } from "react-icons/io5";
 import NodePreview from "./Preview/NodePreview";
 import CreateFile from "./CreateFile/CreateFile";
+import { useRouter } from "next/navigation";
 
 const FilesPage: React.FC = () => {
 	const [isView, setIsView] = useState("list");
@@ -32,15 +33,20 @@ const FilesPage: React.FC = () => {
 	const { user } = useAuth();
 	const { path, setPath, deleteFile } = useStorage();
 	const { filesData, isFilesLoading, refetchFiles } = useGetFiles();
+	const router = useRouter()
+
+
 
 	// Fetching file data for appropriate user
-
-	const nodeClickHandler = (type: string, fullPath: string) => {
+	const nodeClickHandler = (type: string, fullPath: string, contentType, _id, name) => {
 		if (type === "folder") {
 			const { currentPath } = getFolderPathData(fullPath, type, user);
 			setPath(currentPath);
 			refetchFiles();
-		} else console.log("This is a file");
+		}
+		else if(contentType === "text/plain"){
+			router.push(`/dashboard/text-editor/${_id}?name=${name}`)
+		}else console.log('this is file')
 	};
 
 	// to pass hook props down to plain js utilies
@@ -80,7 +86,7 @@ const FilesPage: React.FC = () => {
 					<DropDownView onIsViewChange={handleIsViewChange} />
 					<FolderButton path={path} />
 					<UploadButton />
-					<CreateFile/>
+					{/* <CreateFile /> */}
 				</div>
 			</div>
 			{/* list view */}
@@ -118,9 +124,10 @@ const FilesPage: React.FC = () => {
 								) => (
 									<tr
 										key={_id}
+
 										// update just hover .
 										onClick={() =>
-											nodeClickHandler(type, fullPath)
+											nodeClickHandler(type, fullPath, contentType, _id, name)
 										}
 										className="text-white cursor-pointer hover:bg-slate-700"
 									>
@@ -189,7 +196,7 @@ const FilesPage: React.FC = () => {
 					{filesData?.map((file, index) => (
 						<div
 							onClick={() =>
-								nodeClickHandler(file?.type, file?.fullPath)
+								nodeClickHandler(file?.type, file?.fullPath, file?.contentType,file?. _id, file?.name)
 							}
 							className="relative cursor-pointer"
 							key={index}
@@ -236,7 +243,7 @@ const FilesPage: React.FC = () => {
 					{filesData?.map((file, index) => (
 						<div
 							onClick={() =>
-								nodeClickHandler(file?.type, file?.fullPath)
+								nodeClickHandler(file?.type, file?.fullPath, file?.contentType,file?. _id, file?.name)
 							}
 							className="relative cursor-pointer"
 							key={index}

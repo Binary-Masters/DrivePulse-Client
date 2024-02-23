@@ -21,6 +21,7 @@ const CreateFile: React.FC<FolderModalProps> = ({onSubmit}) => {
 
     const handleFormSubmit = (data: { folderName: string }) => {
         onSubmit(data);
+        console.log(data)
     };
 
     // modal open and close
@@ -104,8 +105,6 @@ const CreateFile: React.FC<FolderModalProps> = ({onSubmit}) => {
                         </form>
 
                     </div>
-
-                <Link  href={"/dashboard/create-file"}>go to file</Link>
                 </div>
             </dialog>
         </div>
