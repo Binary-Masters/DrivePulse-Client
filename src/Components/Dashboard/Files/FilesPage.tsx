@@ -21,6 +21,7 @@ import NodePreview from "./Preview/NodePreview";
 import { StorageContext } from "@/providers/StorageProvider";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+import handleStoreChangeFileTrash from "@/Utils/Files/handelChangeFileLocation/handleStoreChangeFileTrash";
 
 const FilesPage: React.FC = () => {
   const [isView, setIsView] = useState("list");
@@ -59,40 +60,13 @@ const FilesPage: React.FC = () => {
   };
 
   // to pass hook props down to plain js utilies
-  const handleDeleteFile = (fullPath, id) => {
-    const filePath = fullPath.split("/");
-    const myPath = filePath[filePath.length - 1];
-    Swal.fire({
-      title: "Are you sure?",
-      text: `You want to delete ${myPath} `,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axiosPublic
-          .patch(`/store-file?id=${id}`, { store: "Trush" })
-          .then(() => {
-            refetchFiles();
-            Swal.fire({
-              title: `${myPath} has been deleted`,
-              text: `Want To Go Trush Page`,
-              icon: "success",
-              showCancelButton: true,
-              confirmButtonColor: "#3085d6",
-              cancelButtonColor: "#d33",
-              confirmButtonText: "Yes, Go!",
-            }).then((result) => {
-              if (result.isConfirmed) {
-                router.push("/dashboard/totaltrushfiles");
-              }
-            });
-          })
-          .catch();
-      }
-    });
+  const hookPropObj = {
+    user,
+    router,
+    setPath,
+    deleteFile,
+    axiosInstance: axiosPublic,
+    refetchFiles,
   };
 
   const handelShowModal = async (fullPath) => {
@@ -204,7 +178,9 @@ const FilesPage: React.FC = () => {
                     <td className="px-6 py-4">
                       <button
                         className={`text-3xl font-medium text-red-600  dark:text-red-500 hover:font-bold`}
-                        onClick={() => handleDeleteFile(fullPath, _id)}
+                        onClick={() =>
+                          handleStoreChangeFileTrash(hookPropObj, fullPath, _id)
+                        }
                       >
                         <MdDelete />
                       </button>
