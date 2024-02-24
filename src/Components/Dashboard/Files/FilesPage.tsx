@@ -35,13 +35,58 @@ const FilesPage: React.FC = () => {
 	// This is for File Preview
 	const { getFileURL } = useContext(StorageContext);
 
-	// Fetching file data for appropriate user
-	const nodeClickHandler = async (type: string, fullPath: string, thumbnail: any) => {
-		if (type === "folder") {
-			const { currentPath } = getFolderPathData(fullPath, type, user);
-			setPath(currentPath);
-			refetchFiles();
-		} else console.log("This is a file");
+  const handelShowModal = async (fullPath) => {
+    const storage = getStorage();
+    try {
+      const url = await getDownloadURL(ref(storage, fullPath));
+      const filePath = fullPath.split("/");
+      setFileName(filePath[1]);
+      setDownloadUrl(url);
+    } catch (err) {
+      console.error("Error fetching download URL:", err);
+    }
+  };
+  if (isFilesLoading) {
+    return <Loading />;
+  }
+  const handleIsViewChange = (newView) => {
+    setIsView(newView);
+  };
+  const handleDeleteFile = (fullPath, id) => {
+    const filePath = fullPath.split("/");
+    const myPath = filePath[filePath.length - 1];
+    Swal.fire({
+      title: "Are you sure?",
+      text: `You want to delete ${myPath} `,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosPublic
+          .patch(`/store-file?id=${id}`, { store: "Trush" })
+          .then(() => {
+            refetchFiles();
+            Swal.fire({
+              title: `${myPath} has been deleted`,
+              text: `Want To Go Trush Page`,
+              icon: "success",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Yes, Go!",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                router.push("/analytics/totaltrash");
+              }
+            });
+          })
+          .catch();
+      }
+    });
+  };
 
 		// File Preview start here
 		const url = await getFileURL(fullPath);
