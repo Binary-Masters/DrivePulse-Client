@@ -20,7 +20,7 @@ const TrushFiles = () => {
   const router = useRouter();
   console.log(filesData);
   // Fetching file data for appropriate user
-  const filterLocalStoreData = filesData?.filter(
+  const filterTrashStoreData = filesData?.filter(
     (item) => item.owner.store === "Trush"
   );
   const nodeClickHandler = (type: string, fullPath: string) => {
@@ -97,7 +97,7 @@ const TrushFiles = () => {
           </thead>
           <tbody>
             {/* optional chaining update */}
-            {filterLocalStoreData?.map(
+            {filterTrashStoreData?.map(
               ({
                 _id,
                 name,
