@@ -1,30 +1,61 @@
-import Link from 'next/link';
 import React from 'react';
 import { IoCreateOutline } from 'react-icons/io5';
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
+import useAxiosPublic from '@/Hooks/useAxiosPublic';
+import useGetFiles from '@/Hooks/useGetFiles';
+import useAuth from '@/Hooks/useAuth';
+import Swal from 'sweetalert2';
 
-interface FolderModalProps {
-	onSubmit: (data: { folderName: string }) => void;
-}
 type FormData = {
-	folderName: string;
+    fileName: string;
 };
 
-const CreateFile: React.FC<FolderModalProps> = ({onSubmit}) => {
+const CreateFile = () => {
+    const axiosPublic = useAxiosPublic();
+    const { refetchFiles, filesData } = useGetFiles();
+    const { user } = useAuth();
 
-    // react hook form
     const {
         register,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm<FormData>();
 
-    const handleFormSubmit = (data: { folderName: string }) => {
-        onSubmit(data);
-        console.log(data)
+    const onSubmit = async (data: { fileName: string }) => {
+        const name = data.fileName;
+        const fileExtension = name.slice(((name.lastIndexOf('.') - 1) >>> 0) + 2);
+
+        if (fileExtension.toLowerCase() === 'txt') {
+            const folderMetadata = {
+                checksum: '',
+                type: 'file',
+                owner: { uid: user?.uid, email: user?.email },
+                contentType: 'text/plain',
+                bucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
+                name: data.fileName,
+                size: 0,
+            };
+            console.log(user?.email)
+            console.log(folderMetadata);
+            try {
+                await axiosPublic.post('/files', folderMetadata);
+                refetchFiles();
+                closeModal();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        else closeModal()
+        Swal.fire({
+            position: "top",
+            icon: "warning",
+            title: `${data.fileName} is not (.txt) file`,
+            showConfirmButton: false,
+            timer: 1200,
+        });
     };
 
-    // modal open and close
     const openModal = () => {
         const modalElement = document.getElementById('my_modal_7');
         if (modalElement) {
@@ -32,60 +63,56 @@ const CreateFile: React.FC<FolderModalProps> = ({onSubmit}) => {
         } else {
             console.error('Modal element not found');
         }
-    }
+    };
+
     const closeModal = () => {
         const modalElement = document.getElementById('my_modal_7');
         if (modalElement) {
             (modalElement as HTMLDialogElement).close();
+            reset(); // Reset form on modal close
         }
     };
 
-    // key press features
-
     const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === "Enter") {
-            handleSubmit(handleFormSubmit)();
+        if (event.key === 'Enter') {
+            handleSubmit(onSubmit)();
         }
     };
 
     return (
         <div>
-            <button onClick={openModal}
-                className="text-xs md:text-[16px]  border-0 btn bg-primary text-white hover:bg-blue-600 transition-all duration-300"
+            <button
+                onClick={openModal}
+                className="text-xs md:text-[16px] border-0 btn bg-primary text-white hover:bg-blue-600 transition-all duration-300"
             >
                 <IoCreateOutline className="text-xl " />
                 <span className="hidden md:block">Create File</span>
             </button>
 
-            {/* Modal */}
             <dialog id="my_modal_7" className="modal text-black max-w-sm mx-auto">
                 <div className="modal-box bg-gradient-to-br from-[#0c2e52df] to-[#051c34] shadow shadow-sky-600">
                     <form method="dialog">
-                        <button className="btn btn-sm btn-circle text-white btn-ghost absolute right-2 top-2" onClick={closeModal}>
+                        <button
+                            className="btn btn-sm btn-circle text-white btn-ghost absolute right-2 top-2"
+                            onClick={closeModal}
+                        >
                             ✕
                         </button>
                     </form>
                     <div>
-                        <form
-                            onSubmit={handleSubmit(handleFormSubmit)}
-                            className="z-10 space-y-2 "
-                        >
+                        <form onSubmit={handleSubmit(onSubmit)} className="z-10 space-y-2 ">
                             <label className="label">
-                                <span className="text-xl font-medium label-text text-white">
-                                    File Name
-                                </span>
+                                <span className="text-xl font-medium label-text text-white">File Name</span>
                             </label>
                             <input
-                                placeholder="exp: index.html"
+                                placeholder="exp: index.txt"
                                 className="inline-block w-full input input-bordered "
                                 type="text"
-                                {...register("folderName", { required: true })}
+                                {...register('fileName', { required: true })}
                                 onKeyPress={handleKeyPress}
                             />
-                            {errors.folderName && (
-                                <span className="text-sm text-red-400">
-                                    This field is required
-                                </span>
+                            {errors.fileName && (
+                                <span className="text-sm text-red-400">This field is required</span>
                             )}
 
                             <div className="flex justify-end gap-5">
@@ -103,7 +130,6 @@ const CreateFile: React.FC<FolderModalProps> = ({onSubmit}) => {
                                 </button>
                             </div>
                         </form>
-
                     </div>
                 </div>
             </dialog>

@@ -15,7 +15,6 @@ const Notification = () => {
   const { filesData, isFilesLoading, refetchFiles } = useGetFiles();
   const filterNotify = filesData.filter((item) => item.owner.status === 0);
 
-  console.log(filterNotify.length)
   const handelSeenNotifyFiles = () => {
     setOpen(false);
     axiosPublic.patch(`/notify?uid=${user?.uid}`).then().catch();

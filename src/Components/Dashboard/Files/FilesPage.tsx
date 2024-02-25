@@ -86,7 +86,7 @@ const FilesPage: React.FC = () => {
 					<DropDownView onIsViewChange={handleIsViewChange} />
 					<FolderButton path={path} />
 					<UploadButton />
-					{/* <CreateFile /> */}
+					<CreateFile />
 				</div>
 			</div>
 			{/* list view */}
