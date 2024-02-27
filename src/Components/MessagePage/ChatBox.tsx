@@ -92,6 +92,18 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
     scroll.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+
+  // press enter button and send message
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    // console.log('Key pressed:', event.key);
+    if (event.key === 'Enter') {
+      event.preventDefault(); // Prevent default behavior of Enter key
+      handleSend(event); // Call handleSend function
+    }
+  };
+  
+  
+
   return (
     <div className="relative">
       {chat ? (
@@ -150,13 +162,13 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
             <button className="bg-primary text-white text-xl font-medium py-1 px-2 cursor-pointer rounded">
               +
             </button>
-            <InputEmoji value={newMessage} onChange={handleChange} />
+            <InputEmoji value={newMessage} onChange={handleChange} onKeyDown={handleKeyDown}  />
             <button
               onClick={handleSend}
               className=" my-2 px-5 py-2 flex items-center gap-1 hover:bg-blue-600  cursor-pointer bg-primary rounded text-[18px] text-white">
               Send <FiSend />
             </button>
-            <input type="file" name="" id="" style={{ display: "none" }} />
+            <input   type="file" name="" id="" style={{ display: "none" }} />
           </div>
         </div>
       ) : (

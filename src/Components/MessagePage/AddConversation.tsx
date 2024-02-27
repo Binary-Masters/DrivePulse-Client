@@ -66,7 +66,7 @@ const AddConversation = () => {
         </span>
       </button>
       <dialog id="add-conversation" className="modal">
-        <div style={{backdropFilter:"blur(200px)"}} className="modal-box w-11/12 max-w-3xl relative bg-[#08072f]">
+        <div className="modal-box w-11/12 max-w-3xl relative bg-[#08072f]">
           <div className="modal-action absolute right-3 top-0">
             <form method="dialog">
               {/* if there is a button, it will close the modal */}

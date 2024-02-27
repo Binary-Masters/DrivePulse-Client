@@ -18,7 +18,7 @@ const DashboardNav = () => {
   const [isToggle, setIsToggle] = useState(false);
   // test just 
   const [search, setsearch] = useState('');
-  console.log(search) 
+  // console.log(search) 
   const { user, logout } = useAuth();
   // console.log(user.uid);
   const router = useRouter();
