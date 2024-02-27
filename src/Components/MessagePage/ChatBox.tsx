@@ -8,94 +8,90 @@ import InputEmoji from "react-input-emoji";
 import toast from "react-hot-toast";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import { FiSend } from "react-icons/fi";
+import { useQuery } from "@tanstack/react-query";
 // type defined
 interface Message {
   text: string;
 }
 const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
   const [userData, setUserData] = useState(null);
+  const scroll = useRef<any>();
   const axiosPublic = useAxiosPublic();
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const scroll = useRef<any>();
-  useEffect(() => {
-    const userId = chat?.members?.find((id) => id !== currentUser);
-    // console.log(userId);
-    const getUserData = async () => {
-      try {
-        if (userId === undefined || !userId) return;
-        const { data } = await axiosPublic.get(`/single-user/${userId}`);
-        // console.log(userId);
-        setUserData(data);
-        // console.log(data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    if (chat !== null) {
-      getUserData();
-    }
-    getUserData();
-  }, [currentUser, chat, axiosPublic]);
-  // console.log(conversations);
 
-  // feching data for header
-  useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const { data } = await getMessages(chat._id);
-        setMessages(data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    if (chat !== null) {
-      fetchMessages();
-    }
-  }, [chat]);
-  // console.log(messages);
-
+  //set emoji in message state
   const handleChange = (newMessage) => {
     setNewMessage(newMessage);
   };
 
-  const handleSend = async (e) => {
-    e.preventDefault();
-    if (newMessage) {
-      const message = {
-        senderId: currentUser,
-        text: newMessage,
-        chatId: chat?._id,
-      };
-      // send message to databse
+  //!fetch current user [fetch data in header]
+  useEffect(() => {
+    const userId = chat?.members?.find((id) => id !== currentUser);
+    const getUserData = async () => {
       try {
-        const { data } = await addMessage(message);
-        setMessages([...messages, data]);
-        setNewMessage("");
+        const res = await axiosPublic.get(`/single-user/${userId}`);
+        // console.log(res.data);
+        setUserData(res.data);
       } catch (err) {
         console.log(err);
       }
+    };
+    if (chat !== null) getUserData();
+  }, [currentUser, chat, axiosPublic]);
+
+  // fetch message
+  const { refetch } = useQuery({
+    queryKey: ["messageData", chat?._id],
+    queryFn: async () => {
+      const response = await axiosPublic.get(`/message/${chat?._id}`);
+      setMessages(response.data);
+      return response.data; // Return the data fetched from the server
+    },
+  });
+
+    // Receive Message from parent component
+    useEffect(() => {
+      // console.log("Message Arrived: ", receiveMessage);
+      if (receiveMessage !== null && receiveMessage.chatId === chat._id) {
+        refetch()
+        setMessages([...messages, receiveMessage]);
+      }
+    }, [receiveMessage, chat, messages, refetch]);
+
+  // Send Message
+  const handleSend = async (e) => {
+    // refetch()
+    e.preventDefault();
+    const message = {
+      senderId: currentUser,
+      text: newMessage,
+      chatId: chat._id,
+    };
+
+    if (newMessage) {
+      // send message to socket server
+      const receiverId = chat.members.find((id) => id !== currentUser);
+      setSendMessage({ ...message, receiverId });
+      // send message to database
+      try {
+        const { data } = await addMessage(message);
+        setMessages([...messages, data]);
+        refetch();
+        setNewMessage("");
+      } catch {
+        console.log("error");
+      }
     } else {
-      return toast.error("Can't send empty message !");
+      return toast.error("Can't send empty message!");
     }
   };
-  // send message socket server
-  useEffect(() => {
-    const receiverId = chat?.members?.find((id) => id !== currentUser);
-    setSendMessage({ ...messages, receiverId });
-  }, [chat?.members, currentUser, messages, setSendMessage]);
 
-  // receind message
+  // Always scroll to last Message
   useEffect(() => {
-    if (receiveMessage !== null && receiveMessage?.chatId === chat._id) {
-      setMessages([...messages, receiveMessage]);
-    }
-  }, [receiveMessage, chat, messages]);
-
-  // scroll to last message
-  useEffect(() => {
-    scroll.current?.scrollIntoView({ behabio: "smooth" });
+    scroll.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
   return (
     <div className="relative">
       {chat ? (
@@ -109,7 +105,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
                     <div className="flex items-center gap-3 space-y-3">
                       <figure>
                         <Image
-                          src="https://lh3.googleusercontent.com/a/ACg8ocIapXQ9FG0-pl9NdBLyVNK-SpjeCbxAk2_MLWaPW4zaVkc=s96-c"
+                          src={userData?.photoURL}
                           alt=""
                           className="w-10 h-10 rounded-full"
                           width={100}
@@ -141,7 +137,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
                         />
                       </figure>
                     </div>
-                    <p className="text-slate-300 mr-[50px] text-end">
+                    <p className="text-slate-300 mr-[50px] text-end -mt-2">
                       <small>{format(message?.createdAt)}</small>
                     </p>
                   </div>
