@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import useAuth from "@/Hooks/useAuth";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import { FaTrashRestore } from "react-icons/fa";
+import handleStoreChangeFileRestore from "@/Utils/Files/handelChangeFileLocation/handleStoreChangeFileRestore";
 
 const TrushFiles = () => {
   const axiosPublic = useAxiosPublic();
@@ -18,9 +19,8 @@ const TrushFiles = () => {
   const { path, setPath, deleteFile } = useStorage();
   const { filesData, isFilesLoading, refetchFiles } = useGetFiles();
   const router = useRouter();
-  console.log(filesData);
   // Fetching file data for appropriate user
-  const filterLocalStoreData = filesData?.filter(
+  const filterTrashStoreData = filesData?.filter(
     (item) => item.owner.store === "Trush"
   );
   const nodeClickHandler = (type: string, fullPath: string) => {
@@ -34,47 +34,13 @@ const TrushFiles = () => {
   // to pass hook props down to plain js utilies
   const hookPropObj = {
     user,
+    router,
     setPath,
     deleteFile,
     axiosInstance: axiosPublic,
     refetchFiles,
   };
 
-  const handleStoreChangeFile = (fullPath, id) => {
-    const filePath = fullPath.split("/");
-    const myPath = filePath[filePath.length - 1];
-    Swal.fire({
-      title: "Are you sure?",
-      text: `You want to Restore ${myPath} `,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Restore it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axiosPublic
-          .patch(`/store-file?id=${id}`, { store: "Local" })
-          .then(() => {
-            refetchFiles();
-            Swal.fire({
-              title: `${myPath} has been Restored`,
-              text: `Want To Go Files Page`,
-              icon: "success",
-              showCancelButton: true,
-              confirmButtonColor: "#3085d6",
-              cancelButtonColor: "#d33",
-              confirmButtonText: "Yes, Go!",
-            }).then((result) => {
-              if (result.isConfirmed) {
-                router.push("/dashboard/files");
-              }
-            });
-          })
-          .catch();
-      }
-    });
-  };
   if (isFilesLoading) {
     return <Loading />;
   }
@@ -97,7 +63,7 @@ const TrushFiles = () => {
           </thead>
           <tbody>
             {/* optional chaining update */}
-            {filterLocalStoreData?.map(
+            {filterTrashStoreData?.map(
               ({
                 _id,
                 name,
@@ -140,7 +106,9 @@ const TrushFiles = () => {
                   </td>
                   <td className={`px-6 py-4 items-center`}>
                     <button
-                      onClick={() => handleStoreChangeFile(fullPath, _id)}
+                      onClick={() =>
+                        handleStoreChangeFileRestore(hookPropObj, fullPath, _id)
+                      }
                       className="tooltip tooltip-top text-2xl text-green-500"
                       data-tip="Want To Restore"
                     >
