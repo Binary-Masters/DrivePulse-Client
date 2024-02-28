@@ -19,7 +19,7 @@ interface MoreDropDrownProps {
 	id: string;
 	name: string;
 	refetchFiles: any;
-	type: string;
+	type?: string;
 }
 
 const MoreDropDown: React.FC<MoreDropDrownProps> = ({ fileName, downloadUrl, fullPath, bucket, id, name, refetchFiles, type }) => {
