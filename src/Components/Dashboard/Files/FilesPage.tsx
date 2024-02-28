@@ -33,9 +33,8 @@ const FilesPage: React.FC = () => {
   const { path, setPath, deleteFile } = useStorage();
   const { filesData, isFilesLoading, refetchFiles } = useGetFiles();
   const filterLocalStoreData = filesData?.filter(
-    (item) => item.owner.store === "Local"
+    (item) => item.store === "Local"
   );
-  console.log(filterLocalStoreData);
   const router = useRouter();
   // This is for File Preview
   const { getFileURL } = useContext(StorageContext);
