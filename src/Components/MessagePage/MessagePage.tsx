@@ -34,7 +34,7 @@ const MessagePage = () => {
   }, [sendMessage]);
 
   useEffect(() => {
-    socket.current = io("https://drive-pulse-socket-server-klg9.vercel.app");
+    socket.current = io("https://drive-pulse-server.vercel.app");
     socket.current.emit("new-user-add", userData?._id);
     socket.current.on("get-users", (users) => {
       setOnlineUsers(users);
