@@ -18,8 +18,6 @@ const UploadModal: React.FC = () => {
 	const owner = {
 		email: user.email,
 		uid: user.uid,
-		status: 0,
-		store: "Local",
 	};
 
   const closeModal = () => {
@@ -67,6 +65,7 @@ const UploadModal: React.FC = () => {
 												confirmButtonText: "OK",
 											});
 											refetchFiles();
+											setFile(null);
 										})
 										.catch((err) => console.log(err));
 								});
@@ -76,7 +75,7 @@ const UploadModal: React.FC = () => {
 									icon: "error",
 									confirmButtonText: "OK",
 								}).then(({ isConfirmed }) => {
-									isConfirmed && refetchFiles();
+									isConfirmed && refetchFiles();setFile(null);
 								});
 							}
 						})
@@ -86,6 +85,7 @@ const UploadModal: React.FC = () => {
 								icon: "error",
 								confirmButtonText: "OK",
 							});
+							setFile(null);
 						});
 				});
 			}
