@@ -1,7 +1,14 @@
 "use client";
-import { FileUp, Home, LayoutDashboard, MessageCircleMore, Settings, Upload } from "lucide-react";
+import {
+  FileUp,
+  Home,
+  LayoutDashboard,
+  MessageCircleMore,
+  Settings,
+  Upload,
+} from "lucide-react";
 import { CgProfile } from "react-icons/cg";
-import { FaUsers } from "react-icons/fa";
+import { FaRegTrashAlt, FaUsers } from "react-icons/fa";
 import Image from "next/image";
 import logo from "../../assests/icons/logo.png";
 import Link from "next/link";
@@ -48,20 +55,20 @@ const SideNave = () => {
       path: "/dashboard/files",
     },
     {
-      id: 4, //Only Admin can see this route
+      id: 4,
+      name: "Trash",
+      icon: <FaRegTrashAlt />,
+      path: "/dashboard/totaltrushfiles",
+    },
+    {
+      id: 5, //Only Admin can see this route
       name: "Users-Management",
       icon: <FaUsers />,
       path: "/dashboard/users-management",
     },
-    // {
-    //   id: 5,
-    //   name: "Trash",
-    //   icon: <FaUsers />,
-    //   path: "/dashboard/trash",
-    // },
   ];
 
-  const userMenuList = adminMenuList.filter((route) => route.id < 4); //user menu list before id 4
+  const userMenuList = adminMenuList.filter((route) => route.id < 5); //user menu list before id 4
   // console.log(userMenuList);
 
   const anotherMenu: Items[] = [

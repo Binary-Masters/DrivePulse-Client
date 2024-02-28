@@ -18,8 +18,6 @@ const UploadForm: React.FC = () => {
   const owner = {
     uid: user.uid,
     email: user.email,
-    status: 0,
-    store:"Local"
   };
 
   const handleFileUpload = () => {
@@ -59,6 +57,7 @@ const UploadForm: React.FC = () => {
                         confirmButtonText: "OK",
                       });
                       refetchFiles();
+                      setFile(null);
                     })
                     .catch((err) => console.log(err));
                 });
@@ -68,6 +67,7 @@ const UploadForm: React.FC = () => {
                   icon: "error",
                   confirmButtonText: "OK",
                 });
+                setFile(null);
               }
             })
             .catch((err) => {
@@ -76,6 +76,7 @@ const UploadForm: React.FC = () => {
                 icon: "error",
                 confirmButtonText: "OK",
               });
+              setFile(null);
             });
         });
       }

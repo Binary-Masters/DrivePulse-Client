@@ -44,25 +44,25 @@ const EditTextFile = ({ params }) => {
     const handleSave = async () => {
         console.log('fileContent before save:', fileContent);
 
-    const storage = getStorage();
-    const fileRef = ref(storage, findData?.fullPath);
-    
+        const storage = getStorage();
+        const fileRef = ref(storage, findData?.fullPath);
+
         try {
             await uploadFile(fileRef, fileContent);
             console.log('fileContent after save:', fileContent);
-    
+
             await updateMetadata(fileRef, {
                 customMetadata: {
                     lastModified: new Date().toISOString(),
                 },
             });
-    
+
             console.log('File saved successfully!');
         } catch (error) {
             console.error('Error saving file:', error);
         }
     };
-    
+
     console.log('fileContent text', fileContent)
 
     return (
@@ -79,8 +79,8 @@ const EditTextFile = ({ params }) => {
                 {loading ? (
                     <LoadingAnimation />
                 ) : (
-                    // <TextEditor fileContent={fileContent}  />
-                    <ReactQuill theme="snow" value={fileContent} onChange={setFileContent} />
+                    <TextEditor initialContent={fileContent} />
+                    // <ReactQuill theme="snow" value={fileContent} onChange={setFileContent} />
                 )}
             </div>
         </section>

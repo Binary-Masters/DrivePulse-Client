@@ -5,6 +5,7 @@ import useAxiosPublic from '@/Hooks/useAxiosPublic';
 import useGetFiles from '@/Hooks/useGetFiles';
 import useAuth from '@/Hooks/useAuth';
 import Swal from 'sweetalert2';
+import useStorage from '@/Hooks/useStorage';
 
 type FormData = {
     fileName: string;
@@ -14,6 +15,7 @@ const CreateFile = () => {
     const axiosPublic = useAxiosPublic();
     const { refetchFiles, filesData } = useGetFiles();
     const { user } = useAuth();
+    const {path} = useStorage()
 
     const {
         register,
@@ -25,35 +27,69 @@ const CreateFile = () => {
     const onSubmit = async (data: { fileName: string }) => {
         const name = data.fileName;
         const fileExtension = name.slice(((name.lastIndexOf('.') - 1) >>> 0) + 2);
-
-        if (fileExtension.toLowerCase() === 'txt') {
-            const folderMetadata = {
-                checksum: '',
-                type: 'file',
-                owner: { uid: user?.uid, email: user?.email },
-                contentType: 'text/plain',
-                bucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
-                name: data.fileName,
-                size: 0,
-            };
-            console.log(user?.email)
-            console.log(folderMetadata);
-            try {
-                await axiosPublic.post('/files', folderMetadata);
-                refetchFiles();
-                closeModal();
-            } catch (err) {
-                console.error(err);
-            }
+        console.log(fileExtension)
+        const folderMetadata = {
+            checksum: '',
+            type: 'file',
+            owner: { uid: user?.uid, email: user?.email,  store: "Local" },
+            contentType: 'text/plain',
+            bucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
+            fullPath: `${user.uid + path + name}`,
+            name: data.fileName,
+            size: 0,
+        };
+        console.log(user?.email)
+        console.log(folderMetadata);
+        try {
+            await axiosPublic.post('/files', folderMetadata);
+            refetchFiles();
+            closeModal();
+        } catch (err) {
+            closeModal()
+            Swal.fire({
+                position: "top",
+                icon: "warning",
+                title: `${data.fileName} give error-- ${err}`,
+                showConfirmButton: false,
+                timer: 1500,
+            });
         }
-        else closeModal()
-        Swal.fire({
-            position: "top",
-            icon: "warning",
-            title: `${data.fileName} is not (.txt) file`,
-            showConfirmButton: false,
-            timer: 1200,
-        });
+        // if (fileExtension.toLowerCase() == 'txt') {
+        //     const folderMetadata = {
+        //         checksum: '',
+        //         type: 'file',
+        //         owner: { uid: user?.uid, email: user?.email },
+        //         contentType: 'text/plain',
+        //         bucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
+        //         fullPath: `${user.uid + path + name}`,
+        //         name: data.fileName,
+        //         size: 0,
+        //     };
+        //     console.log(user?.email)
+        //     console.log(folderMetadata);
+        //     try {
+        //         await axiosPublic.post('/files', folderMetadata);
+        //         refetchFiles();
+        //         closeModal();
+        //     } catch (err) {
+        //         closeModal()
+        //         Swal.fire({
+        //             position: "top",
+        //             icon: "warning",
+        //             title: `${data.fileName} give error-- ${err}`,
+        //             showConfirmButton: false,
+        //             timer: 1500,
+        //         });
+        //     }
+        // }
+        // else closeModal()
+        // Swal.fire({
+        //     position: "top",
+        //     icon: "warning",
+        //     title: `${data.fileName} is not (.txt) file`,
+        //     showConfirmButton: false,
+        //     timer: 1200,
+        // });
     };
 
     const openModal = () => {

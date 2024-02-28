@@ -33,9 +33,8 @@ const FilesPage: React.FC = () => {
   const { path, setPath, deleteFile } = useStorage();
   const { filesData, isFilesLoading, refetchFiles } = useGetFiles();
   const filterLocalStoreData = filesData?.filter(
-    (item) => item.owner.store === "Local"
+    (item) => item.store === "Local"
   );
-  console.log(filterLocalStoreData);
   const router = useRouter();
   // This is for File Preview
   const { getFileURL } = useContext(StorageContext);
@@ -56,7 +55,7 @@ const FilesPage: React.FC = () => {
 	} else console.log("This is a file");
 
     // File Preview start here
-    if (type !== 'folder') {
+    if (type !== 'folder' && contentType !== "text/plain" ) {
       const url = await getFileURL(fullPath);
       console.log(url);
       if (url) {
