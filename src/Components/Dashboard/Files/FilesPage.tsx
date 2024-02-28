@@ -12,14 +12,17 @@ import MoreDropDown from "./MoreDropDown";
 import getFolderPathData from "@/Utils/FolderNavigation/getFolderPathData";
 import useAuth from "@/Hooks/useAuth";
 import Loading from "@/app/loading";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Link from "next/link";
 import DropDownView from "@/Components/DropDownView/DropDownView";
-import { useRouter } from "next/navigation";
 import FolderMoreInfo from "@/Components/FolderMorInfo/FolderMoreInfo";
 import { IoCreateOutline } from "react-icons/io5";
 import NodePreview from "./Preview/NodePreview";
+import { StorageContext } from "@/providers/StorageProvider";
 import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
+import handleStoreChangeFileTrash from "@/Utils/Files/handelChangeFileLocation/handleStoreChangeFileTrash";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 const FilesPage: React.FC = () => {
   const [isView, setIsView] = useState("list");
@@ -29,17 +32,45 @@ const FilesPage: React.FC = () => {
   const { user } = useAuth();
   const { path, setPath, deleteFile } = useStorage();
   const { filesData, isFilesLoading, refetchFiles } = useGetFiles();
-  const router = useRouter();
-  // Fetching file data for appropriate user
-  const filterLocalStoreData = filesData.filter(
+  const filterLocalStoreData = filesData?.filter(
     (item) => item.owner.store === "Local"
   );
-  const nodeClickHandler = (type: string, fullPath: string) => {
+  console.log(filterLocalStoreData);
+  const router = useRouter();
+  // This is for File Preview
+  const { getFileURL } = useContext(StorageContext);
+
+  // Fetching file data for appropriate user
+  const nodeClickHandler = async (
+    type: string,
+    fullPath: string,
+    thumbnail: any
+  ) => {
     if (type === "folder") {
       const { currentPath } = getFolderPathData(fullPath, type, user);
       setPath(currentPath);
       refetchFiles();
     } else console.log("This is a file");
+
+    // File Preview start here
+    if (type !== 'folder') {
+      const url = await getFileURL(fullPath);
+      console.log(url);
+      if (url) {
+        window.open(url, "_blank");
+      }
+    }
+    // file preview code end
+  };
+
+  // to pass hook props down to plain js utilies
+  const hookPropObj = {
+    user,
+    router,
+    setPath,
+    deleteFile,
+    axiosInstance: axiosPublic,
+    refetchFiles,
   };
 
   const handelShowModal = async (fullPath) => {
@@ -58,41 +89,6 @@ const FilesPage: React.FC = () => {
   }
   const handleIsViewChange = (newView) => {
     setIsView(newView);
-  };
-  const handleDeleteFile = (fullPath, id) => {
-    const filePath = fullPath.split("/");
-    const myPath = filePath[filePath.length - 1];
-    Swal.fire({
-      title: "Are you sure?",
-      text: `You want to delete ${myPath} `,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axiosPublic
-          .patch(`/store-file?id=${id}`, { store: "Trush" })
-          .then(() => {
-            refetchFiles();
-            Swal.fire({
-              title: `${myPath} has been deleted`,
-              text: `Want To Go Trush Page`,
-              icon: "success",
-              showCancelButton: true,
-              confirmButtonColor: "#3085d6",
-              cancelButtonColor: "#d33",
-              confirmButtonText: "Yes, Go!",
-            }).then((result) => {
-              if (result.isConfirmed) {
-                router.push("/dashboard/totaltrushfiles");
-              }
-            });
-          })
-          .catch();
-      }
-    });
   };
 
   return (
@@ -144,6 +140,7 @@ const FilesPage: React.FC = () => {
                     fullPath,
                     contentType,
                     bucket,
+                    thumbnail,
                   },
                   i
                 ) => (
@@ -152,37 +149,51 @@ const FilesPage: React.FC = () => {
                     // update just hover .
                     className="text-white cursor-pointer hover:bg-slate-700"
                   >
-                    <td
-                      onClick={() => nodeClickHandler(type, fullPath)}
-                      className="pl-5 text-2xl font-medium whitespace-nowrap"
-                    >
+                    <td className="pl-5 text-2xl font-medium whitespace-nowrap">
                       {icons?.map((elem) => {
                         if (elem.contentType === contentType)
                           return <elem.icon />;
                       })}
                     </td>
-                    <td className="px-6 py-4 ">{name}</td>
-                    <td className="px-6 py-4">{timeCreated.slice(0, 10)}</td>
-                    <td className="px-6 py-4">
+                    <td
+                      onClick={() =>
+                        nodeClickHandler(type, fullPath, thumbnail)
+                      }
+                      className="px-6 py-4 "
+                    >
+                      {name}
+                    </td>
+                    <td
+                      onClick={() =>
+                        nodeClickHandler(type, fullPath, thumbnail)
+                      }
+                      className="px-6 py-4"
+                    >
+                      {timeCreated.slice(0, 10)}
+                    </td>
+                    <td
+                      onClick={() =>
+                        nodeClickHandler(type, fullPath, thumbnail)
+                      }
+                      className="px-6 py-4"
+                    >
                       {(size / 1024 / 1024).toFixed(2)} MB
                     </td>
                     <td className="px-6 py-4">
                       <button
                         className={`text-3xl font-medium text-red-600  dark:text-red-500 hover:font-bold`}
-                        onClick={() => handleDeleteFile(fullPath, _id)}
+                        onClick={() =>
+                          handleStoreChangeFileTrash(hookPropObj, fullPath, _id)
+                        }
                       >
                         <MdDelete />
                       </button>
                     </td>
-                    <td
-                      className={`px-6 py-4 ${
-                        type === "folder" && "hidden"
-                      } items-center`}
+                    <button
+                      onClick={() => handelShowModal(fullPath)}
+                      className="text-2xl text-gray-500 "
                     >
-                      <button
-                        onClick={() => handelShowModal(fullPath)}
-                        className="text-2xl text-gray-500 "
-                      >
+                      {
                         <MoreDropDown
                           fileName={name}
                           fullPath={fullPath}
@@ -191,9 +202,10 @@ const FilesPage: React.FC = () => {
                           id={_id}
                           name={name}
                           refetchFiles={refetchFiles}
+                          type={type}
                         />
-                      </button>
-                    </td>
+                      }
+                    </button>
                   </tr>
                 )
               )}
@@ -204,13 +216,14 @@ const FilesPage: React.FC = () => {
       {/* medium icon view */}
       {isView === "medium" && (
         <div className="items-center mx-3 grid grid-rows-4 md:grid-cols-6 lg:grid-cols-10 gap-8">
-          {filesData?.map((file, index) => (
-            <div
-              onClick={() => nodeClickHandler(file?.type, file?.fullPath)}
-              className="relative cursor-pointer"
-              key={index}
-            >
-              <div className="w-full">
+          {filterLocalStoreData?.map((file, index) => (
+            <div className="relative cursor-pointer" key={index}>
+              <div
+                className="w-full"
+                onClick={() =>
+                  nodeClickHandler(file?.type, file?.fullPath, file?.thumbnail)
+                }
+              >
                 {file.contentType.startsWith("image/") ? (
                   <NodePreview
                     thumbnail={file.thumbnail}
@@ -233,6 +246,7 @@ const FilesPage: React.FC = () => {
                   info={file}
                   fileName={fileName}
                   downloadUrL={downloadUrl}
+                  refetchFiles={refetchFiles}
                 />
               </div>
             </div>
@@ -242,13 +256,14 @@ const FilesPage: React.FC = () => {
       {/* large icons view */}
       {isView === "large" && (
         <div className="items-center mx-3 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
-          {filesData?.map((file, index) => (
-            <div
-              onClick={() => nodeClickHandler(file?.type, file?.fullPath)}
-              className="relative cursor-pointer"
-              key={index}
-            >
-              <div className="w-full">
+          {filterLocalStoreData?.map((file, index) => (
+            <div className="relative cursor-pointer" key={index}>
+              <div
+                className="w-full"
+                onClick={() =>
+                  nodeClickHandler(file?.type, file?.fullPath, file?.thumbnail)
+                }
+              >
                 {file.contentType.startsWith("image/") ? (
                   <NodePreview
                     thumbnail={file.thumbnail}
@@ -268,6 +283,7 @@ const FilesPage: React.FC = () => {
                   info={file}
                   fileName={fileName}
                   downloadUrL={downloadUrl}
+                  refetchFiles={refetchFiles}
                 />
               </div>
             </div>
