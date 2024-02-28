@@ -7,8 +7,7 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import MoreDropDown from "../Dashboard/Files/MoreDropDown/MoreDropDown";
 
-
-const FolderMoreInfo = ({ info, fileName,downloadUrL}) => {
+const FolderMoreInfo = ({ info, fileName,downloadUrL, refetchFiles}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   // console.log(info?.length);
   const { _id, name, timeCreated, size, type, fullPath, contentType, bucket } =
@@ -47,10 +46,16 @@ const FolderMoreInfo = ({ info, fileName,downloadUrL}) => {
 
                 <TabPanel className={"ml-20"}>
                   {/* <h2>Any content 1</h2> */}
-                  <MoreDropDown fileName={fileName}
-                  fullPath={fullPath}
-                  downloadUrl={downloadUrL}
-                  bucket={bucket} id={""} name={""} refetchFiles={undefined}/>
+                  <MoreDropDown
+                        fileName={fileName}
+                        fullPath={fullPath}
+                        downloadUrl={downloadUrL}
+                        bucket={bucket}
+                        id={_id}
+                        name={name}
+                        refetchFiles={refetchFiles}
+                        />
+                        
                 </TabPanel>
                 <TabPanel className="text-slate-200 space-y-3">
                   <h3>Name: {name}</h3>

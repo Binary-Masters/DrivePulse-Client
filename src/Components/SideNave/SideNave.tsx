@@ -1,5 +1,5 @@
 "use client";
-import { FileUp, Home, LayoutDashboard, Settings, Upload } from "lucide-react";
+import { FileUp, Home, LayoutDashboard, MessageCircleMore, Settings, Upload } from "lucide-react";
 import { CgProfile } from "react-icons/cg";
 import { FaUsers } from "react-icons/fa";
 import Image from "next/image";
@@ -34,6 +34,12 @@ const SideNave = () => {
       name: "Upload",
       icon: <Upload />,
       path: "/dashboard/upload-file",
+    },
+    {
+      id: 2,
+      name: "Message",
+      icon: <MessageCircleMore />,
+      path: "/dashboard/chat",
     },
     {
       id: 3,

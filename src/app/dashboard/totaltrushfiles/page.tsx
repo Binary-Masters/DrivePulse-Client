@@ -1,14 +1,14 @@
-import FilesPage from "@/Components/Dashboard/Files/FilesPage";
+import TrushFiles from "@/Components/Dashboard/Files/TrushFiles";
 import FilesProvider from "@/providers/FilesProvider";
 
-const files = () => {
+const totaltrushfiles = () => {
   return (
     <div className="min-h-screen gradient1-bg">
       <FilesProvider>
-        <FilesPage />
+        <TrushFiles />
       </FilesProvider>
     </div>
   );
 };
 
-export default files;
+export default totaltrushfiles;
