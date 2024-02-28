@@ -4,21 +4,15 @@ import "./message.css";
 import ChatBox from "./ChatBox";
 import Conversation from "./Conversation";
 import useGetSingleUser from "@/Hooks/useGetSingleUser";
-import { userChats } from "@/api/ChatRequest";
 import { Socket, io } from "socket.io-client";
-import { useQuery } from "@tanstack/react-query";
-import useAxiosPublic from "@/Hooks/useAxiosPublic";
-import Image from "next/image";
-import { MdAdd } from "react-icons/md";
 import AddConversation from "./AddConversation";
 import useChats from "@/Hooks/useChats";
 
 const MessagePage = () => {
   const socket: React.MutableRefObject<Socket | null> = useRef(null);
   const [userData] = useGetSingleUser();
-  const axiosPublic = useAxiosPublic();
   const [currentChat, setCurrentChat] = useState(null);
-  const [onlineUsers, setOnlineUsers] = useState([]);
+  const [onlineUsers, setOnlineUsers] = useState<{ userId: string }[]>([]);
   const [sendMessage, setSendMessage] = useState(null);
   const [receiveMessage, setReceiveMessage] = useState(null);
   const [chats] = useChats()

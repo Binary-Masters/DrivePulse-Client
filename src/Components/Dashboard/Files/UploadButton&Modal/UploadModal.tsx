@@ -19,14 +19,15 @@ const UploadModal: React.FC = () => {
 		email: user.email,
 		uid: user.uid,
 		status: 0,
+		store: "Local",
 	};
 
-	const closeModal = () => {
-		const modalElement = document.getElementById("my_modal_1");
-		if (modalElement) {
-			(modalElement as HTMLDialogElement).close();
-		}
-	};
+  const closeModal = () => {
+    const modalElement = document.getElementById("my_modal_1");
+    if (modalElement) {
+      (modalElement as HTMLDialogElement).close();
+    }
+  };
 
 	const handleFileUpload = () => {
 		try {
