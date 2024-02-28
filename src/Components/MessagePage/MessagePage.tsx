@@ -20,12 +20,15 @@ const MessagePage = () => {
   const [sendMessage, setSendMessage] = useState(null);
   const [receiveMessage, setReceiveMessage] = useState(null);
 
-// get chats data with tanstackQuery
-  const {data:chats} = useQuery({
-    queryKey:["chats"],
-    queryFn: () => axiosPublic.get(`/chat/${userData?._id}`).then((response) => response.data)
-  })
-// console.log(chats);
+  // get chats data with tanstackQuery
+  const { data: chats } = useQuery({
+    queryKey: ["chats"],
+    queryFn: () =>
+      axiosPublic
+        .get(`/chat/${userData?._id}`)
+        .then((response) => response.data),
+  });
+  // console.log(chats);
   // send message to socket
   useEffect(() => {
     if (sendMessage !== null) {
@@ -49,15 +52,18 @@ const MessagePage = () => {
   }, []);
 
   //online and offline user define
-  const checkOnlineStatus = (chat)=>{
-    const chatMember = chat.members.find(member=>member !== userData?._id);
-    const online = onlineUsers.find(user=>user?.userId === chatMember);
+  const checkOnlineStatus = (chat) => {
+    const chatMember = chat.members.find((member) => member !== userData?._id);
+    const online = onlineUsers.find((user) => user?.userId === chatMember);
     return online ? true : false;
-  }
+  };
 
   return (
     <div className="flex flex-col-reverse md:flex-row  gap-3 px-3">
-      <div style={{backdropFilter:"blur(100px)"}} className="md:w-[70%] h-[85vh] border-2 border-slate-500 rounded-md p-2 space-y-5 overflow-y-auto">
+      <div
+        style={{ backdropFilter: "blur(100px)" }}
+        className="md:w-[70%] h-[85vh] border-2 border-slate-500 rounded-md p-2 space-y-5 overflow-y-auto"
+      >
         <ChatBox
           chat={currentChat}
           setSendMessage={setSendMessage}
@@ -65,17 +71,29 @@ const MessagePage = () => {
           receiveMessage={receiveMessage}
         />
       </div>
-      <div style={{backdropFilter:"blur(100px)"}} className="md:w-[30%] border-2 border-slate-500 rounded-md p-5 overflow-x-auto md:overflow-y-auto">
+      <div
+        style={{ backdropFilter: "blur(100px)" }}
+        className="md:w-[30%] border-2 border-slate-500 rounded-md p-5 overflow-x-auto md:overflow-y-auto"
+      >
         <div className="flex items-center justify-between px-3">
-          <h3 className="text-slate-300 font-medium text-xl">Add Conversation</h3><span><MdAdd className="text-xl font-semibold text-slate-300" /></span>
+          <h3 className="text-slate-300 font-medium text-xl">
+            Add Conversation
+          </h3>
+          <span>
+            <MdAdd className="text-xl font-semibold text-slate-300" />
+          </span>
         </div>
-        <hr className="my-3"/>
+        <hr className="my-3" />
         <div className="flex flex-row md:flex-col gap-2">
-        {chats?.map((chat, i) => (
-          <div key={i} onClick={()=>setCurrentChat(chat)}>
-            <Conversation data={chat} currentUser={userData._id} online={checkOnlineStatus(chat)}/>
-          </div>
-        ))}
+          {chats?.map((chat, i) => (
+            <div key={i} onClick={() => setCurrentChat(chat)}>
+              <Conversation
+                data={chat}
+                currentUser={userData._id}
+                online={checkOnlineStatus(chat)}
+              />
+            </div>
+          ))}
         </div>
       </div>
     </div>
