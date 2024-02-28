@@ -22,6 +22,7 @@ import CreateFile from "./CreateFile/CreateFile";
 import { useRouter } from "next/navigation";
 import { StorageContext } from "@/providers/StorageProvider";
 import handleStoreChangeFileTrash from "@/Utils/Files/handelChangeFileLocation/handleStoreChangeFileTrash";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 const FilesPage: React.FC = () => {
   const [isView, setIsView] = useState("list");
@@ -34,6 +35,7 @@ const FilesPage: React.FC = () => {
   const filterLocalStoreData = filesData?.filter(
     (item) => item.owner.store === "Local"
   );
+  console.log(filterLocalStoreData);
   const router = useRouter();
   // This is for File Preview
   const { getFileURL } = useContext(StorageContext);
@@ -54,10 +56,12 @@ const FilesPage: React.FC = () => {
 	} else console.log("This is a file");
 
     // File Preview start here
-    const url = await getFileURL(fullPath);
-    console.log(url);
-    if (url) {
-      window.open(url, "_blank");
+    if (type !== 'folder') {
+      const url = await getFileURL(fullPath);
+      console.log(url);
+      if (url) {
+        window.open(url, "_blank");
+      }
     }
     // file preview code end
   };
@@ -182,15 +186,11 @@ const FilesPage: React.FC = () => {
                         <MdDelete />
                       </button>
                     </td>
-                    <td
-                      className={`px-6 py-4 ${
-                        type === "folder" && "hidden"
-                      } items-center`}
+                    <button
+                      onClick={() => handelShowModal(fullPath)}
+                      className="text-2xl text-gray-500 "
                     >
-                      <button
-                        onClick={() => handelShowModal(fullPath)}
-                        className="text-2xl text-gray-500 "
-                      >
+                      {
                         <MoreDropDown
                           fileName={name}
                           fullPath={fullPath}
@@ -199,9 +199,10 @@ const FilesPage: React.FC = () => {
                           id={_id}
                           name={name}
                           refetchFiles={refetchFiles}
+                          type={type}
                         />
-                      </button>
-                    </td>
+                      }
+                    </button>
                   </tr>
                 )
               )}
