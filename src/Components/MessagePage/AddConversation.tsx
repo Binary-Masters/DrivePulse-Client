@@ -14,15 +14,20 @@ const AddConversation = () => {
   const axiosPublic = useAxiosPublic();
   const [chats, refetch] = useChats();
 
-  const availableUsers = users.filter(
-    (user) => !chats?.members?.some((member) => member._id === user._id)
-  );
-  //   console.log(availableUsers);
+  //get avilable user with existing all users
+  const userId = chats.map((chat) => chat.members[1]);
+  userId.push(userData._id);
+  const availableUsers = users.filter((user) => !userId.includes(user?._id));
 
   // add freind
   const handleSendFreind = (user) => {
-    const modal = document.getElementById("add-conversation");
-    modal.close();
+    const modal = document.getElementById(
+      "add-conversation"
+    ) as HTMLDialogElement;
+    if (modal) {
+      modal.close();
+    }
+
     const postInfo = {
       senderId: userData?._id,
       receiverId: user?._id,
@@ -45,7 +50,7 @@ const AddConversation = () => {
               text: `Successfully ${user?.name} added your conversation!`,
               icon: "success",
             });
-            refetch()
+            refetch();
           }
         } catch (err) {
           console.log("add conversation error->", err);
@@ -59,7 +64,14 @@ const AddConversation = () => {
       {/* You can open the modal using document.getElementById('ID').showModal() method */}
       <button
         className="flex w-full items-center justify-between px-3"
-        onClick={() => document.getElementById("add-conversation").showModal()}>
+        onClick={() => {
+          const modal = document.getElementById(
+            "add-conversation"
+          ) as HTMLDialogElement;
+          if (modal) {
+            modal.showModal();
+          }
+        }}>
         <h2 className="text-slate-300 font-medium text-xl">Add Conversation</h2>{" "}
         <span className="text-xl font-semibold text-slate-300">
           <MdAdd />
@@ -78,24 +90,29 @@ const AddConversation = () => {
 
           {/* content */}
           <h3 className="text-center my-3 text-xl font-medium text-slate-300">
-            Total Available Members: {users?.length}
+            Total Available Members: {availableUsers?.length}
           </h3>
           <hr />
           <div className="flex flex-col gap-6 mt-5">
-            {users.map((user) => (
-              <div key={user?._id} className="w-full flex justify-between items-center hover:bg-gray-600 p-3 rounded-md">
-               <div className="flex items-center gap-3">
-               <div className="avatar">
-                  <div className="w-10 rounded-full border-2 border-primary">
-                    <img
-                      src={user?.photoURL}
-                      alt=""
-                    />
+            {availableUsers.map((user) => (
+              <div
+                key={user?._id}
+                className="w-full flex justify-between items-center hover:bg-gray-600 p-3 rounded-md">
+                <div className="flex items-center gap-3">
+                  <div className="avatar">
+                    <div className="w-10 rounded-full border-2 border-primary">
+                      <img src={user?.photoURL} alt="" />
+                    </div>
                   </div>
+                  <h3 className=" font-semibold text-slate-300">
+                    {user?.name || "Unknown"}
+                  </h3>
                 </div>
-                <h3 className=" font-semibold text-slate-300">{user?.name || "Unknown"}</h3>
-               </div>
-               <button onClick={()=>handleSendFreind(user)} className="btn bg-primary hover:bg-blue-600 border-0 text-[16px] text-white">Add Freind <IoPersonAdd /></button>
+                <button
+                  onClick={() => handleSendFreind(user)}
+                  className="btn bg-primary hover:bg-blue-600 border-0 text-[16px] text-white">
+                  Add Freind <IoPersonAdd />
+                </button>
               </div>
             ))}
           </div>

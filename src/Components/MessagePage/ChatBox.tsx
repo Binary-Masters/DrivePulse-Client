@@ -9,29 +9,30 @@ import toast from "react-hot-toast";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import { FiSend } from "react-icons/fi";
 import { useQuery } from "@tanstack/react-query";
-// type defined
+
+// Define the type for a message
 interface Message {
   text: string;
 }
+
 const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<any>(null);
   const scroll = useRef<any>();
   const axiosPublic = useAxiosPublic();
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
 
-  //set emoji in message state
+  // Function to handle change in message input
   const handleChange = (newMessage) => {
     setNewMessage(newMessage);
   };
 
-  //!fetch current user [fetch data in header]
+  // Fetch user data of the chat
   useEffect(() => {
     const userId = chat?.members?.find((id) => id !== currentUser);
     const getUserData = async () => {
       try {
         const res = await axiosPublic.get(`/single-user/${userId}`);
-        // console.log(res.data);
         setUserData(res.data);
       } catch (err) {
         console.log(err);
@@ -40,29 +41,26 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
     if (chat !== null) getUserData();
   }, [currentUser, chat, axiosPublic]);
 
-  // fetch message
+  // Fetch messages for the chat
   const { refetch } = useQuery({
     queryKey: ["messageData", chat?._id],
     queryFn: async () => {
       const response = await axiosPublic.get(`/message/${chat?._id}`);
       setMessages(response.data);
-      return response.data; // Return the data fetched from the server
+      return response.data;
     },
   });
 
-    // Receive Message from parent component
-    useEffect(() => {
-      // console.log("Message Arrived: ", receiveMessage);
-      if (receiveMessage !== null && receiveMessage.chatId === chat._id) {
-        refetch()
-        setMessages([...messages, receiveMessage]);
-      }
-    }, [receiveMessage, chat, messages, refetch]);
+  // Receive new message
+  useEffect(() => {
+    if (receiveMessage !== null && receiveMessage.chatId === chat._id) {
+      refetch();
+      setMessages([...messages, receiveMessage]);
+    }
+  }, [receiveMessage, chat, messages, refetch]);
 
-  // Send Message
-  const handleSend = async (e) => {
-    // refetch()
-    e.preventDefault();
+  // Send message
+  const handleSend = async () => {
     const message = {
       senderId: currentUser,
       text: newMessage,
@@ -70,10 +68,9 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
     };
 
     if (newMessage) {
-      // send message to socket server
       const receiverId = chat.members.find((id) => id !== currentUser);
       setSendMessage({ ...message, receiverId });
-      // send message to database
+
       try {
         const { data } = await addMessage(message);
         setMessages([...messages, data]);
@@ -83,7 +80,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
         console.log("error");
       }
     } else {
-      return toast.error("Can't send empty message!");
+      toast.error("Can't send empty message!");
     }
   };
 
@@ -92,18 +89,6 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
     scroll.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-
-  // press enter button and send message
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    // console.log('Key pressed:', event.key);
-    if (event.key === 'Enter') {
-      event.preventDefault(); // Prevent default behavior of Enter key
-      handleSend(event); // Call handleSend function
-    }
-  };
-  
-  
-
   return (
     <div className="relative">
       {chat ? (
@@ -111,7 +96,6 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
           <div>
             {messages?.map((message: any) => (
               <div key={message?._id}>
-                {/* current user message */}
                 {message.senderId === currentUser ? (
                   <div ref={scroll} className="w-full">
                     <div className="flex items-center gap-3 space-y-3">
@@ -133,7 +117,6 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
                     </p>
                   </div>
                 ) : (
-                  // other user message
                   <div ref={scroll} className="w-full">
                     <div className="flex justify-end  items-center gap-3 space-y-3">
                       <div className="bg-gray-400 text-white p-2 rounded-t-md rounded-l-md">
@@ -157,23 +140,22 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
               </div>
             ))}
           </div>
-          {/* sent box */}
           <div className="chat-sender sticky w-full bottom-0">
             <button className="bg-primary text-white text-xl font-medium py-1 px-2 cursor-pointer rounded">
               +
             </button>
-            <InputEmoji value={newMessage} onChange={handleChange} onKeyDown={handleKeyDown}  />
+            <InputEmoji value={newMessage} onChange={handleChange} onEnter={handleSend} />
             <button
               onClick={handleSend}
-              className=" my-2 px-5 py-2 flex items-center gap-1 hover:bg-blue-600  cursor-pointer bg-primary rounded text-[18px] text-white">
+              className="my-2 px-5 py-2 flex items-center gap-1 hover:bg-blue-600 cursor-pointer bg-primary rounded text-[18px] text-white">
               Send <FiSend />
             </button>
-            <input   type="file" name="" id="" style={{ display: "none" }} />
+            <input type="file" name="" id="" style={{ display: "none" }} />
           </div>
         </div>
       ) : (
-        <p className="text-3xl  text-gray-400 text-center mt-5">
-          Tap to your freind and chat now !
+        <p className="text-3xl text-gray-400 text-center mt-5">
+          Tap to your friend and chat now!
         </p>
       )}
     </div>
@@ -181,3 +163,5 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
 };
 
 export default ChatBox;
+
+

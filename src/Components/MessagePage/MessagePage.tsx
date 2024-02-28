@@ -82,7 +82,7 @@ const MessagePage = () => {
         className="md:w-[30%] border-2 border-slate-500 rounded-md p-5 overflow-x-auto md:overflow-y-auto">
         
         {/* add conversation */}
-        <AddConversation/>
+         <AddConversation/> 
         <hr className="my-3" />
         <div className="flex flex-row md:flex-col gap-2">
           {chats?.map((chat, i) => (
