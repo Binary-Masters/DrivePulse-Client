@@ -1,5 +1,6 @@
 "use client";
 import LoadingAnimation from "@/Components/Animation/LoadingAnimation/LoadingAnimation";
+import useChats from "@/Hooks/useChats";
 import useGetAllUsers from "@/Hooks/useGetAllUsers";
 import useGetFiles from "@/Hooks/useGetFiles";
 import useGetSingleUser from "@/Hooks/useGetSingleUser";
@@ -8,16 +9,19 @@ import { FaRegTrashAlt, FaUserFriends } from "react-icons/fa";
 import { LuFileSpreadsheet } from "react-icons/lu";
 
 const Analytics = () => {
-  const [user, loading, refetch] = useGetSingleUser();
+  const [user, loading] = useGetSingleUser();
+  const [chats, refetch] = useChats();
   const filesDataResult = useGetFiles();
   const filesData = filesDataResult.filesData;
   const [users] = useGetAllUsers();
   const filterLocalStoreData = filesData?.filter(
-    (item) => item.owner.store === "Local"
+    (item) => item.store === "Local"
   );
   const filterTrushStoreData = filesData?.filter(
-    (item) => item.owner.store === "Trush"
+    (item) => item.store === "Trush"
   );
+
+  const friends = chats.map((chat) => chat.members[1]);
   // console.log(users?.length);
   if (loading) {
     return <LoadingAnimation />;
@@ -42,9 +46,9 @@ const Analytics = () => {
     {
       id: 3,
       icon: <FaUserFriends />,
-      number: users?.length,
+      number: friends?.length,
       title: "Total Friends",
-      desc: "totalfriends",
+      desc: "chat",
     },
   ];
 

@@ -8,94 +8,87 @@ import InputEmoji from "react-input-emoji";
 import toast from "react-hot-toast";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import { FiSend } from "react-icons/fi";
-// type defined
+import { useQuery } from "@tanstack/react-query";
+
+// Define the type for a message
 interface Message {
   text: string;
 }
+
 const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<any>(null);
+  const scroll = useRef<any>();
   const axiosPublic = useAxiosPublic();
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const scroll = useRef<any>();
-  useEffect(() => {
-    const userId = chat?.members?.find((id) => id !== currentUser);
-    // console.log(userId);
-    const getUserData = async () => {
-      try {
-        if (userId === undefined || !userId) return;
-        const { data } = await axiosPublic.get(`/single-user/${userId}`);
-        // console.log(userId);
-        setUserData(data);
-        // console.log(data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    if (chat !== null) {
-      getUserData();
-    }
-    getUserData();
-  }, [currentUser, chat, axiosPublic]);
-  // console.log(conversations);
 
-  // feching data for header
-  useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const { data } = await getMessages(chat._id);
-        setMessages(data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    if (chat !== null) {
-      fetchMessages();
-    }
-  }, [chat]);
-  // console.log(messages);
-
+  // Function to handle change in message input
   const handleChange = (newMessage) => {
     setNewMessage(newMessage);
   };
 
-  const handleSend = async (e) => {
-    e.preventDefault();
-    if (newMessage) {
-      const message = {
-        senderId: currentUser,
-        text: newMessage,
-        chatId: chat?._id,
-      };
-      // send message to databse
+  // Fetch user data of the chat
+  useEffect(() => {
+    const userId = chat?.members?.find((id) => id !== currentUser);
+    const getUserData = async () => {
       try {
-        const { data } = await addMessage(message);
-        setMessages([...messages, data]);
-        setNewMessage("");
+        const res = await axiosPublic.get(`/single-user/${userId}`);
+        setUserData(res.data);
       } catch (err) {
         console.log(err);
       }
-    } else {
-      return toast.error("Can't send empty message !");
-    }
-  };
-  // send message socket server
-  useEffect(() => {
-    const receiverId = chat?.members?.find((id) => id !== currentUser);
-    setSendMessage({ ...messages, receiverId });
-  }, [chat?.members, currentUser, messages, setSendMessage]);
+    };
+    if (chat !== null) getUserData();
+  }, [currentUser, chat, axiosPublic]);
 
-  // receind message
+  // Fetch messages for the chat
+  const { refetch } = useQuery({
+    queryKey: ["messageData", chat?._id],
+    queryFn: async () => {
+      const response = await axiosPublic.get(`/message/${chat?._id}`);
+      setMessages(response.data);
+      return response.data;
+    },
+  });
+
+  // Receive new message
   useEffect(() => {
-    if (receiveMessage !== null && receiveMessage?.chatId === chat._id) {
+    if (receiveMessage !== null && receiveMessage.chatId === chat._id) {
+      refetch();
       setMessages([...messages, receiveMessage]);
     }
-  }, [receiveMessage, chat, messages]);
+  }, [receiveMessage, chat, messages, refetch]);
 
-  // scroll to last message
+  // Send message
+  const handleSend = async () => {
+    const message = {
+      senderId: currentUser,
+      text: newMessage,
+      chatId: chat._id,
+    };
+
+    if (newMessage) {
+      const receiverId = chat.members.find((id) => id !== currentUser);
+      setSendMessage({ ...message, receiverId });
+
+      try {
+        const { data } = await addMessage(message);
+        setMessages([...messages, data]);
+        refetch();
+        setNewMessage("");
+      } catch {
+        console.log("error");
+      }
+    } else {
+      toast.error("Can't send empty message!");
+    }
+  };
+
+  // Always scroll to last Message
   useEffect(() => {
-    scroll.current?.scrollIntoView({ behabio: "smooth" });
+    scroll.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
   return (
     <div className="relative">
       {chat ? (
@@ -103,13 +96,12 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
           <div>
             {messages?.map((message: any) => (
               <div key={message?._id}>
-                {/* current user message */}
                 {message.senderId === currentUser ? (
                   <div ref={scroll} className="w-full">
                     <div className="flex items-center gap-3 space-y-3">
                       <figure>
                         <Image
-                          src="https://lh3.googleusercontent.com/a/ACg8ocIapXQ9FG0-pl9NdBLyVNK-SpjeCbxAk2_MLWaPW4zaVkc=s96-c"
+                          src={userData?.photoURL}
                           alt=""
                           className="w-10 h-10 rounded-full"
                           width={100}
@@ -125,7 +117,6 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
                     </p>
                   </div>
                 ) : (
-                  // other user message
                   <div ref={scroll} className="w-full">
                     <div className="flex justify-end  items-center gap-3 space-y-3">
                       <div className="bg-gray-400 text-white p-2 rounded-t-md rounded-l-md">
@@ -141,7 +132,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
                         />
                       </figure>
                     </div>
-                    <p className="text-slate-300 mr-[50px] text-end">
+                    <p className="text-slate-300 mr-[50px] text-end -mt-2">
                       <small>{format(message?.createdAt)}</small>
                     </p>
                   </div>
@@ -149,23 +140,22 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
               </div>
             ))}
           </div>
-          {/* sent box */}
           <div className="chat-sender sticky w-full bottom-0">
             <button className="bg-primary text-white text-xl font-medium py-1 px-2 cursor-pointer rounded">
               +
             </button>
-            <InputEmoji value={newMessage} onChange={handleChange} />
+            <InputEmoji value={newMessage} onChange={handleChange} onEnter={handleSend} />
             <button
               onClick={handleSend}
-              className=" my-2 px-5 py-2 flex items-center gap-1 hover:bg-blue-600  cursor-pointer bg-primary rounded text-[18px] text-white">
+              className="my-2 px-5 py-2 flex items-center gap-1 hover:bg-blue-600 cursor-pointer bg-primary rounded text-[18px] text-white">
               Send <FiSend />
             </button>
             <input type="file" name="" id="" style={{ display: "none" }} />
           </div>
         </div>
       ) : (
-        <p className="text-3xl  text-gray-400 text-center mt-5">
-          Tap to your freind and chat now !
+        <p className="text-3xl text-gray-400 text-center mt-5">
+          Tap to your friend and chat now!
         </p>
       )}
     </div>
@@ -173,3 +163,5 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
 };
 
 export default ChatBox;
+
+

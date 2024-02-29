@@ -10,10 +10,10 @@ interface FileData {
   owner: {
     uid: string;
     email: string;
-    status: number;
-    store: string;
   };
   type: string;
+  status: number;
+  store: string;
   bucket: string;
   fullPath: string;
   name: string;

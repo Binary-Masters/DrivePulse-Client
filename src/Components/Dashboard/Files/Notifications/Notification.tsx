@@ -2,9 +2,10 @@
 import useAuth from "@/Hooks/useAuth";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import useGetFiles from "@/Hooks/useGetFiles";
+import handelSeenNotifyFiles from "@/Utils/Files/handelForNotify/handelSeenNotify";
 import Loading from "@/app/loading";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoNotificationsCircle } from "react-icons/io5";
 import { MdNotifications } from "react-icons/md";
 
@@ -13,19 +14,18 @@ const Notification = () => {
   const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
   const { filesData, isFilesLoading, refetchFiles } = useGetFiles();
-  const filterNotify = filesData.filter((item) => item.owner.status === 0);
+  const filterNotify = filesData.filter((item) => item.status === 0);
 
-  const handelSeenNotifyFiles = () => {
-    setOpen(false);
-    axiosPublic
-      .patch(`/notify-file?uid=${user?.uid}`)
-      .then(() => {
-        refetchFiles();
-      })
-      .catch();
-
-    refetchFiles();
+  const objectForNotify = {
+    setOpen,
+    axiosPublic,
+    refetchFiles,
+    user,
   };
+  // useEffect(() => {
+  //   refetchFiles();
+  // }, [refetchFiles]);
+
   if (isFilesLoading) {
     return <h1>Loading...</h1>;
   }
@@ -68,7 +68,7 @@ const Notification = () => {
             </li>
           ))}
           <button
-            onClick={handelSeenNotifyFiles}
+            onClick={() => handelSeenNotifyFiles(objectForNotify)}
             className="btn btn-accent btn-xs"
           >
             Done

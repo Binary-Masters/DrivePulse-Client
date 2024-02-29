@@ -21,7 +21,7 @@ const TrushFiles = () => {
   const router = useRouter();
   // Fetching file data for appropriate user
   const filterTrashStoreData = filesData?.filter(
-    (item) => item.owner.store === "Trush"
+    (item) => item.store === "Trush"
   );
   const nodeClickHandler = (type: string, fullPath: string) => {
     if (type === "folder") {
