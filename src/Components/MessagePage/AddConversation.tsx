@@ -15,9 +15,14 @@ const AddConversation = () => {
   const [chats, refetch] = useChats();
 
   //get avilable user with existing all users
-  const userId = chats.map((chat) => chat.members[1]);
-  userId.push(userData._id);
-  const availableUsers = users.filter((user) => !userId.includes(user?._id));
+  const userId = chats.map((chat) =>
+    chat.members.find((member) => member !== userData._id)
+  );
+
+  const finalUsers = users.filter((user) => user._id !== userData._id);
+  const availableUsers = finalUsers.filter(
+    (user) => !userId.includes(user?._id)
+  );
 
   // add freind
   const handleSendFreind = (user) => {
