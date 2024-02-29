@@ -1,0 +1,15 @@
+.btn {
+	@apply px-3 py-1 text-xl text-white border-2 border-white rounded-lg gap-2;
+	display: flex;
+	cursor: pointer;
+	align-items: center;
+}
+
+.btn:hover {
+	@apply text-blue-300 border-blue-300;
+	transition: color 100ms linear, border-color 100ms linear;
+}
+
+.btnIcon {
+	@apply font-bold;
+}

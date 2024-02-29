@@ -1,4 +1,4 @@
-import FilesPage from "@/Components/Dashboard/Files/FilesPage";
+import FilesPage from "./ui/FilesPage";
 import FilesProvider from "@/providers/FilesProvider";
 
 const files = () => {
