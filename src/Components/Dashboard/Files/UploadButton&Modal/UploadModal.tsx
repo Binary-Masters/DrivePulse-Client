@@ -11,7 +11,7 @@ import useAuth from "@/Hooks/useAuth";
 
 const UploadModal: React.FC = () => {
 	const [file, setFile] = useState<File | null>(null);
-	const { uploadFile, getFileURL } = useStorage();
+	const { uploadFile, getFileURL, setUploadProgress } = useStorage();
 	const axiosPublic = useAxiosPublic();
 	const { refetchFiles } = useGetFiles();
 	const { user } = useAuth();
@@ -37,46 +37,64 @@ const UploadModal: React.FC = () => {
 						.post("/files/lookup", { checksum, owner })
 						.then(({ data }) => {
 							if (!data.exists) {
-								// Upload to cloud
-								uploadFile(file).then( async (snapshot) => {
-									const fileType =
-										snapshot.metadata.contentType;
-									const filePath = snapshot.metadata.fullPath;
-									let thumbnail = "";
+								// Starts an upload session
+								const uploadSession = uploadFile(file);
+								uploadSession.on(
+									"state_changed",
+									(snapshot) => {
+										const { bytesTransferred, totalBytes } =
+											snapshot;
+										const currentProgress = Math.round(
+											(bytesTransferred / totalBytes) *
+												100
+										);
+										setUploadProgress(currentProgress);
+									},
+									(err) => {},
+									async () => {
+										const { snapshot } = uploadSession;
+										console.log(snapshot);
+										const fileType =
+											snapshot.metadata.contentType;
+										const filePath =
+											snapshot.metadata.fullPath;
+										let thumbnail = "";
 
-									// For image thumbnail
-									if (fileType.startsWith("image/")) {
-										thumbnail = await getFileURL(filePath);
+										// For image thumbnail
+										if (fileType.startsWith("image/")) {
+											thumbnail = await getFileURL(
+												filePath
+											);
+										}
+
+										// Post file metadata to database
+										axiosPublic
+											.post("/files", {
+												checksum,
+												owner,
+												thumbnail,
+												...snapshot.metadata,
+											})
+											.then(() => {
+												Swal.fire({
+													title: "Success",
+													text: "File uploaded successfully",
+													icon: "success",
+													confirmButtonText: "OK",
+												});
+												refetchFiles();
+												setFile(null);
+											})
+											.catch((err) => console.log(err));
 									}
-
-									// Post file metadata to database
-									axiosPublic
-										.post("/files", {
-											checksum,
-											owner,
-											thumbnail,
-											...snapshot.metadata,
-										})
-										.then((response) => {
-											Swal.fire({
-												title: "Success",
-												text: "File uploaded successfully",
-												icon: "success",
-												confirmButtonText: "OK",
-											});
-											refetchFiles();
-											setFile(null);
-										})
-										.catch((err) => console.log(err));
-								});
+								);
 							} else {
 								Swal.fire({
 									title: "File Already Exists",
 									icon: "error",
 									confirmButtonText: "OK",
-								}).then(({ isConfirmed }) => {
-									isConfirmed && refetchFiles();setFile(null);
 								});
+								setFile(null);
 							}
 						})
 						.catch((err) => {

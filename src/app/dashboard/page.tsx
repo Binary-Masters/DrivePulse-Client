@@ -1,15 +1,12 @@
-import DashboardHome from '@/Components/Dashboard/DashboardHome/DashboardHome';
-import FilesProvider from '@/providers/FilesProvider';
-
+import DashboardHome from "@/Components/Dashboard/DashboardHome/DashboardHome";
 
 const Dashboard = () => {
-    return (
-        <>
-        <FilesProvider>
-        <DashboardHome/>
-        </FilesProvider>
-        </>
-    );
+	return (
+		<div>
+			<DashboardHome />
+		</div>
+	);
 };
 
 export default Dashboard;
+

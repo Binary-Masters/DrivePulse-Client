@@ -12,7 +12,6 @@ const PieChartContent = () => {
   const [userData] = useGetSingleUser();
   const {user} = useAuth()
   const { filesData } = useGetFiles();
-  console.log(filesData);
   const value = filesData?.length;
   const value2 = 100 - filesData?.length;
 
@@ -50,23 +49,23 @@ const PieChartContent = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row items-center gap-3 mt-3">
+    <div className="flex flex-col items-center mt-3 lg:flex-row gap-3">
       <div className="w-full lg:w-[40%] dashboard-home-user h-[250px] rounded-md py-10 pl-5">
-        <div className="space-y-1 mb-10">
-          <p className="text-blue-400 uppercase font-semibold">Welcome back,</p>
-          <h2 className="text-3xl text-slate-200 font-bold">{user?.displayName}</h2>
-          <p className="text-gray-300 font-medium">
+        <div className="mb-10 space-y-1">
+          <p className="font-semibold text-blue-400 uppercase">Welcome back,</p>
+          <h2 className="text-3xl font-bold text-slate-200">{user?.displayName}</h2>
+          <p className="font-medium text-gray-300">
             Share your file <br />
             And make your day.
           </p>
         </div>
         <Link href={"/dashboard/profile"}>
-        <button className="text-slate-300 font-semibold cursor-pointer flex items-center gap-1">
+        <button className="flex items-center font-semibold cursor-pointer text-slate-300 gap-1">
           See Profile <FaArrowRight />
         </button></Link>
       </div>
       <div className="w-full lg:w-[30%] progress-background rounded-md h-[250px] shadow-md p-6 relative">
-        <div className=" flex justify-center">
+        <div className="flex justify-center ">
           <div className="w-[180px]">
             <CircularProgressbar
               value={value}
@@ -82,7 +81,7 @@ const PieChartContent = () => {
             />
           </div>
         </div>
-        <div className="flex w-full justify-center">
+        <div className="flex justify-center w-full">
           <div
             style={{ boxShadow: "1px 1px 30px #24207b" }}
             className="text-xl w-[90%] font-semibold text-slate-300 bg-[#090d2b]  py-3 px-10 rounded-md  shadow-lg absolute bottom-3">
@@ -93,7 +92,7 @@ const PieChartContent = () => {
       {/* admin and user dynamic pie chart */}
       {userData?.type === "admin" ? (
          <div className="w-full lg:w-[30%] progress-background rounded-md h-[250px] shadow-md p-6 relative">
-         <div className=" flex justify-center">
+         <div className="flex justify-center ">
            <div className="">
            <PieChart width={200} height={200}>
             
@@ -133,7 +132,7 @@ const PieChartContent = () => {
        </div>
       ) : (
         <div className="w-full lg:w-[30%] progress-background rounded-md h-[250px] shadow-md p-6 relative">
-          <div className=" flex justify-center">
+          <div className="flex justify-center ">
             <div className="w-[180px]">
               <CircularProgressbar
                 value={value2}
