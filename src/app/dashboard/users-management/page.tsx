@@ -14,7 +14,7 @@ import { error } from "console";
 
 const UsersManagement = () => {
     const [users, loading, refetch] = useGetAllUsers(); //load user from mongodb
-    // console.log(users);
+    console.log(users);
     const router = useRouter();
     const updateUser = useUpdateSingleUser();
     const { deleteAnyUser, user: currentUser } = useAuth();
