@@ -41,38 +41,47 @@ const Notification = () => {
       >
         <MdNotifications className="text-2xl" />
         <span className="sr-only">Notifications</span>
-        <div className="absolute inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-1 -end-2">
-          {filterNotify?.length}
+        <div className={`absolute inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-1 -end-2 ${filterNotify?.length === 0  && 'hidden'}`}>
+          { filterNotify?.length }
         </div>
       </div>
 
       {open && (
         <ul
           tabIndex={0}
-          className="dropdown-content z-[1] menu p-2 shadow rounded-box w-auto md:w-56 bg-[#010c4f] text-white"
+          className="dropdown-content z-[1] menu p-2 shadow rounded-box w-auto md:w-56 bg-[#010c4f] text-white "
         >
-          {filterNotify?.map((item) => (
-            <li key={item._id}>
-              <Link
-                href={"/dashboard/files"}
-                className="flex flex-col items-start -space-y-2 hover:bg-blue-950"
-              >
-                <h2 className="flex text-sm md:text-lg justify-center items-center gap-2 font-medium">
-                  {" "}
-                  <IoNotificationsCircle /> {item.name}
-                </h2>
-                <p className="text-[10px] md:text-xs  ml-6">
-                  {item.timeCreated.slice(11, 19)}
-                </p>
-              </Link>
-            </li>
-          ))}
-          <button
+          {
+            filterNotify?.length === 0 ? (
+              <h2 className="text-sm md:text-lg justify-center items-center gap-2 font-medium py-5 text-center px-2 ">No Notification here.!!</h2> ) : 
+              
+              filterNotify?.map((item) => (
+                <li key={item._id}>
+                  <Link
+                    href={"/dashboard/files"}
+                    className="flex flex-col items-start -space-y-2 hover:bg-blue-950"
+                  >
+                    <h2 className="flex text-sm md:text-lg justify-center items-center gap-2 font-medium">
+                      {" "}
+                      <IoNotificationsCircle /> {item.name}
+                    </h2>
+                    <p className="text-[10px] md:text-xs  ml-6">
+                      {item.timeCreated.slice(11, 19)}
+                    </p>
+                  </Link>
+                </li>
+              ))
+          }
+
+          {
+            filterNotify?.length === 0 ? '' : <button
             onClick={() => handelSeenNotifyFiles(objectForNotify)}
-            className="btn btn-accent btn-xs"
+            className="btn btn-accent btn-xs my-3"
           >
             Done
           </button>
+          }
+          
         </ul>
       )}
     </div>

@@ -14,6 +14,7 @@ const FolderButton: React.FC<FolderButtonProps> = ({ path }) => {
   const axiosPublic = useAxiosPublic();
   const { refetchFiles, filesData } = useGetFiles();
   const { user } = useAuth();
+  console.log(path)
 
   const openModal = () => {
     setIsModalOpen(true);

@@ -21,7 +21,7 @@ const customStyles = {
 		marginRight: "-50%",
 		zIndex: 999,
 		transform: "translate(-50%, -50%)",
-		background: "linear-gradient(to right, #eaeff3, #f6f8fa)",
+		background: "linear-gradient(to right, #0c2e52df, #051c34)",
 	},
 };
 
@@ -59,7 +59,7 @@ const FolderModal: React.FC<FolderModalProps> = ({
 				className="z-10 space-y-2 "
 			>
 				<label className="label">
-					<span className="text-xl font-medium label-text">
+					<span className="text-xl font-medium label-text text-white">
 						Folder Name
 					</span>
 				</label>
@@ -79,7 +79,7 @@ const FolderModal: React.FC<FolderModalProps> = ({
 				<div className="flex justify-end gap-5">
 					<button
 						onClick={() => onRequestClose()}
-						className="px-3 mt-5 text-sm font-medium text-blue-600 bg-white border border-sky-500 focus:outline-none hover:bg-gray-100 focus:ring-1 focus:ring-gray-200 rounded-3xl"
+						className="px-3 mt-5 text-sm font-medium text-white hover:text-blue-600 bg-[#051c34] border-2 border-sky-500 focus:outline-none hover:bg-gray-100 focus:ring-1 focus:ring-gray-200 rounded-3xl"
 					>
 						Cancel
 					</button>
