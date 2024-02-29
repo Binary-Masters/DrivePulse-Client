@@ -9,18 +9,23 @@ import { useRouter } from "next/navigation";
 import userIcon from '../../../assests/images/blank-head-profile-pic-for-a-man.jpg'
 import useAuth from "@/Hooks/useAuth";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
-import { error } from "console";
 
 
 const UsersManagement = () => {
     const [users, loading, refetch] = useGetAllUsers(); //load user from mongodb
-    console.log(users);
+    // console.log(users);
     const router = useRouter();
     const updateUser = useUpdateSingleUser();
     const { deleteAnyUser, user: currentUser } = useAuth();
-    console.log(currentUser);
+    // console.log(currentUser);
     const axiosPublic = useAxiosPublic();
 
+    // All user without me
+    const allUsers = users.filter(allUser => allUser.email !== currentUser.email)
+    console.log(allUsers);
+    // all verified users
+    const allVerifiedUsers = allUsers.filter(verifiedUser => verifiedUser.emailVerified === true)
+    console.log(allVerifiedUsers);
 
     if (loading) {
         return <LoadingAnimation />
@@ -138,7 +143,7 @@ const UsersManagement = () => {
                     </thead>
 
                     {
-                        users.map(user => <tbody key={user?.email}>
+                        allVerifiedUsers.map(user => <tbody key={user?.email}>
                             {/* row 1 */}
                             <tr>
                                 <th>
