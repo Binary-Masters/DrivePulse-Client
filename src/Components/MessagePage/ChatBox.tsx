@@ -1,7 +1,5 @@
 import Image from "next/image";
-import React, { useEffect, useRef, useState,RefObject  } from "react";
-import { MdSend } from "react-icons/md";
-import { getUser, userChats } from "../../api/ChatRequest";
+import React, { useEffect, useRef, useState, RefObject } from "react";
 import { addMessage, getMessages } from "../../api/MessageRequest";
 import { format } from "timeago.js";
 import InputEmoji from "react-input-emoji";
@@ -9,6 +7,7 @@ import toast from "react-hot-toast";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import { FiSend } from "react-icons/fi";
 import { useQuery } from "@tanstack/react-query";
+import useGetAllUsers from "@/Hooks/useGetAllUsers";
 
 // Define the type for a message
 interface Message {
@@ -21,7 +20,9 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
   const axiosPublic = useAxiosPublic();
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
+  const [users] = useGetAllUsers()
 
+  console.log(receiveMessage);
   // Function to handle change in message input
   const handleChange = (newMessage) => {
     setNewMessage(newMessage);
@@ -51,14 +52,6 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
     },
   });
 
-  // Receive new message
-  useEffect(() => {
-    if (receiveMessage !== null && receiveMessage.chatId === chat._id) {
-      refetch();
-      setMessages([...messages, receiveMessage]);
-    }
-  }, [receiveMessage, chat, messages, refetch]);
-
   // Send message
   const handleSend = async () => {
     const message = {
@@ -74,23 +67,37 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
       try {
         const { data } = await addMessage(message);
         setMessages([...messages, data]);
-        refetch();
+        // refetch();
         setNewMessage("");
-      } catch {
-        console.log("error");
+      } catch (err){
+        console.log(err);
       }
     } else {
       toast.error("Can't send empty message!");
     }
   };
 
+  
+  // Receive new message
+  useEffect(() => {
+    if (receiveMessage !== null && receiveMessage.chatId === chat._id) {
+      // refetch();
+      setMessages([...messages, receiveMessage]);
+    }
+  }, [receiveMessage, chat, messages]);
+
   // Always scroll to last Message
   useEffect(() => {
     scroll.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+// console.log(messages.senderId);
+
+const photoData = users.filter((user) => messages.some(message => message?.senderId === user?._id));
+// console.log(availableUsers[0].photoURL);
+
 
   return (
-    <div className="relative">
+    <div className="relative ">
       {chat ? (
         <div>
           <div>
@@ -101,7 +108,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
                     <div className="flex items-center gap-3 space-y-3">
                       <figure>
                         <Image
-                          src={userData?.photoURL}
+                          src={photoData[1]?.photoURL}
                           alt=""
                           className="w-10 h-10 rounded-full"
                           width={100}
@@ -124,7 +131,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
                       </div>
                       <figure>
                         <Image
-                          src="https://lh3.googleusercontent.com/a/ACg8ocIapXQ9FG0-pl9NdBLyVNK-SpjeCbxAk2_MLWaPW4zaVkc=s96-c"
+                          src={userData?.photoURL}
                           alt=""
                           className="w-10 h-10 rounded-full"
                           width={100}
@@ -140,11 +147,15 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
               </div>
             ))}
           </div>
-          <div className="chat-sender sticky w-full bottom-0">
+          <div className="chat-sender sticky w-full bottom-0 ">
             <button className="bg-primary text-white text-xl font-medium py-1 px-2 cursor-pointer rounded">
               +
             </button>
-            <InputEmoji value={newMessage} onChange={handleChange} onEnter={handleSend} />
+            <InputEmoji
+              value={newMessage}
+              onChange={handleChange}
+              onEnter={handleSend}
+            />
             <button
               onClick={handleSend}
               className="my-2 px-5 py-2 flex items-center gap-1 hover:bg-blue-600 cursor-pointer bg-primary rounded text-[18px] text-white">
@@ -163,5 +174,3 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
 };
 
 export default ChatBox;
-
-

@@ -8,7 +8,7 @@ import icons from "./icons";
 import NavigationFolder from "./Folder/NavigationFolder";
 import useGetFiles from "@/Hooks/useGetFiles";
 import UploadButton from "./UploadButton&Modal/UploadButton";
-import MoreDropDown from "./MoreDropDown";
+import MoreDropDown from "./MoreDropDown/MoreDropDown";
 import getFolderPathData from "@/Utils/FolderNavigation/getFolderPathData";
 import useAuth from "@/Hooks/useAuth";
 import Loading from "@/app/loading";
@@ -18,9 +18,9 @@ import DropDownView from "@/Components/DropDownView/DropDownView";
 import FolderMoreInfo from "@/Components/FolderMorInfo/FolderMoreInfo";
 import { IoCreateOutline } from "react-icons/io5";
 import NodePreview from "./Preview/NodePreview";
-import { StorageContext } from "@/providers/StorageProvider";
-import Swal from "sweetalert2";
+import CreateFile from "./CreateFile/CreateFile";
 import { useRouter } from "next/navigation";
+import { StorageContext } from "@/providers/StorageProvider";
 import handleStoreChangeFileTrash from "@/Utils/Files/handelChangeFileLocation/handleStoreChangeFileTrash";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
@@ -33,9 +33,8 @@ const FilesPage: React.FC = () => {
   const { path, setPath, deleteFile } = useStorage();
   const { filesData, isFilesLoading, refetchFiles } = useGetFiles();
   const filterLocalStoreData = filesData?.filter(
-    (item) => item.owner.store === "Local"
+    (item) => item.store === "Local"
   );
-  console.log(filterLocalStoreData);
   const router = useRouter();
   // This is for File Preview
   const { getFileURL } = useContext(StorageContext);
@@ -44,16 +43,19 @@ const FilesPage: React.FC = () => {
   const nodeClickHandler = async (
     type: string,
     fullPath: string,
-    thumbnail: any
+    thumbnail: any,
+	contentType, _id, name
   ) => {
     if (type === "folder") {
       const { currentPath } = getFolderPathData(fullPath, type, user);
       setPath(currentPath);
       refetchFiles();
-    } else console.log("This is a file");
+    }else if(contentType === "text/plain"){
+		router.push(`/dashboard/text-editor/${_id}?name=${name}`)
+	} else console.log("This is a file");
 
     // File Preview start here
-    if (type !== 'folder') {
+    if (type !== 'folder' && contentType !== "text/plain" ) {
       const url = await getFileURL(fullPath);
       console.log(url);
       if (url) {
@@ -101,13 +103,7 @@ const FilesPage: React.FC = () => {
           <DropDownView onIsViewChange={handleIsViewChange} />
           <FolderButton path={path} />
           <UploadButton />
-          <Link
-            className="text-xs md:text-[16px]  border-0 btn bg-primary text-white hover:bg-blue-600 transition-all duration-300"
-            href={"/dashboard/create-file"}
-          >
-            <IoCreateOutline className="text-xl " />
-            <span className="hidden md:block">Create File</span>
-          </Link>
+          <CreateFile/>
         </div>
       </div>
       {/* list view */}
@@ -157,7 +153,7 @@ const FilesPage: React.FC = () => {
                     </td>
                     <td
                       onClick={() =>
-                        nodeClickHandler(type, fullPath, thumbnail)
+                        nodeClickHandler(type, fullPath, thumbnail, contentType, _id, name)
                       }
                       className="px-6 py-4 "
                     >
@@ -165,7 +161,7 @@ const FilesPage: React.FC = () => {
                     </td>
                     <td
                       onClick={() =>
-                        nodeClickHandler(type, fullPath, thumbnail)
+                        nodeClickHandler(type, fullPath, thumbnail, contentType, _id, name)
                       }
                       className="px-6 py-4"
                     >
@@ -173,7 +169,7 @@ const FilesPage: React.FC = () => {
                     </td>
                     <td
                       onClick={() =>
-                        nodeClickHandler(type, fullPath, thumbnail)
+                        nodeClickHandler(type, fullPath, thumbnail, contentType, _id, name)
                       }
                       className="px-6 py-4"
                     >
@@ -221,7 +217,7 @@ const FilesPage: React.FC = () => {
               <div
                 className="w-full"
                 onClick={() =>
-                  nodeClickHandler(file?.type, file?.fullPath, file?.thumbnail)
+                  nodeClickHandler(file?.type, file?.fullPath, file?.thumbnail, file?.contentType, file?._id, file?.name)
                 }
               >
                 {file.contentType.startsWith("image/") ? (
@@ -261,7 +257,7 @@ const FilesPage: React.FC = () => {
               <div
                 className="w-full"
                 onClick={() =>
-                  nodeClickHandler(file?.type, file?.fullPath, file?.thumbnail)
+                  nodeClickHandler(file?.type, file?.fullPath, file?.thumbnail, file?.contentType, file?._id, file?.name)
                 }
               >
                 {file.contentType.startsWith("image/") ? (
