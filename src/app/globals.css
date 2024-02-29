@@ -86,6 +86,10 @@
 	animation: rotBGimg 7s linear infinite;
 	transition: all 0.3s linear;
   }
+
+  .bottom-shadow{
+    box-shadow: 0 0px 4px 0 rgba(255, 255, 255, 0.779); 
+}
   
   @keyframes rotBGimg {
 	from {

@@ -26,7 +26,7 @@ const UploadButton = () => {
 
             {/* modal */}
             <dialog id="my_modal_1" className="modal text-black">
-                <div className="modal-box bg-gradient-to-br from-cyan-900 to-sky-950">
+                <div className="modal-box bg-gradient-to-br from-[#0c2e52df] to-[#051c34] shadow shadow-sky-600">
                     <form method="dialog">
                         <button className="btn btn-sm btn-circle text-white btn-ghost absolute right-2 top-2" onClick={closeModal}>
                             ✕
