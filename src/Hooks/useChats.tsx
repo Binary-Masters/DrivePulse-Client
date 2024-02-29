@@ -6,12 +6,12 @@ import useGetSingleUser from './useGetSingleUser';
 const useChats = () => {
     const axiosPublic = useAxiosPublic()
     const [userData] = useGetSingleUser();
-    const { data: chats =[], refetch} = useQuery({
+    const { data: chats =[], refetch:chatsRefetch} = useQuery({
         queryKey: ["chatsData", userData?._id],
         queryFn: () => axiosPublic.get(`/chat/${userData?._id}`).then((response) => response.data),
       });
 
-      return [chats, refetch]
+      return [chats, chatsRefetch]
 };
 
 export default useChats;
