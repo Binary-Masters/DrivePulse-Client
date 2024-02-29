@@ -67,10 +67,10 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
       try {
         const { data } = await addMessage(message);
         setMessages([...messages, data]);
-        refetch();
+        // refetch();
         setNewMessage("");
-      } catch {
-        console.log("error");
+      } catch (err){
+        console.log(err);
       }
     } else {
       toast.error("Can't send empty message!");
@@ -81,10 +81,10 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
   // Receive new message
   useEffect(() => {
     if (receiveMessage !== null && receiveMessage.chatId === chat._id) {
-      refetch();
+      // refetch();
       setMessages([...messages, receiveMessage]);
     }
-  }, [receiveMessage, chat, messages, refetch]);
+  }, [receiveMessage, chat, messages]);
 
   // Always scroll to last Message
   useEffect(() => {

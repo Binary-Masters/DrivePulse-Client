@@ -38,11 +38,19 @@ const MessagePage = () => {
 
   useEffect(() => {
     if (socket.current) {
-      socket.current?.on("getMessage", (data) => {
-        setReceiveMessage(data);
+      socket.current.on("getMessage", (data) => {
+        // Check if the received message is not the same as the previously received one
+        if (JSON.stringify(data) !== JSON.stringify(receiveMessage)) {
+          setReceiveMessage(data);
+        }
       });
+      return () => {
+        // Clean up socket event listener when component unmounts
+        socket.current.off("getMessage");
+      };
     }
-  }, []);
+  }, [receiveMessage]); // Add receiveMessage as a dependency if necessary
+  
   
   const checkOnlineStatus = (chat: any) => {
     const chatMember = chat.members?.find((member: string) => member !== userData._id);
