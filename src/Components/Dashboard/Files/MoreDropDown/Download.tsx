@@ -1,13 +1,12 @@
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
-const download = 'https://cdn.create.vista.com/api/media/small/96171264/stock-photo-solitude-tree-with-birds'
 interface DownloadProps {
   fileName: string;
   fullPath: string;
   bucket: string
 }
 
-const Download: React.FC<DownloadProps> = ({ fileName, fullPath,bucket  }) => {
+const Download: React.FC<DownloadProps> = ({ fileName, fullPath,  }) => {
   const handleDownload = async () => {
     try {
       const storage = getStorage();
