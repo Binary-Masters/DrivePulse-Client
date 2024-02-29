@@ -1,4 +1,4 @@
-import { FaFolder, FaImage, FaFilePdf } from "react-icons/fa";
+import { FaFolder, FaImage, FaFilePdf, FaFileAlt  } from "react-icons/fa";
 import { FaDebian } from "react-icons/fa6";
 
 const icons = [
@@ -22,6 +22,10 @@ const icons = [
 		contentType: "application/vnd.debian.binary-package",
 		icon: FaDebian,
 	},
+	{
+		contentType: "text/plain",
+		icon: FaFileAlt,
+	}
 ]
 
 export default icons;

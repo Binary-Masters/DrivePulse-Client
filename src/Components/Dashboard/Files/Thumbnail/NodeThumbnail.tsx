@@ -6,8 +6,7 @@ interface NodePreviewChildren {
 	width: number,
 }
 
-export default function NodePreview({thumbnail, height, width}: NodePreviewChildren) {
-	console.log(thumbnail);
+export default function NodeThumbnail({thumbnail, height, width}: NodePreviewChildren) {
 	return (
 		<div>
 			<Image 
