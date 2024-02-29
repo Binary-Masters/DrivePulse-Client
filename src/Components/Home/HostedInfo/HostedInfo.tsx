@@ -12,7 +12,7 @@ const HostedInfo = () => {
       id: 2,
       icon: <DatabaseZap />,
       title: "Database Zap",
-      desc: "DatabaseZap integration with our file-sharing platform! DatabaseZap empowers you to effortlessly synchronize and transfer data between your database systems and our secure cloud storage environment",
+      desc: "DatabaseZap empowers you to effortlessly synchronize and transfer data between your database systems and our secure cloud storage environment",
     },
     {
       id: 3,
