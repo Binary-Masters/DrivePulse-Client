@@ -15,9 +15,14 @@ const AddConversation = () => {
   const [chats, refetch] = useChats();
 
   //get avilable user with existing all users
-  const userId = chats.map((chat) => chat.members[1]);
-  userId.push(userData._id);
-  const availableUsers = users.filter((user) => !userId.includes(user?._id));
+  const userId = chats.map((chat) =>
+    chat.members.find((member) => member !== userData._id)
+  );
+
+  const finalUsers = users.filter((user) => user._id !== userData._id);
+  const availableUsers = finalUsers.filter(
+    (user) => !userId.includes(user?._id)
+  );
 
   // add freind
   const handleSendFreind = (user) => {
@@ -71,7 +76,8 @@ const AddConversation = () => {
           if (modal) {
             modal.showModal();
           }
-        }}>
+        }}
+      >
         <h2 className="text-slate-300 font-medium text-xl">Add Conversation</h2>{" "}
         <span className="text-xl font-semibold text-slate-300">
           <MdAdd />
@@ -97,7 +103,8 @@ const AddConversation = () => {
             {availableUsers.map((user) => (
               <div
                 key={user?._id}
-                className="w-full flex justify-between items-center hover:bg-gray-600 p-3 rounded-md">
+                className="w-full flex justify-between items-center hover:bg-gray-600 p-3 rounded-md"
+              >
                 <div className="flex items-center gap-3">
                   <div className="avatar">
                     <div className="w-10 rounded-full border-2 border-primary">
@@ -110,7 +117,8 @@ const AddConversation = () => {
                 </div>
                 <button
                   onClick={() => handleSendFreind(user)}
-                  className="btn bg-primary hover:bg-blue-600 border-0 text-[16px] text-white">
+                  className="btn bg-primary hover:bg-blue-600 border-0 text-[16px] text-white"
+                >
                   Add Freind <IoPersonAdd />
                 </button>
               </div>

@@ -46,7 +46,6 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
     queryKey: ["messageData", chat?._id],
     queryFn: async () => {
       const response = await axiosPublic.get(`/message/${chat?._id}`);
-      setMessages(response.data);
       return response.data;
     },
   });
@@ -54,10 +53,9 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
   // Receive new message
   useEffect(() => {
     if (receiveMessage !== null && receiveMessage.chatId === chat._id) {
-      refetch();
       setMessages([...messages, receiveMessage]);
     }
-  }, [receiveMessage, chat, messages, refetch]);
+  }, [receiveMessage, chat, messages]);
 
   // Send message
   const handleSend = async () => {
@@ -74,7 +72,6 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
       try {
         const { data } = await addMessage(message);
         setMessages([...messages, data]);
-        refetch();
         setNewMessage("");
       } catch {
         console.log("error");
