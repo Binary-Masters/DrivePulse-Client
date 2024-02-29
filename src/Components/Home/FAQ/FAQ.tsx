@@ -12,7 +12,11 @@ import {
 
 // Demo styles, see 'Styles' section below for some notes on use.
 import 'react-accessible-accordion/dist/fancy-example.css';
+import { useState } from "react";
 const FAQ = () => {
+
+    const [isOpen, setIsOpen] = useState(false);
+
     return (
         <div className="py-10">
             <div className="text-center w-fit mx-auto">
@@ -25,53 +29,61 @@ const FAQ = () => {
                 </div>
                 <div className=" w-full md:w-[60%]">
                     <Accordion className="space-y-2">
-                        <AccordionItem style={{ backdropFilter: "blur(150px)" }} className="rounded-md">
+                        <AccordionItem onClick={() => setIsOpen(!isOpen)} style={{ backdropFilter: "blur(150px)" }} className="rounded-md">
                             <AccordionItemHeading>
                                 <AccordionItemButton className="bg-transparent text-xl font-bold text-slate-300 border border-slate-500 p-3 rounded-md">
                                     What is DrivePulse ?
                                 </AccordionItemButton>
                             </AccordionItemHeading>
-                            <AccordionItemPanel>
-                                <div className="text-slate-300">
-                                    DrivePulse is a secure file sharing platform to make it easier to manage   larger files.
-                                </div>
-                            </AccordionItemPanel>
+                            {
+                                isOpen && <AccordionItemPanel>
+                                    <div className="text-slate-300">
+                                        DrivePulse is a secure file sharing platform to make it easier to manage   larger files.
+                                    </div>
+                                </AccordionItemPanel>
+                            }
                         </AccordionItem>
-                        <AccordionItem style={{ backdropFilter: "blur(150px)" }} className="rounded-md">
+                        <AccordionItem onClick={() => setIsOpen(!isOpen)} style={{ backdropFilter: "blur(150px)" }} className="rounded-md">
                             <AccordionItemHeading>
                                 <AccordionItemButton className="bg-transparent text-xl font-bold text-slate-300 border border-slate-500 p-3 rounded-md">
                                     Why should you use DrivePulse ?
                                 </AccordionItemButton>
                             </AccordionItemHeading>
-                            <AccordionItemPanel>
-                                <div className="text-gray-400">
-                                    DrivePulse has end-to-end encryption for messages and secure file sharing options. You can share your files securely through DrivePulse.That's why you should use DrivePulse.
-                                </div>
-                            </AccordionItemPanel>
+                            {
+                                isOpen && <AccordionItemPanel>
+                                    <div className="text-gray-400">
+                                        DrivePulse has end-to-end encryption for messages and secure file sharing options. You can share your files securely through DrivePulse.That's why you should use DrivePulse.
+                                    </div>
+                                </AccordionItemPanel>
+                            }
                         </AccordionItem>
-                        <AccordionItem style={{ backdropFilter: "blur(150px)" }} className="rounded-md">
+                        <AccordionItem onClick={() => setIsOpen(!isOpen)} style={{ backdropFilter: "blur(150px)" }} className="rounded-md">
                             <AccordionItemHeading>
                                 <AccordionItemButton className="bg-transparent text-xl font-bold text-slate-300 border border-slate-500 p-3 rounded-md">
                                     Can I access my files from any device or location?
                                 </AccordionItemButton>
                             </AccordionItemHeading>
-                            <AccordionItemPanel>
-                                <div className="text-gray-400">
-                                    Absolutely! Our platform is accessible from any internet-enabled device, including desktops, laptops, tablets, and smartphones. Whether you're at home, in the office, or on the go, you can securely access your files whenever you need them.
-                                </div>
-                            </AccordionItemPanel>
+                            {
+                                isOpen && <AccordionItemPanel>
+                                    <div className="text-gray-400">
+                                        Absolutely! Our platform is accessible from any internet-enabled device, including desktops, laptops, tablets, and smartphones. Whether you're at home, in the office, or on the go, you can securely access your files whenever you need them.
+                                    </div>
+                                </AccordionItemPanel>
+                            }
                         </AccordionItem >
-                        <AccordionItem style={{ backdropFilter: "blur(150px)" }} className="rounded-md">
+                        <AccordionItem onClick={() => setIsOpen(!isOpen)} style={{ backdropFilter: "blur(150px)" }} className="rounded-md">
                             <AccordionItemHeading>
                                 <AccordionItemButton className="bg-transparent text-xl font-bold text-slate-300 border border-slate-500 p-3 rounded-md">
                                     Why DrivePulse is different from other file sharing platforms ?
                                 </AccordionItemButton>
                             </AccordionItemHeading>
-                            <AccordionItemPanel>
-                                <div className="text-gray-400">
-                                    DrivePulse is different from other file sharing platforms because, users can easily share files with their friends and communicate with them in real-time, all within the same interface.
-                                </div>
-                            </AccordionItemPanel>
+                            {
+                                isOpen && <AccordionItemPanel>
+                                    <div className="text-gray-400">
+                                        DrivePulse is different from other file sharing platforms because, users can easily share files with their friends and communicate with them in real-time, all within the same interface.
+                                    </div>
+                                </AccordionItemPanel>
+                            }
                         </AccordionItem>
 
                     </Accordion>
