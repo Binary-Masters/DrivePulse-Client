@@ -20,9 +20,8 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
   const axiosPublic = useAxiosPublic();
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const [users] = useGetAllUsers()
+  const [users] = useGetAllUsers();
 
-  console.log(receiveMessage);
   // Function to handle change in message input
   const handleChange = (newMessage) => {
     setNewMessage(newMessage);
@@ -47,6 +46,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
     queryKey: ["messageData", chat?._id],
     queryFn: async () => {
       const response = await axiosPublic.get(`/message/${chat?._id}`);
+      setMessages(response.data);
       return response.data;
     },
   });
@@ -66,9 +66,9 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
       try {
         const { data } = await addMessage(message);
         setMessages([...messages, data]);
-        // refetch();
+        refetch();
         setNewMessage("");
-      } catch (err){
+      } catch (err) {
         console.log(err);
       }
     } else {
@@ -76,24 +76,31 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
     }
   };
 
-  
+  // if (receiveMessage === null) {
+  //   refetch();
+  // }
+
   // Receive new message
   useEffect(() => {
+    if (receiveMessage === null) {
+      refetch();
+    }
     if (receiveMessage !== null && receiveMessage.chatId === chat._id) {
-      // refetch();
+      refetch();
       setMessages([...messages, receiveMessage]);
     }
-  }, [receiveMessage, chat, messages]);
+  }, [receiveMessage, chat, messages, refetch]);
 
   // Always scroll to last Message
   useEffect(() => {
     scroll.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-// console.log(messages.senderId);
+  // console.log(messages.senderId);
 
-const photoData = users.filter((user) => messages.some(message => message?.senderId === user?._id));
-// console.log(availableUsers[0].photoURL);
-
+  const photoData = users.filter((user) =>
+    messages.some((message) => message.senderId === user?._id)
+  );
+  // console.log(availableUsers[0].photoURL);
 
   return (
     <div className="relative ">
@@ -157,7 +164,8 @@ const photoData = users.filter((user) => messages.some(message => message?.sende
             />
             <button
               onClick={handleSend}
-              className="my-2 px-5 py-2 flex items-center gap-1 hover:bg-blue-600 cursor-pointer bg-primary rounded text-[18px] text-white">
+              className="my-2 px-5 py-2 flex items-center gap-1 hover:bg-blue-600 cursor-pointer bg-primary rounded text-[18px] text-white"
+            >
               Send <FiSend />
             </button>
             <input type="file" name="" id="" style={{ display: "none" }} />

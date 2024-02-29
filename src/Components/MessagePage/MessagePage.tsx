@@ -15,7 +15,7 @@ const MessagePage = () => {
   const [onlineUsers, setOnlineUsers] = useState<{ userId: string }[]>([]);
   const [sendMessage, setSendMessage] = useState(null);
   const [receiveMessage, setReceiveMessage] = useState(null);
-  const [chats, refetch] = useChats()
+  const [chats, refetch] = useChats();
 
   console.log(receiveMessage);
 
@@ -39,25 +39,21 @@ const MessagePage = () => {
   useEffect(() => {
     if (socket.current) {
       socket.current.on("getMessage", (data) => {
-        // Check if the received message is not the same as the previously received one
-        if (JSON.stringify(data) !== JSON.stringify(receiveMessage)) {
-          setReceiveMessage(data);
-        }
+        setReceiveMessage(data);
       });
-      return () => {
-        // Clean up socket event listener when component unmounts
-        socket.current.off("getMessage");
-      };
     }
   }, [receiveMessage]); // Add receiveMessage as a dependency if necessary
-  
-  
+
   const checkOnlineStatus = (chat: any) => {
-    const chatMember = chat.members?.find((member: string) => member !== userData._id);
-    const online = onlineUsers?.find((user: { userId: string }) => user.userId === chatMember);
+    const chatMember = chat.members?.find(
+      (member: string) => member !== userData._id
+    );
+    const online = onlineUsers?.find(
+      (user: { userId: string }) => user.userId === chatMember
+    );
     return online ? true : false;
   };
-  
+
   return (
     <div className="flex flex-col-reverse md:flex-row  gap-3 px-3">
       <div
@@ -73,25 +69,32 @@ const MessagePage = () => {
       </div>
       <div
         style={{ backdropFilter: "blur(100px)" }}
-        className="md:w-[30%] border-2 border-slate-500 rounded-md p-5 ">
-        
+        className="md:w-[30%] border-2 border-slate-500 rounded-md p-5 "
+      >
         {/* add conversation */}
         <AddConversation />
         <hr className="my-3" />
         <div className="">
-        {
-          chats?.length ===0 ? <p className="text-center text-slate-400 text-xl mt-5">No freind !</p> : <div className="flex flex-row md:flex-col gap-2 overflow-x-auto md:overflow-y-auto">  {chats?.map((chat, i) => (
-            <div key={i}>
-              <Conversation
-                data={chat}
-                setCurrentChat={setCurrentChat}
-                refetch={refetch}
-                currentUser={userData._id}
-                online={checkOnlineStatus(chat)}
-              />
+          {chats?.length === 0 ? (
+            <p className="text-center text-slate-400 text-xl mt-5">
+              No freind !
+            </p>
+          ) : (
+            <div className="flex flex-row md:flex-col gap-2 overflow-x-auto md:overflow-y-auto">
+              {" "}
+              {chats?.map((chat, i) => (
+                <div key={i}>
+                  <Conversation
+                    data={chat}
+                    setCurrentChat={setCurrentChat}
+                    refetch={refetch}
+                    currentUser={userData._id}
+                    online={checkOnlineStatus(chat)}
+                  />
+                </div>
+              ))}
             </div>
-          ))}</div>
-        }
+          )}
         </div>
       </div>
     </div>
@@ -99,4 +102,3 @@ const MessagePage = () => {
 };
 
 export default MessagePage;
-
