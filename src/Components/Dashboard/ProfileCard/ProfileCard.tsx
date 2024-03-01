@@ -5,6 +5,7 @@ import React from "react";
 import img1 from "../../../assests/images/about1.jpg";
 import Dropdown from "./Dropdown";
 import useGetSingleUser from "@/Hooks/useGetSingleUser";
+import Aboutimg from "../../../assests/images/about.jpg"
 const ProfileCard = () => {
   // use hook call
   const [userData, loading, refetch] = useGetSingleUser();
@@ -12,7 +13,10 @@ const ProfileCard = () => {
   // console.log(userData?.name,'user info')
   return (
     <div>
-      <div className="card w-80  h-96 bg-base-100 shadow-xl">
+      <div>
+     
+      </div>
+      <div className="card my-28 w-80  h-96 bg-base-100 shadow-xl">
         <figure>
           <div className="avatar">
             <div className="w-28 rounded-full ring hover:ring-offset-teal-700 ring-offset-base-100 ring-offset-2 my-8 ">
