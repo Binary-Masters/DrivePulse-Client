@@ -2,17 +2,18 @@
 import TextEditor from '@/Components/Dashboard/Files/CreateFile/TextEditor';
 import useAuth from '@/Hooks/useAuth';
 import useGetFiles from '@/Hooks/useGetFiles';
-import { getDownloadURL, getStorage, ref, updateMetadata } from 'firebase/storage';
+import { getDownloadURL, getStorage, ref, updateMetadata, uploadString } from 'firebase/storage';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FaSave } from 'react-icons/fa';
 import { MdOutlineArrowBack } from 'react-icons/md';
 import useStorage from '@/Hooks/useStorage';
 import LoadingAnimation from '@/Components/Animation/LoadingAnimation/LoadingAnimation';
-import useTextEditor from '@/Hooks/useTextEditor';
+
 
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import toast from 'react-hot-toast';
 
 
 const EditTextFile = ({ params }) => {
@@ -40,30 +41,27 @@ const EditTextFile = ({ params }) => {
     if (findData) {
         fetchData();
     }
-
+    console.log('fileContent before save:', fileContent);
     const handleSave = async () => {
-        console.log('fileContent before save:', fileContent);
-
+        console.log('fileContent text', fileContent)
         const storage = getStorage();
         const fileRef = ref(storage, findData?.fullPath);
 
-        try {
-            await uploadFile(fileRef, fileContent);
-            console.log('fileContent after save:', fileContent);
+        // const message = 'This is my message.';
+        uploadString(fileRef, fileContent).then((snapshot) => {
+            console.log('Uploaded a raw string!', snapshot );
+            toast.success('Successfully update text file', {
+                duration: 3000,
+                position: 'top-center',
+            })
+        }).catch((error) => {
+            console.error('Error uploading text file:', error);
+            toast.error('Failed to update text file');
+          });
 
-            await updateMetadata(fileRef, {
-                customMetadata: {
-                    lastModified: new Date().toISOString(),
-                },
-            });
-
-            console.log('File saved successfully!');
-        } catch (error) {
-            console.error('Error saving file:', error);
-        }
+      
     };
 
-    console.log('fileContent text', fileContent)
 
     return (
         <section className='gradient2-bg pt-20 min-h-screen'>
@@ -79,7 +77,7 @@ const EditTextFile = ({ params }) => {
                 {loading ? (
                     <LoadingAnimation />
                 ) : (
-                    <TextEditor initialContent={fileContent} />
+                    <TextEditor initialContent={fileContent} setContent={setFileContent} />
                     // <ReactQuill theme="snow" value={fileContent} onChange={setFileContent} />
                 )}
             </div>
