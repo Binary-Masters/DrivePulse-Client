@@ -110,10 +110,10 @@ const FilesPage: React.FC = () => {
       {isView === "list" && (
         <div
           style={{ backdropFilter: "blur(200px)" }}
-          className="relative h-screen overflow-x-auto shadow-md sm:rounded-lg"
+          className="relative h-screen overflow-x-auto shadow-md sm:rounded-lg mx-3"
         >
           <table className="w-full text-sm text-left text-gray-500 rtl:text-right ">
-            <thead className="text-xs uppercase text-slate-200 bg-primary ">
+            <thead className="text-xs uppercase text-slate-200 bg-primary">
               <tr>
                 <th className="px-6 py-3"></th>
                 <th className="px-6 py-3">Name</th>
