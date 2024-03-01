@@ -13,7 +13,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "DrivePulse",
-  description: "This Is A File Sharing Website",
+  description: "Secure File Sharing",
 };
 
 interface RootLayoutProps {

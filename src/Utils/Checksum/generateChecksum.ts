@@ -3,7 +3,7 @@ import crypto from "crypto";
 
 // Generates checksum for the first megabyte of the file
 const generateChecksum = async (file: File) => {
-	const chunkSize = 16 * 1024 * 1024; // 16 MB chunk size
+	const chunkSize = 64 * 1024 * 1024; // 16 MB chunk size
 	const fileSize = Math.min(chunkSize, file.size); // Limit to the first megabyte
 
 	// Algorithm selection

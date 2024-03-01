@@ -93,7 +93,7 @@ const SideNave = () => {
   ];
 
   return (
-    <div className="min-h-screen w-[60%] md:w-64 fixed z-50 shadow-sm bg-[#0e1642] mt-20 md:mt-0 overflow-y-auto">
+    <div className="min-h-screen w-[60%] md:w-64 fixed z-50 shadow-sm bg-custom-blue-1 mt-20 md:mt-0 overflow-y-auto">
       <div className="hidden p-3 md:block">
         <div className="flex items-center gap-1">
           <Image
