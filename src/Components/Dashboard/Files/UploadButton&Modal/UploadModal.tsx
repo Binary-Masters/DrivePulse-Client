@@ -90,6 +90,7 @@ const UploadModal: React.FC = () => {
 												...snapshot.metadata,
 											})
 											.then(() => {
+												closeModal()
 												Swal.fire({
 													title: "Success",
 													text: "File uploaded successfully",
@@ -209,10 +210,7 @@ const UploadModal: React.FC = () => {
 			<div className="flex justify-center mt-4">
 				<button
 					disabled={!file}
-					onClick={() => {
-						handleFileUpload();
-						closeModal();
-					}}
+					onClick={() =>handleFileUpload()}
 					className="px-6 py-2 text-xl text-center text-white rounded-full bg-primary text hover:bg-blue-600 transition-all duration-300 disabled:bg-gray-300"
 				>
 					Upload
