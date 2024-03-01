@@ -42,8 +42,16 @@ const MessagePage = () => {
 
   // connect socket server
   useEffect(() => {
+<<<<<<< HEAD
+    socket.current = io(socketServerUrl);
+    socket.current.on("connection-status", (data)=>{
+      console.log(data);
+    })
+    socket.current.on("getMessage", (data: any) => {
+=======
     socket.current = io("ws://localhost:3002");
     socket.current.on("getMessage", (data: MessageType) => {
+>>>>>>> 519d33b1e5e94667e0b23d2a454be16357c7c6c4
       setReceiveMessage({
         senderId: data.senderId,
         text: data.text,
