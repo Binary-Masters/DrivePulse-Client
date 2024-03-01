@@ -5,16 +5,10 @@ import { useState } from "react";
 import { MdClose } from "react-icons/md";
 import Swal from "sweetalert2";
 
-const Conversation = ({
-  data,
-  currentUser,
-  online,
-  refetch,
-  setCurrentChat,
-}) => {
+const Conversation = ({ data, currentUser, online, refetch, setCurrentChat }) => {
   const axiosPublic = useAxiosPublic();
   const [hovered, setHovered] = useState(false);
-  // find conversation member with id then get data
+
   const userId = data?.members.find((id) => id !== currentUser);
   const { data: conversationData } = useQuery({
     queryKey: ["conversationData", userId],
@@ -24,12 +18,10 @@ const Conversation = ({
         .then((response) => response.data),
   });
 
-
-  // delete conversation freind
   const handleDelete = (data) => {
     Swal.fire({
       title: "Are you sure?",
-      text: `Are you sure delete this conversation ?`,
+      text: `Are you sure you want to delete this conversation?`,
       icon: "question",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -42,13 +34,18 @@ const Conversation = ({
           if (response?.data) {
             Swal.fire({
               title: "",
-              text: `Successfully delete your conversation!`,
+              text: `Conversation deleted successfully!`,
               icon: "success",
             });
             refetch();
           }
-        } catch (err) {
-          console.log("delete conversation error->", err);
+        } catch (error) {
+          console.error("Failed to delete conversation:", error);
+          Swal.fire({
+            title: "Error",
+            text: "Failed to delete conversation. Please try again later.",
+            icon: "error",
+          });
         }
       }
     });
@@ -62,7 +59,7 @@ const Conversation = ({
       <div
         onClick={() => setCurrentChat(data)}
         className=" flex flex-col md:flex-row items-center gap-2">
-        <div className={`avatar ${online && "online"}`}>
+        <div className={`avatar ${online ? "online" : ""}`}>
           <div className="w-10 rounded-full border-2 border-primary">
             <Image
               src={conversationData?.photoURL}

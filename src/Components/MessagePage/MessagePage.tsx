@@ -9,11 +9,11 @@ import useChats from "@/Hooks/useChats";
 import { FiSend } from "react-icons/fi";
 import InputEmoji from "react-input-emoji";
 import Message from "./Message";
-import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import toast from "react-hot-toast";
 import { addMessage } from "@/api/MessageRequest";
 
+// type defined
 interface MessageType {
   _id: string;
   senderId: string;
@@ -25,7 +25,6 @@ interface CurrentChatType {
   _id: string;
   members: string[];
 }
-
 const MessagePage = () => {
   const socket = useRef<Socket | null>(null);
   const [userData] = useGetSingleUser();
@@ -39,11 +38,11 @@ const MessagePage = () => {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
 
+
   // connect socket server
   useEffect(() => {
     socket.current = io("ws://localhost:3002");
     socket.current.on("getMessage", (data: MessageType) => {
-      console.log(data);
       setReceiveMessage({
         senderId: data.senderId,
         text: data.text,
@@ -51,23 +50,27 @@ const MessagePage = () => {
         _id: data._id,
       });
     });
-  }, []);
+    socket.current.on("connect_error", (error: Error) => {
+      console.error("Socket server connection error-->", error);
+      toast.error("Failed to connect to real-time server. Please try again later.");
+    });
+  }, [socketServerUrl]);
 
   // add user and get user in socket server
   useEffect(() => {
     socket.current?.emit("addUsers", userData?._id);
     socket.current?.on("getUsers", (users) => {
-      console.log(users);
       setOnlineUsers(users);
     });
   }, [userData]);
+
 
   // set emoji in  message
   const handleChange = (newMessage: string) => {
     setNewMessage(newMessage);
   };
 
-  // get message in database
+   // get message in database
   const { refetch } = useQuery({
     queryKey: ["messageData", currentChat?._id],
     queryFn: async () => {
@@ -90,6 +93,8 @@ const MessagePage = () => {
       setMessages((prev) => [...prev, receiveMessage]);
   }, [currentChat, receiveMessage, refetch]);
 
+
+
   const handleSend = async () => {
     const message = {
       senderId: userData?._id,
@@ -97,7 +102,7 @@ const MessagePage = () => {
       chatId: currentChat?._id,
     };
     if (newMessage && currentChat) {
-      const receiverId = currentChat.members.find((id) => id !== userData?._id);
+      const receiverId = currentChat.members.find((id: string) => id !== userData?._id);
       socket.current?.emit("sendMessage", {
         senderId: userData?._id,
         receiverId,
@@ -108,21 +113,20 @@ const MessagePage = () => {
         const { data } = await addMessage(message);
         setMessages([...messages, data]);
         setNewMessage("");
-      } catch (err) {
-        console.log(err);
+      } catch (error) {
+        console.error("Failed to send message:", error);
+        toast.error("Failed to send message. Please try again later.");
       }
     } else {
       toast.error("Can't send empty message!");
     }
   };
 
+
+ 
   const checkOnlineStatus = (chat: any) => {
-    const chatMember = chat.members?.find(
-      (member: string) => member !== userData?._id
-    );
-    const online = onlineUsers?.find(
-      (user: { userId: string }) => user.userId === chatMember
-    );
+    const chatMember = chat.members?.find((member: string) => member !== userData?._id);
+    const online = onlineUsers?.find((user: { userId: string }) => user.userId === chatMember);
     return online ? true : false;
   };
 

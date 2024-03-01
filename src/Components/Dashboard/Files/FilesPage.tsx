@@ -1,7 +1,7 @@
 "use client";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
-import { MdDelete, MdImage } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import FolderButton from "./Folder/FolderButton";
 import useStorage from "@/Hooks/useStorage";
 import icons from "./icons";
@@ -13,16 +13,13 @@ import getFolderPathData from "@/Utils/FolderNavigation/getFolderPathData";
 import useAuth from "@/Hooks/useAuth";
 import Loading from "@/app/loading";
 import { useContext, useState } from "react";
-import Link from "next/link";
 import DropDownView from "@/Components/DropDownView/DropDownView";
 import FolderMoreInfo from "@/Components/FolderMorInfo/FolderMoreInfo";
-import { IoCreateOutline } from "react-icons/io5";
 import NodePreview from "./Preview/NodePreview";
 import CreateFile from "./CreateFile/CreateFile";
 import { useRouter } from "next/navigation";
 import { StorageContext } from "@/providers/StorageProvider";
 import handleStoreChangeFileTrash from "@/Utils/Files/handelChangeFileLocation/handleStoreChangeFileTrash";
-import { BsThreeDotsVertical } from "react-icons/bs";
 
 const FilesPage: React.FC = () => {
   const [isView, setIsView] = useState("list");
@@ -110,10 +107,10 @@ const FilesPage: React.FC = () => {
       {isView === "list" && (
         <div
           style={{ backdropFilter: "blur(200px)" }}
-          className="relative h-screen overflow-x-auto shadow-md sm:rounded-lg"
+          className="relative h-screen overflow-x-auto shadow-md sm:rounded-lg mx-3"
         >
           <table className="w-full text-sm text-left text-gray-500 rtl:text-right ">
-            <thead className="text-xs uppercase text-slate-200 bg-primary ">
+            <thead className="text-xs uppercase text-slate-200 bg-primary">
               <tr>
                 <th className="px-6 py-3"></th>
                 <th className="px-6 py-3">Name</th>
