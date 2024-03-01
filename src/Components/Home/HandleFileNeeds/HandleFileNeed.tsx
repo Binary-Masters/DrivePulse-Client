@@ -35,7 +35,7 @@ const HandleFileNeed = () => {
       <p className="text-lg max-w-3xl px-3 mx-auto text-center mt-3 mb-10 text-slate-400">
         File storage made easy – including powerful features you won’t find
         anywhere else. Whether you’re sharing photos, videos, audio, or docs,
-        MediaFire can simplify your workflow.
+        DrivePulse can simplify your workflow.
       </p>
 
       <div className=" max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 px-7">

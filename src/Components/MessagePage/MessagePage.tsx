@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useEffect, useRef, useState } from "react";
 import "./message.css";
 import Conversation from "./Conversation";
@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import { addMessage } from "@/api/MessageRequest";
 import { useQuery } from "@tanstack/react-query";
 
+// type defined
 interface MessageType {
   _id: string;
   senderId: string;
@@ -25,7 +26,6 @@ interface CurrentChatType {
   _id: string;
   members: string[];
 }
-
 const MessagePage = () => {
   const socket = useRef<Socket | null>(null);
   const [userData] = useGetSingleUser();
@@ -53,10 +53,11 @@ const MessagePage = () => {
     });
     socket.current.on("connect_error", (error: Error) => {
       console.error("Socket server connection error-->", error);
-      toast.error("Failed to connect to real-time server. Please try again later.");
+      // toast.error("Failed to connect to real-time server. Please try again later.");
     });
   }, []);
 
+  // add user and get user in socket server
   useEffect(() => {
     socket.current?.emit("addUsers", userData?._id);
     socket.current?.on("getUsers", (users) => {
@@ -122,6 +123,8 @@ const MessagePage = () => {
     }
   };
 
+
+ 
   const checkOnlineStatus = (chat: any) => {
     const chatMember = chat.members?.find((member: string) => member !== userData?._id);
     const online = onlineUsers?.find((user: { userId: string }) => user.userId === chatMember);
@@ -157,12 +160,7 @@ const MessagePage = () => {
                 >
                   Send <FiSend />
                 </button>
-                <input
-                  type="file"
-                  name=""
-                  id=""
-                  style={{ display: "none" }}
-                />
+                <input type="file" name="" id="" style={{ display: "none" }} />
               </div>
             </div>
           ) : (
