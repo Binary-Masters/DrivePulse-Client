@@ -1,7 +1,7 @@
 "use client";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
-import { MdDelete, MdImage } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import FolderButton from "./Folder/FolderButton";
 import useStorage from "@/Hooks/useStorage";
 import icons from "./icons";
@@ -13,16 +13,13 @@ import getFolderPathData from "@/Utils/FolderNavigation/getFolderPathData";
 import useAuth from "@/Hooks/useAuth";
 import Loading from "@/app/loading";
 import { useContext, useState } from "react";
-import Link from "next/link";
 import DropDownView from "@/Components/DropDownView/DropDownView";
 import FolderMoreInfo from "@/Components/FolderMorInfo/FolderMoreInfo";
-import { IoCreateOutline } from "react-icons/io5";
 import NodePreview from "./Preview/NodePreview";
 import CreateFile from "./CreateFile/CreateFile";
 import { useRouter } from "next/navigation";
 import { StorageContext } from "@/providers/StorageProvider";
 import handleStoreChangeFileTrash from "@/Utils/Files/handelChangeFileLocation/handleStoreChangeFileTrash";
-import { BsThreeDotsVertical } from "react-icons/bs";
 
 const FilesPage: React.FC = () => {
   const [isView, setIsView] = useState("list");

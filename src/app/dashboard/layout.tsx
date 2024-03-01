@@ -3,7 +3,6 @@ import SideNave from "@/Components/SideNave/SideNave";
 import React from "react";
 import PrivateRoute from "@/Components/Routes/PrivateRoute";
 import FilesProvider from "@/providers/FilesProvider";
-import UploadProgress from "@/Components/Dashboard/Files/ProgressBar/UploadProgress";
 
 const layout = ({ children }) => {
 	return (
@@ -16,7 +15,6 @@ const layout = ({ children }) => {
 					<FilesProvider>
 						<DashboardNav />
 						{children}
-						<UploadProgress/>
 					</FilesProvider>
 				</div>
 			</div>

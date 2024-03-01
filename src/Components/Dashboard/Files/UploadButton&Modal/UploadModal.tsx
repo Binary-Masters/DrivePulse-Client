@@ -11,7 +11,7 @@ import useAuth from "@/Hooks/useAuth";
 
 const UploadModal: React.FC = () => {
 	const [file, setFile] = useState<File | null>(null);
-	const { uploadFile, getFileURL, setUploadProgress } = useStorage();
+	const { uploadFile, getFileURL, setUploadProgress, setUploadFileInfo } = useStorage();
 	const axiosPublic = useAxiosPublic();
 	const { refetchFiles } = useGetFiles();
 	const { user } = useAuth();
@@ -20,12 +20,12 @@ const UploadModal: React.FC = () => {
 		uid: user.uid,
 	};
 
-  const closeModal = () => {
-    const modalElement = document.getElementById("my_modal_1");
-    if (modalElement) {
-      (modalElement as HTMLDialogElement).close();
-    }
-  };
+	const closeModal = () => {
+		const modalElement = document.getElementById("my_modal_1");
+		if (modalElement) {
+			(modalElement as HTMLDialogElement).close();
+		}
+	};
 
 	const handleFileUpload = () => {
 		try {
@@ -33,12 +33,22 @@ const UploadModal: React.FC = () => {
 				// Check database for duplicate files under current user
 				// Ensures cloud and server synchronization
 				generateChecksum(file).then((checksum) => {
+					const fileInfo = { name: file.name, size: file.size };
+					setUploadFileInfo({
+						...fileInfo,
+						status: "Generating Checksum...",
+					});
 					axiosPublic
 						.post("/files/lookup", { checksum, owner })
 						.then(({ data }) => {
 							if (!data.exists) {
 								// Starts an upload session
 								const uploadSession = uploadFile(file);
+								setUploadFileInfo({
+									...fileInfo,
+									status: "Uploading...",
+								});
+								setFile(null);
 								uploadSession.on(
 									"state_changed",
 									(snapshot) => {
@@ -52,6 +62,10 @@ const UploadModal: React.FC = () => {
 									},
 									(err) => {},
 									async () => {
+										setUploadFileInfo({
+											...fileInfo,
+											status: "Uploaded",
+										});
 										const { snapshot } = uploadSession;
 										console.log(snapshot);
 										const fileType =

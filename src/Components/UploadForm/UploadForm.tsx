@@ -8,6 +8,7 @@ import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import generateChecksum from "@/Utils/Checksum/generateChecksum";
 import useAuth from "@/Hooks/useAuth";
 import useGetFiles from "@/Hooks/useGetFiles";
+import UploadProgress from "../Dashboard/Files/ProgressBar/UploadProgress";
 
 const UploadForm: React.FC = () => {
 	const [file, setFile] = useState<File | null>(null);
@@ -16,7 +17,7 @@ const UploadForm: React.FC = () => {
 		uploadFile,
 		getFileURL,
 		setUploadProgress,
-		uploadProgress 
+		setUploadFileInfo,
 	} = useStorage();
 	const { refetchFiles } = useGetFiles();
 	const axiosPublic = useAxiosPublic();
@@ -31,12 +32,16 @@ const UploadForm: React.FC = () => {
 				// Check database for duplicate files under current user
 				// Ensures cloud and server synchronization
 				generateChecksum(file).then((checksum) => {
+					const fileInfo = { name: file.name, size: file.size };
+					setUploadFileInfo({ ...fileInfo, status: "Generating Checksum..." })
 					axiosPublic
 						.post("/files/lookup", { checksum, owner })
 						.then(({ data }) => {
 							if (!data.exists) {
 								// Starts an upload session
 								const uploadSession = uploadFile(file);
+								setUploadFileInfo({ ...fileInfo, status: "Uploading..." })
+								setFile(null);
 								uploadSession.on(
 									"state_changed",
 									(snapshot) => {
@@ -50,6 +55,7 @@ const UploadForm: React.FC = () => {
 									},
 									(err) => {},
 									async () => {
+										setUploadFileInfo({ ...fileInfo, status: "Uploaded" })
 										const { snapshot } = uploadSession;
 										console.log(snapshot);
 										const fileType =
@@ -199,6 +205,8 @@ const UploadForm: React.FC = () => {
 					Upload
 				</button>
 			</div>
+			<UploadProgress/>
+
 		</div>
 	);
 };

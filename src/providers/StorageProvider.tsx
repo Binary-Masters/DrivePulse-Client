@@ -10,6 +10,12 @@ import {
 } from "firebase/storage";
 import React, { ReactElement, ReactNode, createContext, useState } from "react";
 
+interface UploadFileInfo {
+	name: string;
+	size: number;
+	status: string;
+}
+
 interface StorageInfo {
 	uploadFile: (file: File) => UploadTask;
 	deleteFile: (fullPath: string) => Promise<void>;
@@ -18,9 +24,12 @@ interface StorageInfo {
 	setStorageLoading: React.Dispatch<React.SetStateAction<boolean>>;
 	uploadProgress: number;
 	setUploadProgress: React.Dispatch<React.SetStateAction<number>>;
+	uploadFileInfo: UploadFileInfo | null,
+	setUploadFileInfo: React.Dispatch<React.SetStateAction<UploadFileInfo | null>>;
 	path: string;
 	getFileURL: (fullPath: string) => Promise<string>;
 }
+
 
 export const StorageContext = createContext<any>({});
 
@@ -31,6 +40,7 @@ export default function StorageProvider({
 	const [path, setPath] = useState<string>("/");
 	const [uploadProgress, setUploadProgress] = useState<number>(0);
 	const [storageLoading, setStorageLoading] = useState<boolean>(true);
+	const [uploadFileInfo, setUploadFileInfo] = useState<UploadFileInfo | null>(null)
 	const storage = getStorage();
 	const root = user?.uid; // Root directory
 
@@ -55,6 +65,8 @@ export default function StorageProvider({
 	};
 
 	const storageInfo: StorageInfo = {
+		uploadFileInfo,
+		setUploadFileInfo,
 		uploadProgress,
 		setUploadProgress,
 		uploadFile,
