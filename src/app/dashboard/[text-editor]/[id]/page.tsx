@@ -52,7 +52,7 @@ const EditTextFile = ({ params }) => {
             console.log('Uploaded a raw string!', snapshot );
             toast.success('Successfully update text file', {
                 duration: 3000,
-                position: 'top-right',
+                position: 'top-center',
             })
         }).catch((error) => {
             console.error('Error uploading text file:', error);
