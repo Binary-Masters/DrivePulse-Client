@@ -40,6 +40,9 @@ const MessagePage = () => {
   // connect socket server
   useEffect(() => {
     socket.current = io(socketServerUrl);
+    socket.current.on("connection-status", (data)=>{
+      console.log(data);
+    })
     socket.current.on("getMessage", (data: any) => {
       setReceiveMessage({
         senderId: data.senderId,
