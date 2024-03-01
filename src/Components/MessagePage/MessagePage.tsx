@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import React, { useEffect, useRef, useState } from "react";
 import "./message.css";
 import Conversation from "./Conversation";
@@ -13,7 +13,6 @@ import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import toast from "react-hot-toast";
 import { addMessage } from "@/api/MessageRequest";
 
-// type defined
 interface MessageType {
   _id: string;
   senderId: string;
@@ -25,6 +24,7 @@ interface CurrentChatType {
   _id: string;
   members: string[];
 }
+
 const MessagePage = () => {
   const socket = useRef<Socket | null>(null);
   const [userData] = useGetSingleUser();
@@ -35,11 +35,9 @@ const MessagePage = () => {
   const axiosPublic = useAxiosPublic();
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
-  const socketServerUrl = process.env.NEXT_PUBLIC_SOCKET_SERVER_URL || "ws://localhost:3002";
-  console.log(receiveMessage);
-  // connect socket server
+
   useEffect(() => {
-    socket.current = io(socketServerUrl);
+    socket.current = io(process.env.NEXT_PUBLIC_SOCKET_SERVER_URL || "https://drive-pulse-server.vercel.app");
     socket.current.on("getMessage", (data: any) => {
       setReceiveMessage({
         senderId: data.senderId,
@@ -52,21 +50,19 @@ const MessagePage = () => {
       console.error("Socket server connection error-->", error);
       toast.error("Failed to connect to real-time server. Please try again later.");
     });
-  }, [socketServerUrl]);
+  }, []);
 
-  // add user and get user in socket server
   useEffect(() => {
     try {
       socket.current?.emit("addUsers", userData?._id);
     } catch (error) {
       console.error("Error adding user:", error);
-    }    
+    }
     socket.current?.on("getUsers", (users: any) => {
       console.log(users);
       setOnlineUsers(users);
     });
   }, [userData]);
-
 
   useEffect(() => {
     receiveMessage &&
@@ -74,13 +70,10 @@ const MessagePage = () => {
       setMessages((prev) => [...prev, receiveMessage]);
   }, [currentChat, receiveMessage]);
 
-
-  // set emoji in  message
   const handleChange = (newMessage: string) => {
     setNewMessage(newMessage);
   };
 
-  // get message in database
   useEffect(() => {
     const getMessages = async () => {
       try {
@@ -94,8 +87,6 @@ const MessagePage = () => {
     getMessages();
   }, [currentChat, axiosPublic]);
 
-
-  // send message
   const handleSend = async () => {
     const message = {
       senderId: userData?._id,
@@ -122,8 +113,6 @@ const MessagePage = () => {
     }
   };
 
-
- 
   const checkOnlineStatus = (chat: any) => {
     const chatMember = chat.members?.find(
       (member: string) => member !== userData?._id
@@ -138,7 +127,8 @@ const MessagePage = () => {
     <div className="flex flex-col-reverse md:flex-row  gap-3 px-3">
       <div
         style={{ backdropFilter: "blur(100px)" }}
-        className="md:w-[70%] h-[85vh] border-2 border-slate-500 rounded-md p-2 space-y-5 overflow-y-auto">
+        className="md:w-[70%] h-[85vh] border-2 border-slate-500 rounded-md p-2 space-y-5 overflow-y-auto"
+      >
         <div className="relative ">
           {currentChat ? (
             <div>
@@ -158,10 +148,16 @@ const MessagePage = () => {
                 />
                 <button
                   onClick={handleSend}
-                  className="my-2 px-5 py-2 flex items-center gap-1 hover:bg-blue-600 cursor-pointer bg-primary rounded text-[18px] text-white">
+                  className="my-2 px-5 py-2 flex items-center gap-1 hover:bg-blue-600 cursor-pointer bg-primary rounded text-[18px] text-white"
+                >
                   Send <FiSend />
                 </button>
-                <input type="file" name="" id="" style={{ display: "none" }} />
+                <input
+                  type="file"
+                  name=""
+                  id=""
+                  style={{ display: "none" }}
+                />
               </div>
             </div>
           ) : (
@@ -173,7 +169,8 @@ const MessagePage = () => {
       </div>
       <div
         style={{ backdropFilter: "blur(100px)" }}
-        className="md:w-[30%] border-2 border-slate-500 rounded-md p-5 ">
+        className="md:w-[30%] border-2 border-slate-500 rounded-md p-5 "
+      >
         <AddConversation />
         <hr className="my-3" />
         <div className="">
