@@ -11,7 +11,7 @@ import useAuth from "@/Hooks/useAuth";
 
 const UploadModal: React.FC = () => {
 	const [file, setFile] = useState<File | null>(null);
-	const { uploadFile, getFileURL } = useStorage();
+	const { uploadFile, getFileURL, setUploadProgress, setUploadFileInfo } = useStorage();
 	const axiosPublic = useAxiosPublic();
 	const { refetchFiles } = useGetFiles();
 	const { user } = useAuth();
@@ -20,12 +20,12 @@ const UploadModal: React.FC = () => {
 		uid: user.uid,
 	};
 
-  const closeModal = () => {
-    const modalElement = document.getElementById("my_modal_1");
-    if (modalElement) {
-      (modalElement as HTMLDialogElement).close();
-    }
-  };
+	const closeModal = () => {
+		const modalElement = document.getElementById("my_modal_1");
+		if (modalElement) {
+			(modalElement as HTMLDialogElement).close();
+		}
+	};
 
 	const handleFileUpload = () => {
 		try {
@@ -33,50 +33,82 @@ const UploadModal: React.FC = () => {
 				// Check database for duplicate files under current user
 				// Ensures cloud and server synchronization
 				generateChecksum(file).then((checksum) => {
+					const fileInfo = { name: file.name, size: file.size };
+					setUploadFileInfo({
+						...fileInfo,
+						status: "Generating Checksum...",
+					});
 					axiosPublic
 						.post("/files/lookup", { checksum, owner })
 						.then(({ data }) => {
 							if (!data.exists) {
-								// Upload to cloud
-								uploadFile(file).then( async (snapshot) => {
-									const fileType =
-										snapshot.metadata.contentType;
-									const filePath = snapshot.metadata.fullPath;
-									let thumbnail = "";
-
-									// For image thumbnail
-									if (fileType.startsWith("image/")) {
-										thumbnail = await getFileURL(filePath);
-									}
-
-									// Post file metadata to database
-									axiosPublic
-										.post("/files", {
-											checksum,
-											owner,
-											thumbnail,
-											...snapshot.metadata,
-										})
-										.then((response) => {
-											Swal.fire({
-												title: "Success",
-												text: "File uploaded successfully",
-												icon: "success",
-												confirmButtonText: "OK",
-											});
-											refetchFiles();
-											setFile(null);
-										})
-										.catch((err) => console.log(err));
+								// Starts an upload session
+								const uploadSession = uploadFile(file);
+								setUploadFileInfo({
+									...fileInfo,
+									status: "Uploading...",
 								});
+								setFile(null);
+								uploadSession.on(
+									"state_changed",
+									(snapshot) => {
+										const { bytesTransferred, totalBytes } =
+											snapshot;
+										const currentProgress = Math.round(
+											(bytesTransferred / totalBytes) *
+												100
+										);
+										setUploadProgress(currentProgress);
+									},
+									(err) => {},
+									async () => {
+										setUploadFileInfo({
+											...fileInfo,
+											status: "Uploaded",
+										});
+										const { snapshot } = uploadSession;
+										console.log(snapshot);
+										const fileType =
+											snapshot.metadata.contentType;
+										const filePath =
+											snapshot.metadata.fullPath;
+										let thumbnail = "";
+
+										// For image thumbnail
+										if (fileType.startsWith("image/")) {
+											thumbnail = await getFileURL(
+												filePath
+											);
+										}
+
+										// Post file metadata to database
+										axiosPublic
+											.post("/files", {
+												checksum,
+												owner,
+												thumbnail,
+												...snapshot.metadata,
+											})
+											.then(() => {
+												Swal.fire({
+													title: "Success",
+													text: "File uploaded successfully",
+													icon: "success",
+													confirmButtonText: "OK",
+												});
+												refetchFiles();
+												setFile(null);
+											})
+											.catch((err) => console.log(err));
+									}
+								);
 							} else {
 								Swal.fire({
 									title: "File Already Exists",
 									icon: "error",
 									confirmButtonText: "OK",
-								}).then(({ isConfirmed }) => {
-									isConfirmed && refetchFiles();setFile(null);
 								});
+								setFile(null);
 							}
 						})
 						.catch((err) => {
