@@ -16,6 +16,7 @@
     "@types/react-toastify": "^4.1.0",
     "axios": "^1.6.7",
     "dotenv": "^16.4.0",
+    "draft-js": "^0.11.7",
     "draft-js-export-html": "^1.4.1",
     "emailjs": "^4.0.3",
     "firebase": "^10.7.2",

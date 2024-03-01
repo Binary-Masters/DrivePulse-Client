@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useRef, useState } from "react";
 import "./message.css";
 import Conversation from "./Conversation";
@@ -9,11 +9,11 @@ import useChats from "@/Hooks/useChats";
 import { FiSend } from "react-icons/fi";
 import InputEmoji from "react-input-emoji";
 import Message from "./Message";
-import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import toast from "react-hot-toast";
 import { addMessage } from "@/api/MessageRequest";
 
+// type defined
 interface MessageType {
   _id: string;
   senderId: string;
@@ -25,7 +25,6 @@ interface CurrentChatType {
   _id: string;
   members: string[];
 }
-
 const MessagePage = () => {
   const socket = useRef<Socket | null>(null);
   const [userData] = useGetSingleUser();
@@ -36,12 +35,12 @@ const MessagePage = () => {
   const axiosPublic = useAxiosPublic();
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
-
-
+  const socketServerUrl = process.env.NEXT_PUBLIC_SOCKET_SERVER_URL || "ws://localhost:3002";
+  console.log(receiveMessage);
   // connect socket server
   useEffect(() => {
-    socket.current = io("ws://localhost:3002");
-    socket.current.on("getMessage", (data: MessageType) => {
+    socket.current = io(socketServerUrl);
+    socket.current.on("getMessage", (data: any) => {
       setReceiveMessage({
         senderId: data.senderId,
         text: data.text,
@@ -49,15 +48,31 @@ const MessagePage = () => {
         _id: data._id,
       });
     });
-  }, []);
+    socket.current.on("connect_error", (error: Error) => {
+      console.error("Socket server connection error-->", error);
+      toast.error("Failed to connect to real-time server. Please try again later.");
+    });
+  }, [socketServerUrl]);
 
   // add user and get user in socket server
   useEffect(() => {
-    socket.current?.emit("addUsers", userData?._id);
-    socket.current?.on("getUsers", (users) => {
+    try {
+      socket.current?.emit("addUsers", userData?._id);
+    } catch (error) {
+      console.error("Error adding user:", error);
+    }    
+    socket.current?.on("getUsers", (users: any) => {
+      console.log(users);
       setOnlineUsers(users);
     });
   }, [userData]);
+
+
+  useEffect(() => {
+    receiveMessage &&
+      currentChat?.members.includes(receiveMessage.senderId) &&
+      setMessages((prev) => [...prev, receiveMessage]);
+  }, [currentChat, receiveMessage]);
 
 
   // set emoji in  message
@@ -65,32 +80,22 @@ const MessagePage = () => {
     setNewMessage(newMessage);
   };
 
-
-   // get message in database
-  const { refetch } = useQuery({
-    queryKey: ["messageData", currentChat?._id],
-    queryFn: async () => {
-      if (currentChat) {
-        const response = await axiosPublic.get(`/message/${currentChat?._id}`);
-        setMessages(response.data);
-        return response.data;
-      }
-      return [];
-    },
-  });
-
-  // received message in  conditionaly
+  // get message in database
   useEffect(() => {
-    if (receiveMessage === null) {
-      refetch();
-    }
-    receiveMessage &&
-      currentChat?.members.includes(receiveMessage.senderId) &&
-      setMessages((prev) => [...prev, receiveMessage]);
-  }, [currentChat, receiveMessage, refetch]);
+    const getMessages = async () => {
+      try {
+        const res = await axiosPublic.get(`/message/${currentChat?._id}`);
+        console.log(res.data);
+        setMessages(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getMessages();
+  }, [currentChat, axiosPublic]);
 
 
-
+  // send message
   const handleSend = async () => {
     const message = {
       senderId: userData?._id,
@@ -98,7 +103,7 @@ const MessagePage = () => {
       chatId: currentChat?._id,
     };
     if (newMessage && currentChat) {
-      const receiverId = currentChat.members.find((id) => id !== userData?._id);
+      const receiverId = currentChat.members.find((id: string) => id !== userData?._id);
       socket.current?.emit("sendMessage", {
         senderId: userData?._id,
         receiverId,
@@ -108,21 +113,26 @@ const MessagePage = () => {
         const { data } = await addMessage(message);
         setMessages([...messages, data]);
         setNewMessage("");
-      } catch (err) {
-        console.log(err);
+      } catch (error) {
+        console.error("Failed to send message:", error);
+        toast.error("Failed to send message. Please try again later.");
       }
     } else {
       toast.error("Can't send empty message!");
     }
   };
 
+
+ 
   const checkOnlineStatus = (chat: any) => {
-    const chatMember = chat.members?.find((member: string) => member !== userData?._id);
-    const online = onlineUsers?.find((user: { userId: string }) => user.userId === chatMember);
+    const chatMember = chat.members?.find(
+      (member: string) => member !== userData?._id
+    );
+    const online = onlineUsers?.find(
+      (user: any) => user.userId === chatMember
+    );
     return online ? true : false;
   };
-
-  
 
   return (
     <div className="flex flex-col-reverse md:flex-row  gap-3 px-3">
@@ -168,7 +178,9 @@ const MessagePage = () => {
         <hr className="my-3" />
         <div className="">
           {chats?.length === 0 ? (
-            <p className="text-center text-slate-400 text-xl mt-5">No friend !</p>
+            <p className="text-center text-slate-400 text-xl mt-5">
+              No friend !
+            </p>
           ) : (
             <div className="flex flex-row md:flex-col gap-2 overflow-x-auto md:overflow-y-auto">
               {chats?.map((chat, i) => (
