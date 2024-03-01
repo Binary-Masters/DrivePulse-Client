@@ -12,6 +12,7 @@ import Message from "./Message";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import toast from "react-hot-toast";
 import { addMessage } from "@/api/MessageRequest";
+import { useQuery } from "@tanstack/react-query";
 
 // type defined
 interface MessageType {
@@ -54,7 +55,7 @@ const MessagePage = () => {
       console.error("Socket server connection error-->", error);
       toast.error("Failed to connect to real-time server. Please try again later.");
     });
-  }, [socketServerUrl]);
+  }, []);
 
   // add user and get user in socket server
   useEffect(() => {
