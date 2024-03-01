@@ -6,6 +6,7 @@ import useGetFiles from '@/Hooks/useGetFiles';
 import useAuth from '@/Hooks/useAuth';
 import Swal from 'sweetalert2';
 import useStorage from '@/Hooks/useStorage';
+import toast from 'react-hot-toast';
 
 type FormData = {
     fileName: string;
@@ -26,70 +27,47 @@ const CreateFile = () => {
 
     const onSubmit = async (data: { fileName: string }) => {
         const name = data.fileName;
-        const fileExtension = name.slice(((name.lastIndexOf('.') - 1) >>> 0) + 2);
-        console.log(fileExtension)
-        const folderMetadata = {
-            checksum: '',
-            type: 'file',
-            owner: { uid: user?.uid, email: user?.email,  store: "Local" },
-            contentType: 'text/plain',
-            bucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
-            fullPath: `${user.uid + path + name}`,
-            name: data.fileName,
-            size: 0,
-        };
-        console.log(user?.email)
-        console.log(folderMetadata);
-        try {
-            await axiosPublic.post('/files', folderMetadata);
-            refetchFiles();
-            closeModal();
-        } catch (err) {
+        const isTxtFile = name.toLowerCase().endsWith('.txt');
+
+       
+        if(isTxtFile){
+            const folderMetadata = {
+                checksum: '',
+                type: 'file',
+                owner: { uid: user?.uid, email: user?.email,  store: "Local" },
+                contentType: 'text/plain',
+                bucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
+                fullPath: `${user.uid + path + name}`,
+                name: data.fileName,
+                size: 0,
+            };
+            
+            try {
+                await axiosPublic.post('/files', folderMetadata);
+                toast.success('Created text file', {
+                    position: 'top-center',
+                })
+                closeModal();
+                refetchFiles();
+            } catch (err) {
+                closeModal()
+                Swal.fire({
+                    position: "top",
+                    icon: "warning",
+                    title: `${data.fileName} give error-- ${err}`,
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+            }
+        }else{
             closeModal()
-            Swal.fire({
-                position: "top",
-                icon: "warning",
-                title: `${data.fileName} give error-- ${err}`,
-                showConfirmButton: false,
-                timer: 1500,
-            });
+            toast.error(`${data.fileName} is not txt file`, {
+                position: 'top-center',
+                duration: 3000
+            })
         }
-        // if (fileExtension.toLowerCase() == 'txt') {
-        //     const folderMetadata = {
-        //         checksum: '',
-        //         type: 'file',
-        //         owner: { uid: user?.uid, email: user?.email },
-        //         contentType: 'text/plain',
-        //         bucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
-        //         fullPath: `${user.uid + path + name}`,
-        //         name: data.fileName,
-        //         size: 0,
-        //     };
-        //     console.log(user?.email)
-        //     console.log(folderMetadata);
-        //     try {
-        //         await axiosPublic.post('/files', folderMetadata);
-        //         refetchFiles();
-        //         closeModal();
-        //     } catch (err) {
-        //         closeModal()
-        //         Swal.fire({
-        //             position: "top",
-        //             icon: "warning",
-        //             title: `${data.fileName} give error-- ${err}`,
-        //             showConfirmButton: false,
-        //             timer: 1500,
-        //         });
-        //     }
-        // }
-        // else closeModal()
-        // Swal.fire({
-        //     position: "top",
-        //     icon: "warning",
-        //     title: `${data.fileName} is not (.txt) file`,
-        //     showConfirmButton: false,
-        //     timer: 1200,
-        // });
+        
+      
     };
 
     const openModal = () => {

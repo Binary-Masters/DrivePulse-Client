@@ -12,6 +12,7 @@ import Message from "./Message";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import toast from "react-hot-toast";
 import { addMessage } from "@/api/MessageRequest";
+import { useQuery } from "@tanstack/react-query";
 
 // type defined
 interface MessageType {
@@ -30,20 +31,27 @@ const MessagePage = () => {
   const [userData] = useGetSingleUser();
   const [currentChat, setCurrentChat] = useState<CurrentChatType | null>(null);
   const [onlineUsers, setOnlineUsers] = useState<{ userId: string }[]>([]);
-  const [receiveMessage, setReceiveMessage] = useState<MessageType | null>(null);
+  const [receiveMessage, setReceiveMessage] = useState<MessageType | null>(
+    null
+  );
   const [chats, chatsRefetch] = useChats();
   const axiosPublic = useAxiosPublic();
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
-  const socketServerUrl = process.env.NEXT_PUBLIC_SOCKET_SERVER_URL || "ws://localhost:3002";
-  console.log(receiveMessage);
+
+
   // connect socket server
   useEffect(() => {
+<<<<<<< HEAD
     socket.current = io(socketServerUrl);
     socket.current.on("connection-status", (data)=>{
       console.log(data);
     })
     socket.current.on("getMessage", (data: any) => {
+=======
+    socket.current = io("ws://localhost:3002");
+    socket.current.on("getMessage", (data: MessageType) => {
+>>>>>>> 519d33b1e5e94667e0b23d2a454be16357c7c6c4
       setReceiveMessage({
         senderId: data.senderId,
         text: data.text,
@@ -55,27 +63,15 @@ const MessagePage = () => {
       console.error("Socket server connection error-->", error);
       toast.error("Failed to connect to real-time server. Please try again later.");
     });
-  }, [socketServerUrl]);
+  }, []);
 
   // add user and get user in socket server
   useEffect(() => {
-    try {
-      socket.current?.emit("addUsers", userData?._id);
-    } catch (error) {
-      console.error("Error adding user:", error);
-    }    
-    socket.current?.on("getUsers", (users: any) => {
-      console.log(users);
+    socket.current?.emit("addUsers", userData?._id);
+    socket.current?.on("getUsers", (users) => {
       setOnlineUsers(users);
     });
   }, [userData]);
-
-
-  useEffect(() => {
-    receiveMessage &&
-      currentChat?.members.includes(receiveMessage.senderId) &&
-      setMessages((prev) => [...prev, receiveMessage]);
-  }, [currentChat, receiveMessage]);
 
 
   // set emoji in  message
@@ -83,22 +79,31 @@ const MessagePage = () => {
     setNewMessage(newMessage);
   };
 
-  // get message in database
-  useEffect(() => {
-    const getMessages = async () => {
-      try {
-        const res = await axiosPublic.get(`/message/${currentChat?._id}`);
-        console.log(res.data);
-        setMessages(res.data);
-      } catch (err) {
-        console.log(err);
+   // get message in database
+  const { refetch } = useQuery({
+    queryKey: ["messageData", currentChat?._id],
+    queryFn: async () => {
+      if (currentChat) {
+        const response = await axiosPublic.get(`/message/${currentChat?._id}`);
+        setMessages(response.data);
+        return response.data;
       }
-    };
-    getMessages();
-  }, [currentChat, axiosPublic]);
+      return [];
+    },
+  });
+
+  // received message in  conditionaly
+  useEffect(() => {
+    if (receiveMessage === null) {
+      refetch();
+    }
+    receiveMessage &&
+      currentChat?.members.includes(receiveMessage.senderId) &&
+      setMessages((prev) => [...prev, receiveMessage]);
+  }, [currentChat, receiveMessage, refetch]);
 
 
-  // send message
+
   const handleSend = async () => {
     const message = {
       senderId: userData?._id,
@@ -112,6 +117,7 @@ const MessagePage = () => {
         receiverId,
         text: newMessage,
       });
+
       try {
         const { data } = await addMessage(message);
         setMessages([...messages, data]);
@@ -128,12 +134,8 @@ const MessagePage = () => {
 
  
   const checkOnlineStatus = (chat: any) => {
-    const chatMember = chat.members?.find(
-      (member: string) => member !== userData?._id
-    );
-    const online = onlineUsers?.find(
-      (user: any) => user.userId === chatMember
-    );
+    const chatMember = chat.members?.find((member: string) => member !== userData?._id);
+    const online = onlineUsers?.find((user: { userId: string }) => user.userId === chatMember);
     return online ? true : false;
   };
 
@@ -141,7 +143,8 @@ const MessagePage = () => {
     <div className="flex flex-col-reverse md:flex-row  gap-3 px-3">
       <div
         style={{ backdropFilter: "blur(100px)" }}
-        className="md:w-[70%] h-[85vh] border-2 border-slate-500 rounded-md p-2 space-y-5 overflow-y-auto">
+        className="md:w-[70%] h-[85vh] border-2 border-slate-500 rounded-md p-2 space-y-5 overflow-y-auto"
+      >
         <div className="relative ">
           {currentChat ? (
             <div>
@@ -161,7 +164,8 @@ const MessagePage = () => {
                 />
                 <button
                   onClick={handleSend}
-                  className="my-2 px-5 py-2 flex items-center gap-1 hover:bg-blue-600 cursor-pointer bg-primary rounded text-[18px] text-white">
+                  className="my-2 px-5 py-2 flex items-center gap-1 hover:bg-blue-600 cursor-pointer bg-primary rounded text-[18px] text-white"
+                >
                   Send <FiSend />
                 </button>
                 <input type="file" name="" id="" style={{ display: "none" }} />
@@ -176,7 +180,8 @@ const MessagePage = () => {
       </div>
       <div
         style={{ backdropFilter: "blur(100px)" }}
-        className="md:w-[30%] border-2 border-slate-500 rounded-md p-5 ">
+        className="md:w-[30%] border-2 border-slate-500 rounded-md p-5 "
+      >
         <AddConversation />
         <hr className="my-3" />
         <div className="">
