@@ -15,6 +15,7 @@ import { FaWhatsappSquare } from "react-icons/fa";
 import { FaDiscord } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
+import shahidulIslamImg from '../../assests/Team-member-images/shahidul-islam.png'
 const Team = () => {
   // use to map array of objects
   const members = [
@@ -22,19 +23,22 @@ const Team = () => {
       id: 1,
       name: "Shahidul Islam (Leader) ",
       description: "Description for Object 1.",
+      images: shahidulIslamImg,
     },
     {
       id: 2,
       name: "MD Morsed Alam",
       description: "Description for Object 2.",
+      images:images,
     },
-    { id: 3, name: "Zaib Khan", description: "Description for Object 3." },
-    { id: 4, name: "Sadid Hasan", description: "Description for Object 4." },
-    { id: 5, name: "Kamruj Jaman", description: "Description for Object 5." },
+    { id: 3, name: "Zaib Khan", description: "Description for Object 3.",images:images, },
+    { id: 4, name: "Sadid Hasan", description: "Description for Object 4.",images:images, },
+    { id: 5, name: "Kamruj Jaman", description: "Description for Object 5.",images:images, },
     {
       id: 6,
       name: "Abu Bokor Siddik",
       description: "Description for Object 6.",
+      images:images,
     },
   ];
 
@@ -67,8 +71,8 @@ const Team = () => {
                 <Image
                   className="rounded-full z-10 mt-8"
                   width={250}
-                  height={500}
-                  src={images}
+                  height={250}
+                  src={member?.images}
                   alt="photo"
                 />
               </figure>

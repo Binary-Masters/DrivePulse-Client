@@ -11,8 +11,7 @@ import useAuth from "@/Hooks/useAuth";
 
 const UploadModal: React.FC = () => {
 	const [file, setFile] = useState<File | null>(null);
-	const [loading, setLoading] = useState(false)
-	const { uploadFile, getFileURL } = useStorage();
+	const { uploadFile, getFileURL, setUploadProgress, setUploadFileInfo } = useStorage();
 	const axiosPublic = useAxiosPublic();
 	const { refetchFiles } = useGetFiles();
 	const { user } = useAuth();
@@ -31,59 +30,86 @@ const UploadModal: React.FC = () => {
 	const handleFileUpload = () => {
 		try {
 			if (file) {
-				setLoading(true)
 				// Check database for duplicate files under current user
 				// Ensures cloud and server synchronization
 				generateChecksum(file).then((checksum) => {
+					const fileInfo = { name: file.name, size: file.size };
+					setUploadFileInfo({
+						...fileInfo,
+						status: "Generating Checksum...",
+					});
 					axiosPublic
 						.post("/files/lookup", { checksum, owner })
 						.then(({ data }) => {
 							if (!data.exists) {
-								// Upload to cloud
-								uploadFile(file).then(async (snapshot) => {
-									const fileType =
-										snapshot.metadata.contentType;
-									const filePath = snapshot.metadata.fullPath;
-									let thumbnail = "";
-
-									// For image thumbnail
-									if (fileType.startsWith("image/")) {
-										thumbnail = await getFileURL(filePath);
-									}
-
-									// Post file metadata to database
-									axiosPublic
-										.post("/files", {
-											checksum,
-											owner,
-											thumbnail,
-											...snapshot.metadata,
-										})
-										.then((response) => {
-											closeModal();
-											Swal.fire({
-												title: "Success",
-												text: "File uploaded successfully",
-												icon: "success",
-												confirmButtonText: "OK",
-											});
-											refetchFiles();
-											setFile(null);
-											setLoading(false)
-										})
-										.catch((err) => {
-											console.log(err)
-											setLoading(false)
-										});
+								// Starts an upload session
+								const uploadSession = uploadFile(file);
+								setUploadFileInfo({
+									...fileInfo,
+									status: "Uploading...",
 								});
+								setFile(null);
+								uploadSession.on(
+									"state_changed",
+									(snapshot) => {
+										const { bytesTransferred, totalBytes } =
+											snapshot;
+										const currentProgress = Math.round(
+											(bytesTransferred / totalBytes) *
+												100
+										);
+										setUploadProgress(currentProgress);
+									},
+									(err) => {},
+									async () => {
+										setUploadFileInfo({
+											...fileInfo,
+											status: "Uploaded",
+										});
+										const { snapshot } = uploadSession;
+										console.log(snapshot);
+										const fileType =
+											snapshot.metadata.contentType;
+										const filePath =
+											snapshot.metadata.fullPath;
+										let thumbnail = "";
+
+										// For image thumbnail
+										if (fileType.startsWith("image/")) {
+											thumbnail = await getFileURL(
+												filePath
+											);
+										}
+
+										// Post file metadata to database
+										axiosPublic
+											.post("/files", {
+												checksum,
+												owner,
+												thumbnail,
+												...snapshot.metadata,
+											})
+											.then(() => {
+												closeModal()
+												Swal.fire({
+													title: "Success",
+													text: "File uploaded successfully",
+													icon: "success",
+													confirmButtonText: "OK",
+												});
+												refetchFiles();
+												setFile(null);
+											})
+											.catch((err) => console.log(err));
+									}
+								);
 							} else {
 								Swal.fire({
 									title: "File Already Exists",
 									icon: "error",
 									confirmButtonText: "OK",
-								}).then(({ isConfirmed }) => {
-									isConfirmed && refetchFiles(); setFile(null);
 								});
+								setFile(null);
 							}
 						})
 						.catch((err) => {
@@ -93,13 +119,11 @@ const UploadModal: React.FC = () => {
 								confirmButtonText: "OK",
 							});
 							setFile(null);
-							setLoading(false)
 						});
 				});
 			}
 		} catch (error) {
 			console.log("Couldn't upload file");
-			setLoading(false)
 		}
 	};
 
@@ -186,17 +210,12 @@ const UploadModal: React.FC = () => {
 			<div className="flex justify-center mt-4">
 				<button
 					disabled={!file}
-					onClick={() => handleFileUpload()}
+					onClick={() =>handleFileUpload()}
 					className="px-6 py-2 text-xl text-center text-white rounded-full bg-primary text hover:bg-blue-600 transition-all duration-300 disabled:bg-gray-300"
 				>
 					Upload
 				</button>
 			</div>
-			{/* <div>
-				{
-					loading && <h2>loading...</h2>
-				}
-			</div> */}
 		</div>
 	);
 };

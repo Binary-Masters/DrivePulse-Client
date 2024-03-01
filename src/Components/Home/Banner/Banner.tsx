@@ -9,7 +9,9 @@ import animation from "../../../assests/lottie-animation/banner.json"
 // import Lottie from "lottie-react";
 import "./styles.css"
 import PlayVideoModal from '../PlayvideoModal/PlayVideoModal';
+import useAuth from '@/Hooks/useAuth';
 const Banner = () => {
+  const { user } = useAuth();
   return (
    <>
    <div className="banner h-[105vh] md:h-[100vh]">
@@ -24,7 +26,7 @@ const Banner = () => {
         </div>
             <h2 className='animate-text text-4xl md:text-5xl font-bold'>Share, Store, and Collaborate with Ease!</h2>
             <p className='text-gray-300 font-medium'>Discover effortless file sharing at DrivePulse. Upload, share, and collaborate seamlessly with our intuitive platform. Enjoy secure storage, unlimited file uploads, and simplified sharing—all in one place. Join us today and experience hassle-free file sharing like never before!</p>
-            <Link href={"/dashboard/upload-file"}>
+            <Link href={`${user ? '/dashboard' : '/login'}`}>
             <button className="button absolute left-[90px] -bottom-20">
               <span></span>
               <span></span>

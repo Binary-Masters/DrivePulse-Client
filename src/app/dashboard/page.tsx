@@ -1,17 +1,14 @@
-import DashboardHome from '@/Components/Dashboard/DashboardHome/DashboardHome';
-import FilesProvider from '@/providers/FilesProvider';
-import { Toaster } from 'react-hot-toast';
-
+import DashboardHome from "@/Components/Dashboard/DashboardHome/DashboardHome";
+import { Toaster } from "react-hot-toast";
 
 const Dashboard = () => {
-    return (
-        <>
-        <FilesProvider>
+	return (
+		<div>
+			<DashboardHome />
             <Toaster/>
-        <DashboardHome/>
-        </FilesProvider>
-        </>
-    );
+		</div>
+	);
 };
 
 export default Dashboard;
+
