@@ -11,6 +11,7 @@ import useAuth from "@/Hooks/useAuth";
 
 const UploadModal: React.FC = () => {
 	const [file, setFile] = useState<File | null>(null);
+	const [loading, setLoading] = useState(false)
 	const { uploadFile, getFileURL } = useStorage();
 	const axiosPublic = useAxiosPublic();
 	const { refetchFiles } = useGetFiles();
@@ -20,16 +21,17 @@ const UploadModal: React.FC = () => {
 		uid: user.uid,
 	};
 
-  const closeModal = () => {
-    const modalElement = document.getElementById("my_modal_1");
-    if (modalElement) {
-      (modalElement as HTMLDialogElement).close();
-    }
-  };
+	const closeModal = () => {
+		const modalElement = document.getElementById("my_modal_1");
+		if (modalElement) {
+			(modalElement as HTMLDialogElement).close();
+		}
+	};
 
 	const handleFileUpload = () => {
 		try {
 			if (file) {
+				setLoading(true)
 				// Check database for duplicate files under current user
 				// Ensures cloud and server synchronization
 				generateChecksum(file).then((checksum) => {
@@ -38,7 +40,7 @@ const UploadModal: React.FC = () => {
 						.then(({ data }) => {
 							if (!data.exists) {
 								// Upload to cloud
-								uploadFile(file).then( async (snapshot) => {
+								uploadFile(file).then(async (snapshot) => {
 									const fileType =
 										snapshot.metadata.contentType;
 									const filePath = snapshot.metadata.fullPath;
@@ -58,6 +60,7 @@ const UploadModal: React.FC = () => {
 											...snapshot.metadata,
 										})
 										.then((response) => {
+											closeModal();
 											Swal.fire({
 												title: "Success",
 												text: "File uploaded successfully",
@@ -66,8 +69,12 @@ const UploadModal: React.FC = () => {
 											});
 											refetchFiles();
 											setFile(null);
+											setLoading(false)
 										})
-										.catch((err) => console.log(err));
+										.catch((err) => {
+											console.log(err)
+											setLoading(false)
+										});
 								});
 							} else {
 								Swal.fire({
@@ -75,7 +82,7 @@ const UploadModal: React.FC = () => {
 									icon: "error",
 									confirmButtonText: "OK",
 								}).then(({ isConfirmed }) => {
-									isConfirmed && refetchFiles();setFile(null);
+									isConfirmed && refetchFiles(); setFile(null);
 								});
 							}
 						})
@@ -86,11 +93,13 @@ const UploadModal: React.FC = () => {
 								confirmButtonText: "OK",
 							});
 							setFile(null);
+							setLoading(false)
 						});
 				});
 			}
 		} catch (error) {
 			console.log("Couldn't upload file");
+			setLoading(false)
 		}
 	};
 
@@ -177,15 +186,17 @@ const UploadModal: React.FC = () => {
 			<div className="flex justify-center mt-4">
 				<button
 					disabled={!file}
-					onClick={() => {
-						handleFileUpload();
-						closeModal();
-					}}
+					onClick={() => handleFileUpload()}
 					className="px-6 py-2 text-xl text-center text-white rounded-full bg-primary text hover:bg-blue-600 transition-all duration-300 disabled:bg-gray-300"
 				>
 					Upload
 				</button>
 			</div>
+			{/* <div>
+				{
+					loading && <h2>loading...</h2>
+				}
+			</div> */}
 		</div>
 	);
 };

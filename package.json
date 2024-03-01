@@ -17,6 +17,7 @@
     "axios": "^1.6.7",
     "dotenv": "^16.4.0",
     "draft-js-export-html": "^1.4.1",
+    "draftjs-to-html": "^0.9.1",
     "emailjs": "^4.0.3",
     "firebase": "^10.7.2",
     "framer-motion": "^11.0.3",

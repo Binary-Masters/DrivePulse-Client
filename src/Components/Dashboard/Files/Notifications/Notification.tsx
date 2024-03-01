@@ -30,7 +30,7 @@ const Notification = () => {
     return <h1>Loading...</h1>;
   }
   return (
-    <div className="dropdown">
+    <div className="dropdown block">
       <div
         onClick={() => setOpen((pv) => !pv)}
         tabIndex={0}
@@ -49,7 +49,7 @@ const Notification = () => {
       {open && (
         <ul
           tabIndex={0}
-          className="dropdown-content z-[1] menu p-2 shadow rounded-box w-auto md:w-56 bg-[#010c4f] text-white "
+          className="dropdown-content z-[1] menu p-2 shadow rounded-box w-auto md:w-56 bg-[#010c4f] text-white"
         >
           {
             filterNotify?.length === 0 ? (
@@ -61,10 +61,11 @@ const Notification = () => {
                     href={"/dashboard/files"}
                     className="flex flex-col items-start -space-y-2 hover:bg-blue-950"
                   >
-                    <h2 className="flex text-sm md:text-lg justify-center items-center gap-2 font-medium">
+                    <p className="flex text-xs md:text-sm justify-center items-center gap-2 font-medium overflow-hidden overflow-ellipsis ">
                       {" "}
-                      <IoNotificationsCircle /> {item.name}
-                    </h2>
+                      <IoNotificationsCircle />  
+                      {item.name.length > 20 ? `${item.name.slice(0, 20)}...` : item.name}
+                    </p>
                     <p className="text-[10px] md:text-xs  ml-6">
                       {item.timeCreated.slice(11, 19)}
                     </p>
