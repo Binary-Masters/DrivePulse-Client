@@ -53,6 +53,7 @@ const githubProvider = new GithubAuthProvider();
 
 const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 	const [user, setUser] = useState<User | null>(null);
+	console.log(user);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 	const createUser = async (
@@ -160,6 +161,8 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 	const updateUser = (name: string, photoURL: string) => {
 		setLoading(true);
 		const currentUser = auth.currentUser;
+		// console.log(currentUser);
+		// console.log(name,photoURL);
 		if (currentUser) {
 			return updateProfile(currentUser, {
 				displayName: name,

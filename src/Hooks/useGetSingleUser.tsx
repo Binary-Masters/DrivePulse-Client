@@ -8,7 +8,7 @@ const useGetSingleUser = () => {
     // http://localhost:3001/users?email=mnmorshadmondol@gmail.com
     const axiosPublic = useAxiosPublic();
     const { user } = useAuth();
-    console.log(user);
+    // console.log(user);
     // datatype default empty object 
     const {
       data: userData ={},
@@ -21,7 +21,7 @@ const useGetSingleUser = () => {
         return res.data;
       },
     });
-    console.log(userData);
+    // console.log(userData);
     return [userData, loading, refetch];
   ;
 }

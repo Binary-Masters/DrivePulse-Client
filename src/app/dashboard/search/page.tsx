@@ -15,7 +15,7 @@ import handleDeleteFile from "@/Utils/Files/handleDeleteNode/handleDeleteNode";
 import Loading from "@/app/loading";
 import { useState } from "react";
 import '../profile/profile.css'
-import MoreDropDown from "@/Components/Dashboard/Files/MoreDropDown";
+import MoreDropDown from "@/Components/Dashboard/Files/MoreDropDown/MoreDropDown";
 import icons from "@/Components/Dashboard/Files/icons";
 const Search : React.FC = () => {
   const [downloadUrl, setDownloadUrl] = useState<string>("");

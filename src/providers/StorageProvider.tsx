@@ -1,24 +1,35 @@
 "use client";
 import useAuth from "@/Hooks/useAuth";
 import {
-	UploadResult,
 	deleteObject,
 	getStorage,
 	ref,
-	uploadBytes,
+	uploadBytesResumable,
 	getDownloadURL, 
+	UploadTask,
 } from "firebase/storage";
 import React, { ReactElement, ReactNode, createContext, useState } from "react";
 
+interface UploadFileInfo {
+	name: string;
+	size: number;
+	status: string;
+}
+
 interface StorageInfo {
-	uploadFile: (file: File) => Promise<UploadResult>;
+	uploadFile: (file: File) => UploadTask;
 	deleteFile: (fullPath: string) => Promise<void>;
 	setPath: React.Dispatch<React.SetStateAction<string>>;
 	storageLoading: boolean;
 	setStorageLoading: React.Dispatch<React.SetStateAction<boolean>>;
+	uploadProgress: number;
+	setUploadProgress: React.Dispatch<React.SetStateAction<number>>;
+	uploadFileInfo: UploadFileInfo | null,
+	setUploadFileInfo: React.Dispatch<React.SetStateAction<UploadFileInfo | null>>;
 	path: string;
 	getFileURL: (fullPath: string) => Promise<string>;
 }
+
 
 export const StorageContext = createContext<any>({});
 
@@ -27,7 +38,9 @@ export default function StorageProvider({
 }): ReactElement<{ children: ReactNode }> {
 	const { user } = useAuth();
 	const [path, setPath] = useState<string>("/");
+	const [uploadProgress, setUploadProgress] = useState<number>(0);
 	const [storageLoading, setStorageLoading] = useState<boolean>(true);
+	const [uploadFileInfo, setUploadFileInfo] = useState<UploadFileInfo | null>(null)
 	const storage = getStorage();
 	const root = user?.uid; // Root directory
 
@@ -37,11 +50,11 @@ export default function StorageProvider({
 		return URL;
 	};
 
-	const uploadFile = async (file: File): Promise<UploadResult> => {
+	const uploadFile = (file: File): UploadTask => {
 		setStorageLoading(true);
 
 		const storagePath = ref(storage, `${root + path + file.name}`);
-		return uploadBytes(storagePath, file);
+		return uploadBytesResumable(storagePath, file);
 	};
 
 	const deleteFile = async (fullPath: string): Promise<void> => {
@@ -52,6 +65,10 @@ export default function StorageProvider({
 	};
 
 	const storageInfo: StorageInfo = {
+		uploadFileInfo,
+		setUploadFileInfo,
+		uploadProgress,
+		setUploadProgress,
 		uploadFile,
 		setPath,
 		getFileURL,
