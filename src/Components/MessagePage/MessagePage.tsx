@@ -26,53 +26,80 @@ interface CurrentChatType {
   _id: string;
   members: string[];
 }
+let socket; 
 const MessagePage = () => {
-  const socket = useRef<Socket | null>(null);
+  // const socket = useRef<Socket | null>(null);
   const [userData] = useGetSingleUser();
   const [currentChat, setCurrentChat] = useState<CurrentChatType | null>(null);
   const [onlineUsers, setOnlineUsers] = useState<{ userId: string }[]>([]);
-  const [receiveMessage, setReceiveMessage] = useState<MessageType | null>(
-    null
-  );
   const [chats, chatsRefetch] = useChats();
   const axiosPublic = useAxiosPublic();
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
-
-
+  console.log(messages);
   // connect socket server
   useEffect(() => {
-    socket.current = io("ws://localhost:3002");
-    socket.current.on("getMessage", (data: MessageType) => {
-      setReceiveMessage({
-        senderId: data.senderId,
-        text: data.text,
-        createdAt: Date.now(),
-        _id: data._id,
-      });
+    socket = io("http://localhost:3001");
+    socket.emit("setup", userData)
+    socket.on("connect", () => {
+      if (userData) {
+        socket.emit("addUsers", userData._id);
+      }
     });
-    socket.current.on("connect_error", (error: Error) => {
+    socket.on("getUsers", (users) => {
+      setOnlineUsers(users);
+    });
+    socket.on("connect_error", (error: Error) => {
       console.error("Socket server connection error-->", error);
       // toast.error("Failed to connect to real-time server. Please try again later.");
     });
-  }, []);
-
-  // add user and get user in socket server
-  useEffect(() => {
-    socket.current?.emit("addUsers", userData?._id);
-    socket.current?.on("getUsers", (users) => {
-      setOnlineUsers(users);
-    });
+    return () => {
+      // Clean up socket connection
+      socket.disconnect();
+    };
   }, [userData]);
 
-
+  useEffect(() => {
+    socket.on("getMessage", (data: MessageType) => {
+      if (currentChat && currentChat.members.includes(data.senderId)) {
+        setMessages(prevMessages => [...prevMessages, data]);
+      }
+    });
+  }, [currentChat]);
   // set emoji in  message
   const handleChange = (newMessage: string) => {
     setNewMessage(newMessage);
   };
 
+  const handleSend = async () => {
+    const message = {
+      senderId: userData?._id,
+      text: newMessage,
+      chatId: currentChat?._id,
+    };
+    if (newMessage && currentChat) {
+      const receiverId = currentChat?.members.find((id: string) => id !== userData?._id);
+      socket.emit("sendMessage", {
+        senderId: userData?._id,
+        receiverId,
+        text: newMessage,
+      });
+  
+      try {
+        const { data } = await addMessage(message);
+        setMessages(prevMessages => [...prevMessages, data]); // Update messages state using functional update to ensure consistency
+        setNewMessage("");
+      } catch (error) {
+        console.error("Failed to send message:", error);
+        toast.error("Failed to send message. Please try again later.");
+      }
+    } else {
+      toast.error("Can't send empty message!");
+    }
+  };
+
    // get message in database
-  const { refetch } = useQuery({
+   const { refetch } = useQuery({
     queryKey: ["messageData", currentChat?._id],
     queryFn: async () => {
       if (currentChat) {
@@ -84,51 +111,15 @@ const MessagePage = () => {
     },
   });
 
-  // received message in  conditionaly
-  useEffect(() => {
-    if (receiveMessage === null) {
+    // Handle received message
+    useEffect(() => {
       refetch();
-    }
-    receiveMessage &&
-      currentChat?.members.includes(receiveMessage.senderId) &&
-      setMessages((prev) => [...prev, receiveMessage]);
-  }, [currentChat, receiveMessage, refetch]);
-
-
-
-  const handleSend = async () => {
-    const message = {
-      senderId: userData?._id,
-      text: newMessage,
-      chatId: currentChat?._id,
-    };
-    if (newMessage && currentChat) {
-      const receiverId = currentChat.members.find((id: string) => id !== userData?._id);
-      socket.current?.emit("sendMessage", {
-        senderId: userData?._id,
-        receiverId,
-        text: newMessage,
-      });
-
-      try {
-        const { data } = await addMessage(message);
-        setMessages([...messages, data]);
-        setNewMessage("");
-      } catch (error) {
-        console.error("Failed to send message:", error);
-        toast.error("Failed to send message. Please try again later.");
-      }
-    } else {
-      toast.error("Can't send empty message!");
-    }
-  };
-
-
+    }, [currentChat, refetch]);
  
-  const checkOnlineStatus = (chat: any) => {
-    const chatMember = chat.members?.find((member: string) => member !== userData?._id);
-    const online = onlineUsers?.find((user: { userId: string }) => user.userId === chatMember);
-    return online ? true : false;
+  // Online status check
+  const isOnline = (chat: CurrentChatType) => {
+    const chatMember = chat.members.find((member) => member !== userData._id);
+    return onlineUsers.some((user) => user.userId === chatMember);
   };
 
   return (
@@ -156,9 +147,8 @@ const MessagePage = () => {
                 />
                 <button
                   onClick={handleSend}
-                  className="my-2 px-5 py-2 flex items-center gap-1 hover:bg-blue-600 cursor-pointer bg-primary rounded text-[18px] text-white"
-                >
-                  Send <FiSend />
+                  className="my-2 px-5 py-2 flex items-center gap-1 hover:bg-blue-600 cursor-pointer bg-primary rounded text-[25px] text-white"
+                ><FiSend />
                 </button>
                 <input type="file" name="" id="" style={{ display: "none" }} />
               </div>
@@ -190,7 +180,7 @@ const MessagePage = () => {
                     refetch={chatsRefetch}
                     setCurrentChat={setCurrentChat}
                     currentUser={userData?._id}
-                    online={checkOnlineStatus(chat)}
+                    online={isOnline(chat)}
                   />
                 </div>
               ))}
