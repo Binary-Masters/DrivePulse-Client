@@ -12,8 +12,9 @@ import getFolderPathData from "@/Utils/FolderNavigation/getFolderPathData";
 import icons from "@/Components/Dashboard/Files/icons";
 import handleDeleteFile from "@/Utils/Files/handleDeleteNode/handleDeleteNode";
 import { MdDelete } from "react-icons/md";
-import MoreDropDown from "@/Components/Dashboard/Files/MoreDropDown";
+import MoreDropDown from "@/Components/Dashboard/Files/MoreDropDown/MoreDropDown";
 import "../../profile/profile.css";
+
 
 interface FilesearchProps {
   params: {
@@ -32,8 +33,8 @@ const Filesearch: React.FC<FilesearchProps> = ({ params, searchParams }) => {
   const [userData, loadings, refetch] = useGetfiles(searchParams.search);
   //     const [{name}]=userData
 
-  //    console.log(name)
-  console.log(userData);
+ 
+  // console.log(userData);
 
   const [downloadUrl, setDownloadUrl] = useState<string>("");
   const [fileName, setFileName] = useState<string>("");
@@ -50,6 +51,7 @@ const Filesearch: React.FC<FilesearchProps> = ({ params, searchParams }) => {
     } else console.log("This is a file");
   };
 
+  
   // to pass hook props down to plain js utilies
   const hookPropObj = {
     user,
@@ -79,7 +81,7 @@ const Filesearch: React.FC<FilesearchProps> = ({ params, searchParams }) => {
       className="relative h-screen overflow-x-auto shadow-md sm:rounded-lg classes pt-20"
     >
       <p className="text-white text-3xl mx-auto flex  justify-center items-center my-3">
-        Search your file
+        Your Searched File
       </p>
 
       <table className=" w-full text-sm text-left text-gray-500 rtl:text-right ">

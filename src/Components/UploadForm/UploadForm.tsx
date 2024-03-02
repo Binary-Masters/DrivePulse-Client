@@ -8,17 +8,22 @@ import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import generateChecksum from "@/Utils/Checksum/generateChecksum";
 import useAuth from "@/Hooks/useAuth";
 import useGetFiles from "@/Hooks/useGetFiles";
+import UploadProgress from "../Dashboard/Files/ProgressBar/UploadProgress";
 
 const UploadForm: React.FC = () => {
 	const [file, setFile] = useState<File | null>(null);
 	const { user } = useAuth();
-	const { uploadFile, getFileURL } = useStorage();
+	const { 
+		uploadFile,
+		getFileURL,
+		setUploadProgress,
+		setUploadFileInfo,
+	} = useStorage();
 	const { refetchFiles } = useGetFiles();
 	const axiosPublic = useAxiosPublic();
 	const owner = {
 		uid: user.uid,
 		email: user.email,
-		status: 0,
 	};
 
 	const handleFileUpload = () => {
@@ -27,46 +32,73 @@ const UploadForm: React.FC = () => {
 				// Check database for duplicate files under current user
 				// Ensures cloud and server synchronization
 				generateChecksum(file).then((checksum) => {
+					const fileInfo = { name: file.name, size: file.size };
+					setUploadFileInfo({ ...fileInfo, status: "Generating Checksum..." })
 					axiosPublic
 						.post("/files/lookup", { checksum, owner })
 						.then(({ data }) => {
 							if (!data.exists) {
-								// Upload to cloud
-								uploadFile(file).then( async (snapshot) => {
-									const fileType = snapshot.metadata.contentType;
-									const filePath = snapshot.metadata.fullPath;
-									let thumbnail = "";
-									
-									// For image thumbnail
-									if(fileType.startsWith("image/")) {
-										thumbnail = await getFileURL(filePath);
+								// Starts an upload session
+								const uploadSession = uploadFile(file);
+								setUploadFileInfo({ ...fileInfo, status: "Uploading..." })
+								setFile(null);
+								uploadSession.on(
+									"state_changed",
+									(snapshot) => {
+										const { bytesTransferred, totalBytes } =
+											snapshot;
+										const currentProgress = Math.round(
+											(bytesTransferred / totalBytes) *
+												100
+										);
+										setUploadProgress(currentProgress);
+									},
+									(err) => {},
+									async () => {
+										setUploadFileInfo({ ...fileInfo, status: "Uploaded" })
+										const { snapshot } = uploadSession;
+										console.log(snapshot);
+										const fileType =
+											snapshot.metadata.contentType;
+										const filePath =
+											snapshot.metadata.fullPath;
+										let thumbnail = "";
+
+										// For image thumbnail
+										if (fileType.startsWith("image/")) {
+											thumbnail = await getFileURL(
+												filePath
+											);
+										}
+
+										// Post file metadata to database
+										axiosPublic
+											.post("/files", {
+												checksum,
+												owner,
+												thumbnail,
+												...snapshot.metadata,
+											})
+											.then(() => {
+												Swal.fire({
+													title: "Success",
+													text: "File uploaded successfully",
+													icon: "success",
+													confirmButtonText: "OK",
+												});
+												refetchFiles();
+												setFile(null);
+											})
+											.catch((err) => console.log(err));
 									}
-									
-									// Post file metadata to database
-									axiosPublic
-										.post("/files", {
-											checksum,
-											owner,
-											thumbnail,
-											...snapshot.metadata,
-										})
-										.then((response) => {
-											Swal.fire({
-												title: "Success",
-												text: "File uploaded successfully",
-												icon: "success",
-												confirmButtonText: "OK",
-											});
-											refetchFiles();
-										})
-										.catch((err) => console.log(err));
-								});
+								);
 							} else {
 								Swal.fire({
 									title: "File Already Exists",
 									icon: "error",
 									confirmButtonText: "OK",
 								});
+								setFile(null);
 							}
 						})
 						.catch((err) => {
@@ -75,6 +107,7 @@ const UploadForm: React.FC = () => {
 								icon: "error",
 								confirmButtonText: "OK",
 							});
+							setFile(null);
 						});
 				});
 			}
@@ -172,6 +205,8 @@ const UploadForm: React.FC = () => {
 					Upload
 				</button>
 			</div>
+			<UploadProgress/>
+
 		</div>
 	);
 };

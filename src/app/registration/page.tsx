@@ -12,6 +12,7 @@ import Lottie from "lottie-react";
 import animationData from "../../assests/lottie-animation/Registration.json";
 import "./style.css";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
+import { error } from "console";
 
 const image_hosting_key = process.env.NEXT_PUBLIC_IMG_HOSTING_API_KEY;
 // console.log(process.env.NEXT_PUBLIC_IMG_HOSTING_API_KEY);
@@ -34,7 +35,7 @@ const Registration = () => {
     const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
-    // console.log(name,email,photoUrl,password,type,phoneNumber);
+    // console.log(name, email, password);
     if (password.length < 6) {
       Swal.fire({
         title: "Opps!!",
@@ -54,20 +55,19 @@ const Registration = () => {
         // console.log(name,email,photoUrl,password);
         createUser(email, password)
           .then((res) => {
-            console.log(res);
+            // console.log(res);
             updateUser(name, imageUrl).then().catch();
             verifyEmail().then().catch();
             const userInfo = {
               email: res.user?.email,
-              name: res.user?.displayName,
+              name: name,
               emailVerified: res?.user?.emailVerified,
               phoneNumber: res?.user?.phoneNumber,
-              photoURL: res?.user?.photoURL,
+              photoURL: imageUrl,
               uid: res?.user?.uid,
               type: "user",
             };
- 
-            
+
             axiosPublic
               .post("/users", userInfo)
               .then(() => {

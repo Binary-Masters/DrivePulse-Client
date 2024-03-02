@@ -1,7 +1,14 @@
 "use client";
-import { FileUp, Home, LayoutDashboard, Settings, Upload } from "lucide-react";
+import {
+  FileUp,
+  Home,
+  LayoutDashboard,
+  MessageCircleMore,
+  Settings,
+  Upload,
+} from "lucide-react";
 import { CgProfile } from "react-icons/cg";
-import { FaUsers } from "react-icons/fa";
+import { FaRegTrashAlt, FaUsers } from "react-icons/fa";
 import Image from "next/image";
 import logo from "../../assests/icons/logo.png";
 import Link from "next/link";
@@ -36,26 +43,32 @@ const SideNave = () => {
       path: "/dashboard/upload-file",
     },
     {
+      id: 2,
+      name: "Message",
+      icon: <MessageCircleMore />,
+      path: "/dashboard/chat",
+    },
+    {
       id: 3,
       name: "Files",
       icon: <FileUp />,
       path: "/dashboard/files",
     },
     {
-      id: 4, //Only Admin can see this route
+      id: 4,
+      name: "Trash",
+      icon: <FaRegTrashAlt />,
+      path: "/dashboard/totaltrushfiles",
+    },
+    {
+      id: 5, //Only Admin can see this route
       name: "Users-Management",
       icon: <FaUsers />,
       path: "/dashboard/users-management",
     },
-    // {
-    //   id: 5,
-    //   name: "Trash",
-    //   icon: <FaUsers />,
-    //   path: "/dashboard/trash",
-    // },
   ];
 
-  const userMenuList = adminMenuList.filter((route) => route.id < 4); //user menu list before id 4
+  const userMenuList = adminMenuList.filter((route) => route.id < 5); //user menu list before id 4
   // console.log(userMenuList);
 
   const anotherMenu: Items[] = [
@@ -80,7 +93,7 @@ const SideNave = () => {
   ];
 
   return (
-    <div className="min-h-screen w-[60%] md:w-64 fixed z-50 shadow-sm bg-[#0e1642] mt-20 md:mt-0 overflow-y-auto">
+    <div className="min-h-screen w-[60%] md:w-64 fixed z-50 shadow-sm bg-custom-blue-1 mt-20 md:mt-0 overflow-y-auto">
       <div className="hidden p-3 md:block">
         <div className="flex items-center gap-1">
           <Image
