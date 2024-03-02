@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "https://drive-pulse-server.vercel.app" });
+const API = axios.create({ baseURL: "https://drivepulse-server.onrender.com" });
 
 export const getMessages = (id) => API.get(`/message/${id}`);
 

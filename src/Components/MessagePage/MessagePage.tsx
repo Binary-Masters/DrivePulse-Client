@@ -26,7 +26,7 @@ interface CurrentChatType {
   _id: string;
   members: string[];
 }
-let socket; 
+let socket;
 const MessagePage = () => {
   // const socket = useRef<Socket | null>(null);
   const [userData] = useGetSingleUser();
@@ -39,7 +39,7 @@ const MessagePage = () => {
   console.log(messages);
   // connect socket server
   useEffect(() => {
-    socket = io("http://localhost:3001");
+    socket = io("https://drivepulse-server.onrender.com");
     socket.emit("setup", userData)
     socket.on("connect", () => {
       if (userData) {
@@ -60,12 +60,14 @@ const MessagePage = () => {
   }, [userData]);
 
   useEffect(() => {
-    socket.on("getMessage", (data: MessageType) => {
-      if (currentChat && currentChat.members.includes(data.senderId)) {
-        setMessages(prevMessages => [...prevMessages, data]);
-      }
+    socket?.on("getMessage", (data: MessageType) => {
+      // if (currentChat && currentChat.members.includes(data.senderId)) {
+      //   console.log("new message",data);
+      setMessages([...messages, data]);
+
     });
-  }, [currentChat]);
+  }, [messages]);
+
   // set emoji in  message
   const handleChange = (newMessage: string) => {
     setNewMessage(newMessage);
@@ -84,7 +86,7 @@ const MessagePage = () => {
         receiverId,
         text: newMessage,
       });
-  
+
       try {
         const { data } = await addMessage(message);
         setMessages(prevMessages => [...prevMessages, data]); // Update messages state using functional update to ensure consistency
@@ -98,8 +100,8 @@ const MessagePage = () => {
     }
   };
 
-   // get message in database
-   const { refetch } = useQuery({
+  // get message in database
+  const { refetch } = useQuery({
     queryKey: ["messageData", currentChat?._id],
     queryFn: async () => {
       if (currentChat) {
@@ -111,11 +113,11 @@ const MessagePage = () => {
     },
   });
 
-    // Handle received message
-    useEffect(() => {
-      refetch();
-    }, [currentChat, refetch]);
- 
+  // Handle received message
+  useEffect(() => {
+    refetch();
+  }, [currentChat, refetch]);
+
   // Online status check
   const isOnline = (chat: CurrentChatType) => {
     const chatMember = chat.members.find((member) => member !== userData._id);
