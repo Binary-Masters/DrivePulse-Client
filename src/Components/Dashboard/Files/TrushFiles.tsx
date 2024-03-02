@@ -57,8 +57,8 @@ const TrushFiles = () => {
               <th className="px-6 py-3">Name</th>
               <th className="px-6 py-3">Modified</th>
               <th className="px-6 py-3">Size</th>
-              <th className="px-6 py-3">Action</th>
-              <th className="px-6 py-3">More</th>
+              <th className="px-6 py-3">Delete</th>
+              <th className="px-6 py-3">Restore</th>
             </tr>
           </thead>
           <tbody>

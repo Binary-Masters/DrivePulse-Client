@@ -61,7 +61,7 @@ const MessagePage = () => {
     });
     socket.current.on("connect_error", (error: Error) => {
       console.error("Socket server connection error-->", error);
-      toast.error("Failed to connect to real-time server. Please try again later.");
+      // toast.error("Failed to connect to real-time server. Please try again later.");
     });
   }, []);
 
