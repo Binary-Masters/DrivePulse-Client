@@ -36,14 +36,14 @@ const MessagePage = () => {
   const axiosPublic = useAxiosPublic();
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
-  console.log(messages);
+
   // connect socket server
   useEffect(() => {
-    socket = io("http://localhost:3001");
-    socket.emit("setup", userData)
-    socket.on("connect", () => {
+    socket = io("https://drivepulse-server.onrender.com");
+    socket?.emit("setup", userData)
+    socket?.on("connect", () => {
       if (userData) {
-        socket.emit("addUsers", userData._id);
+        socket?.emit("addUsers", userData._id);
       }
     });
     socket.on("getUsers", (users) => {
@@ -53,24 +53,27 @@ const MessagePage = () => {
       console.error("Socket server connection error-->", error);
       toast.error("Failed to connect to real-time server. Please try again later.");
     });
+
     return () => {
       // Clean up socket connection
       socket.disconnect();
     };
   }, [userData]);
 
+  // get message from socket
   useEffect(() => {
-    socket.on("getMessage", (data: MessageType) => {
-      if (currentChat && currentChat.members.includes(data.senderId)) {
-        setMessages(prevMessages => [...prevMessages, data]);
-      }
+    socket?.on("getMessage", (data: MessageType) => {
+        setMessages([...messages, data]);
     });
-  }, [currentChat]);
+  }, [messages]);
+
   // set emoji in  message
   const handleChange = (newMessage: string) => {
     setNewMessage(newMessage);
   };
 
+
+  // send message
   const handleSend = async () => {
     const message = {
       senderId: userData?._id,
@@ -78,6 +81,7 @@ const MessagePage = () => {
       chatId: currentChat?._id,
     };
     if (newMessage && currentChat) {
+      // send message socket
       const receiverId = currentChat?.members.find((id: string) => id !== userData?._id);
       socket.emit("sendMessage", {
         senderId: userData?._id,
@@ -86,6 +90,7 @@ const MessagePage = () => {
       });
   
       try {
+        //send message database
         const { data } = await addMessage(message);
         setMessages(prevMessages => [...prevMessages, data]); // Update messages state using functional update to ensure consistency
         setNewMessage("");
