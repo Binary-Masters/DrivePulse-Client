@@ -23,6 +23,7 @@ import { GoogleAuthProvider } from "firebase/auth";
 // import { FacebookAuthProvider } from "firebase/auth";
 import { auth } from "../firebase/firebase.config";
 import StorageProvider from "./StorageProvider";
+import useAxiosPublic from "@/Hooks/useAxiosPublic";
 export interface AuthInfo {
 	user: any;
 	loading: boolean;
@@ -40,7 +41,7 @@ export interface AuthInfo {
 	// test 
 	changeemail: any;
 	logout: () => Promise<void>;
-	deleteAnyUser: (aUser:any) => Promise<void>;
+	deleteAnyUser: (aUser: any) => Promise<void>;
 	setLoading: (value: boolean) => void;
 	updateUser: (name: string, photoURL: string) => Promise<void> | undefined;
 }
@@ -56,6 +57,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 	console.log(user);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+	const axiosPublic = useAxiosPublic();
 	const createUser = async (
 		email: string,
 		password: string
@@ -155,7 +157,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 		setLoading(true);
 		return signInWithPopup(auth, provider);
 	};
-// update user 
+	// update user 
 
 	// update user Like name and Photo
 	const updateUser = (name: string, photoURL: string) => {
@@ -172,11 +174,11 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 	};
 	// test 
 	// update email 
-	const changeemail = (email:string)=>{
+	const changeemail = (email: string) => {
 		setLoading(true)
 		const currentUser = auth.currentUser
-		if(currentUser){
-			return updateEmail(currentUser,email)
+		if (currentUser) {
+			return updateEmail(currentUser, email)
 		}
 	}
 	// logout 
@@ -186,28 +188,39 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 		setLoading(true);
 		return signOut(auth);
 	};
-// hold your user 
+	// hold your user 
 
 	// Delete User
-	const deleteAnyUser = (user:any) => {
+	const deleteAnyUser = (user: any) => {
 		setLoading(true);
 		return deleteUser(user)
 	}
 
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
+			const userEmail = { email: user?.email };
 			if (user) {
 				setUser(user);
 				setIsAuthenticated(true);
 				setLoading(false);
+				axiosPublic.post('/jwt', userEmail, { withCredentials: true })	//sent email for jwt
+					.then(result => {
+						console.log(result);
+					})
+			}
+			else {
+				// axiosPublic.post('/logout', userEmail, { withCredentials: true })
+				// 	.then(result => {
+				// 		console.log(result);
+				// 	})
 			}
 		});
 
 		return () => {
 			unsubscribe();
 		};
-	}, []);
-// 
+	}, [axiosPublic]);
+	// 
 	const authInfo: AuthInfo = {
 		user,
 		isAuthenticated,
