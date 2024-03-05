@@ -9,8 +9,10 @@ const Conversation = ({ data, currentUser, online, refetch, setCurrentChat }) =>
   const axiosPublic = useAxiosPublic();
   const [hovered, setHovered] = useState(false);
 
+
+  // get conversation  data with id
   const userId = data?.members.find((id) => id !== currentUser);
-  const { data: conversationData } = useQuery({
+  const { data: conversationData , isLoading} = useQuery({
     queryKey: ["conversationData", userId],
     queryFn: () =>
       axiosPublic
@@ -18,6 +20,18 @@ const Conversation = ({ data, currentUser, online, refetch, setCurrentChat }) =>
         .then((response) => response.data),
   });
 
+// conversation skeliton loading
+  if(isLoading){
+    return (<div className="relative flex w-64 animate-pulse gap-2 p-4">
+    <div className="h-10 w-10 rounded-full bg-slate-400"></div>
+    <div className="flex-1">
+      <div className="mb-1 h-4 w-[80%] rounded-lg bg-slate-400 text-lg"></div>
+      <div className="h-2 w-[30%] rounded-lg bg-slate-400 text-sm"></div>
+    </div>
+  </div>)
+  }
+
+  // delete conversation
   const handleDelete = (data) => {
     Swal.fire({
       title: "Are you sure?",
