@@ -209,10 +209,10 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 					})
 			}
 			else {
-				// axiosPublic.post('/logout', userEmail, { withCredentials: true })
-				// 	.then(result => {
-				// 		console.log(result);
-				// 	})
+				axiosPublic.post('/logout', userEmail, { withCredentials: true })
+					.then(result => {
+						console.log(result);
+					})
 			}
 		});
 
