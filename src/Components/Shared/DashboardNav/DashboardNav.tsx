@@ -84,7 +84,7 @@ const DashboardNav = () => {
     <>
       <div
         ref={navbarRef}
-        className="flex z-50  w-full max-w-5xl mx-auto fixed top-2 items-center justify-between px-4 py-2 glass shadow gap-2 rounded-lg ml-5"
+        className="flex z-50  w-full max-w-5xl mx-auto fixed top-2 items-center justify-between px-4 py-2 glass shadow gap-2 rounded-lg ml-3"
       >
         <button onClick={() => setIsToggle(!isToggle)}>
           <Menu className="md:hidden text-white" />

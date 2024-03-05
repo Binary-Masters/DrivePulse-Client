@@ -183,7 +183,7 @@ const MessagePage = () => {
                 )}
                 <div
                   className={`chat-sender ${
-                    messages?.length <= 6 ? "fixed w-[96%]" : "sticky"
+                    messages?.length <= 6 ? "fixed w-[95%]" : "sticky"
                   } w-full bottom-1 `}>
                   <div className="dropdown dropdown-top ">
                     <div

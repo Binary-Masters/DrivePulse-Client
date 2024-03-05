@@ -18,7 +18,7 @@ export default function Navbar() {
 	const routes = [
 		{ path: "/", label: "Home" },
 		{ path: "/about", label: "About" },
-		{ path: "/pricing", label: "Pricing" },
+		// { path: "/pricing", label: "Pricing" },
 		{ path: "/contact", label: "Contact" },
 		{
 			path: `${user ? "/dashboard" : "/login"}`,
