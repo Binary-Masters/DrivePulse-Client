@@ -2,7 +2,8 @@
 import axios from "axios";
 
 const axiosPublic = axios.create({
-	baseURL: "https://drivepulse-server.onrender.com",
+  withCredentials: true,
+  baseURL: "http://localhost:3001",
 });
 
 // http://localhost:3001
