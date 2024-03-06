@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 import { FcGoogle } from "react-icons/fc";
 import { FaEye, FaEyeSlash, FaGithub } from "react-icons/fa";
@@ -10,7 +11,7 @@ import { useRouter } from "next/navigation";
 import useAuth from "@/Hooks/useAuth";
 import "./style.css";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
-
+import img from "../../assests/images/login.jpg";
 const Login = () => {
   const [showPass, setShowPass] = useState(false);
   const { login, loginByGoogle, resetPassword, logout, loginByGithub } =
@@ -155,7 +156,8 @@ const Login = () => {
   };
 
   return (
-    <div
+    <div className="flex flex-col lg:flex-row login-bg h-screen">
+      {/* <div
       className="min-h-screen bg-cover bg-opacity-30"
       style={{ backgroundImage: `url(${loginImg.src})` }}
     >
@@ -243,6 +245,87 @@ const Login = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div> */}
+      <div
+        className="h-[40vh] lg:h-[100vh] flex items-center bg-cover bg-opacity-80 lg:w-[45%]"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0, 0.7)),url(${img?.src})`,
+        }}>
+        <div className="w-[80%] pl-4 md:pl-10">
+          <h2 className="text-3xl md:text-5xl text-slate-300 font-semibold">
+            <span className="text-primary">Welcome</span> back!
+          </h2>
+          <p className="text-slate-300 mt-2">
+            This is a best secure file sharing platform, Upload your file and make your beautiful day!
+          </p>
+        </div>
+      </div>
+      <div className="lg:w-[55%] ">
+        <div
+          style={{
+            backdropFilter: "blur(50px)",
+            boxShadow: "0px 0px 20px #16aae0",
+          }}
+          className="mx-5 lg:w-[60%] -mt-10 lg:mt-32 p-6 py-10 rounded-md lg:-ml-20">
+          <form onSubmit={handleLogin} className="space-y-4 ">
+            <div className="relative w-full min-w-[200px] h-10">
+              <input
+                className="peer w-full h-full bg-transparent  text-primary font-sans font-normal outline outline-0 focus:outline-0  transition-all placeholder-shown:border placeholder-shown:border-slate-400  border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-4 rounded focus:border-primary"
+                placeholder=" "
+                type="email"
+                required
+                name="email"
+              />
+              <label className="flex w-full h-full select-none pointer-events-none absolute left-0 font-normal !overflow-visible truncate peer-placeholder-shown:text-primary leading-tight peer-focus:leading-tight peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-primary transition-all -top-1.5 peer-placeholder-shown:text-sm text-[11px] peer-focus:text-[11px] before:content[' '] before:block before:box-border before:w-2.5 before:h-1.5 before:mt-[6.5px] before:mr-1 peer-placeholder-shown:before:border-transparent before:rounded-tl-md before:border-t peer-focus:before:border-t-2  peer-focus:before:border-l-2 before:pointer-events-none before:transition-all peer-disabled:before:border-transparent after:content[' '] after:block after:flex-grow after:box-border after:w-2.5 after:h-1.5 after:mt-[6.5px] after:ml-1 peer-placeholder-shown:after:border-transparent after:rounded-tr-md after:border-t peer-focus:after:border-t-2 after:border-r peer-focus:after:border-r-2 after:pointer-events-none after:transition-all peer-disabled:after:border-transparent peer-placeholder-shown:leading-[3.75] text-blue-gray-400 peer-focus:text-primary before:border-blue-gray-200 peer-focus:before:!border-primary after:border-blue-gray-200 peer-focus:after:!border-primary">
+                Email
+              </label>
+            </div>
+            <div className="relative w-full min-w-[200px] h-10">
+              <input
+                className="peer w-full h-full bg-transparent text-primary font-sans font-normal outline outline-0 focus:outline-0  transition-all placeholder-shown:border placeholder-shown:border-slate-400  border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-4 rounded focus:border-primary"
+                placeholder=" "
+                type="password"
+                name="password"
+                required
+              />
+              <label className="flex w-full h-full select-none pointer-events-none absolute left-0 font-normal !overflow-visible truncate peer-placeholder-shown:text-primary leading-tight peer-focus:leading-tight peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-primary transition-all -top-1.5 peer-placeholder-shown:text-sm text-[11px] peer-focus:text-[11px] before:content[' '] before:block before:box-border before:w-2.5 before:h-1.5 before:mt-[6.5px] before:mr-1 peer-placeholder-shown:before:border-transparent before:rounded-tl-md before:border-t peer-focus:before:border-t-2 before:border-l peer-focus:before:border-l-2 before:pointer-events-none before:transition-all peer-disabled:before:border-transparent after:content[' '] after:block after:flex-grow after:box-border after:w-2.5 after:h-1.5 after:mt-[6.5px] after:ml-1 peer-placeholder-shown:after:border-transparent after:rounded-tr-md after:border-t peer-focus:after:border-t-2 after:border-r peer-focus:after:border-r-2 after:pointer-events-none after:transition-all peer-disabled:after:border-transparent peer-placeholder-shown:leading-[3.75] text-blue-gray-400 peer-focus:text-primary before:border-blue-gray-200 peer-focus:before:!border-primary after:border-blue-gray-200 peer-focus:after:!border-primary">
+                Password
+              </label>
+            </div>
+            <button type="submit" className="login-btn">
+              login
+            </button>
+            <Link
+              href="/forget-password"
+              className="text-primary font-medium link-hover cursor-pointer">
+              Forget password?
+            </Link>
+            <p className="text-slate-300">
+              Don't have any account?{" "}
+              <Link href={"/registration"} className="text-primary link">
+                Create new account
+              </Link>
+            </p>
+          </form>
+          <div className="divider divider-info text-slate-400">
+            Continue with
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={handleLoginByGoogle}
+              className="w-1/2 text-lg text-white capitalize border-primary btn btn-outline hover:bg-primary transition-all duration-300">
+              <FcGoogle className="mr-4 text-2xl"></FcGoogle>
+              Google
+            </button>
+            <button
+              onClick={handleLoginByGithub}
+              className="w-1/2 text-lg text-white capitalize border-primary btn btn-outline hover:bg-primary">
+              <FaGithub className="text-2xl"></FaGithub>
+              Github
+            </button>
           </div>
         </div>
       </div>
