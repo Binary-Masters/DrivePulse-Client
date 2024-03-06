@@ -5,7 +5,10 @@ import { FaDiscord } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
 import { FaWhatsapp } from "react-icons/fa6";
 import { FaFacebookF } from "react-icons/fa";
+import Link from 'next/link';
+import useAuth from '@/Hooks/useAuth';
 const Footer = () => {
+ 
   return (
     <div>
       <footer className="  w-full h-full mx-auto  ">
@@ -29,10 +32,10 @@ const Footer = () => {
       <div className=' w-28'>
      <div className='text-white'> FEATURES <div className="underline w-[86px] -mt-5 "><span></span></div></div>
      <div className='my-8 flex flex-col gap-4 text-gray-400 '>
-        <p className='cursor-pointer text-balance hover:underline'>File Upload </p>
-        <p className='cursor-pointer text-ellipsis hover:underline'>File Sharing </p>
-        <p className='cursor-pointer hover:underline'>Access File</p>
-        <p className='cursor-pointer hover:underline'>Notification</p>
+        <p className=' text-balance '>File Upload </p>
+        <p className=' text-ellipsis '>File Sharing </p>
+        <p className=' '>Access File</p>
+        <p className=' '>Notification</p>
         
       </div>
       
@@ -41,10 +44,10 @@ const Footer = () => {
       <div className='text-white  w-28 '>
       LEARN MORE <div className="underline w-[100px] -mt-5"><span></span></div>
       <div className='my-8 flex flex-col gap-4 text-gray-400'>
-        <p className='cursor-pointer hover:underline'>About</p>
-        <p className='cursor-pointer hover:underline'>Blog</p>
-        <p className='cursor-pointer hover:underline'>Contact</p>
-        <p className='cursor-pointer hover:underline'>Dashboard</p>
+        <Link href='/about'><p className='cursor-pointer hover:underline'>About</p></Link>
+        <p className=''>Blog</p>
+       <Link href="/contact"> <p className='cursor-pointer hover:underline'>Contact</p></Link>
+       <p>Dashboard</p>
         
       </div>
       </div>
@@ -53,10 +56,10 @@ const Footer = () => {
       SUPPORTS <div className="underline w-[86px]  -mt-5"><span ></span></div>
 
       <div className='my-8 flex flex-col gap-4 text-gray-400'>
-        <p className='cursor-pointer hover:underline'>Help Center</p>
-        <p className='cursor-pointer hover:underline'>Privacy Policy </p>
-        <p className='cursor-pointer hover:underline'>Contact Us</p>
-        <p className='cursor-pointer hover:underline'>Terms of Use</p>
+        <p className=''>Help Center</p>
+        <p className=''>Privacy Policy </p>
+        <Link href="/contact"><p className='cursor-pointer hover:underline'>Contact Us</p></Link>
+        <p className=''>Terms of Use</p>
         
       </div>
       </div>
