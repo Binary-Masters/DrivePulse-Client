@@ -27,7 +27,8 @@ const RenameModal: React.FC<RenameModalProps> = ({ id, name, refetchFiles }) => 
     // console.log(owner);
 
     // File Rename
-    const handleFileRename = () => {
+    const handleFileRename = (e) => {
+        e.preventDefault();
         const fileMetaData = {
             id,
             name: renameText,
@@ -53,6 +54,12 @@ const RenameModal: React.FC<RenameModalProps> = ({ id, name, refetchFiles }) => 
             })
     }
 
+    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            handleFileRename(event);
+        }
+    };
+
     return (
         <dialog id="my_modal_4" className="modal max-w-sm mx-auto ">
             <div className="modal-box bg-gradient-to-br from-[#0c2e52df] to-[#051c34] shadow shadow-sky-600">
@@ -64,7 +71,7 @@ const RenameModal: React.FC<RenameModalProps> = ({ id, name, refetchFiles }) => 
                 <h3 className="font-bold text-white text-lg mb-5 text-left">Rename</h3>
                 <form>
                     <div className="form-control">
-                        <input onChange={handleRenameText} type="text" placeholder="Rename file with .extension" className="input input-bordered w-full" />
+                        <input onChange={handleRenameText} onKeyPress={handleKeyPress} type="text" placeholder="Rename file with .extension" className="input input-bordered w-full" />
                     </div>
 
                 </form>
