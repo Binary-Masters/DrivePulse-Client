@@ -41,18 +41,20 @@ const FilesPage: React.FC = () => {
     type: string,
     fullPath: string,
     thumbnail: any,
-	contentType, _id, name
+    contentType,
+    _id,
+    name
   ) => {
     if (type === "folder") {
       const { currentPath } = getFolderPathData(fullPath, type, user);
       setPath(currentPath);
       refetchFiles();
-    }else if(contentType === "text/plain"){
-		router.push(`/dashboard/text-editor/${_id}?name=${name}`)
-	} else console.log("This is a file");
+    } else if (contentType === "text/plain") {
+      router.push(`/dashboard/text-editor/${_id}?name=${name}`);
+    } else console.log("This is a file");
 
     // File Preview start here
-    if (type !== 'folder' && contentType !== "text/plain" ) {
+    if (type !== "folder" && contentType !== "text/plain") {
       const url = await getFileURL(fullPath);
       console.log(url);
       if (url) {
@@ -100,15 +102,14 @@ const FilesPage: React.FC = () => {
           <DropDownView onIsViewChange={handleIsViewChange} />
           <FolderButton path={path} />
           <UploadButton />
-          <CreateFile/>
+          <CreateFile />
         </div>
       </div>
       {/* list view */}
       {isView === "list" && (
         <div
           style={{ backdropFilter: "blur(200px)" }}
-          className="relative h-screen overflow-x-auto shadow-md sm:rounded-lg mx-3"
-        >
+          className="relative h-screen overflow-x-auto shadow-md sm:rounded-lg mx-3">
           <table className="w-full text-sm text-left text-gray-500 rtl:text-right ">
             <thead className="text-xs uppercase text-slate-200 bg-primary">
               <tr>
@@ -140,8 +141,7 @@ const FilesPage: React.FC = () => {
                   <tr
                     key={_id}
                     // update just hover .
-                    className="text-white cursor-pointer hover:bg-slate-700"
-                  >
+                    className="text-white cursor-pointer hover:bg-slate-700">
                     <td className="pl-5 text-2xl font-medium whitespace-nowrap">
                       {icons?.map((elem) => {
                         if (elem.contentType === contentType)
@@ -150,26 +150,44 @@ const FilesPage: React.FC = () => {
                     </td>
                     <td
                       onClick={() =>
-                        nodeClickHandler(type, fullPath, thumbnail, contentType, _id, name)
+                        nodeClickHandler(
+                          type,
+                          fullPath,
+                          thumbnail,
+                          contentType,
+                          _id,
+                          name
+                        )
                       }
-                      className="px-6 py-4 "
-                    >
+                      className="px-6 py-4 ">
                       {name}
                     </td>
                     <td
                       onClick={() =>
-                        nodeClickHandler(type, fullPath, thumbnail, contentType, _id, name)
+                        nodeClickHandler(
+                          type,
+                          fullPath,
+                          thumbnail,
+                          contentType,
+                          _id,
+                          name
+                        )
                       }
-                      className="px-6 py-4"
-                    >
+                      className="px-6 py-4">
                       {timeCreated.slice(0, 10)}
                     </td>
                     <td
                       onClick={() =>
-                        nodeClickHandler(type, fullPath, thumbnail, contentType, _id, name)
+                        nodeClickHandler(
+                          type,
+                          fullPath,
+                          thumbnail,
+                          contentType,
+                          _id,
+                          name
+                        )
                       }
-                      className="px-6 py-4"
-                    >
+                      className="px-6 py-4">
                       {(size / 1024 / 1024).toFixed(2)} MB
                     </td>
                     <td className="px-6 py-4">
@@ -177,15 +195,14 @@ const FilesPage: React.FC = () => {
                         className={`text-3xl font-medium text-red-600  dark:text-red-500 hover:font-bold`}
                         onClick={() =>
                           handleStoreChangeFileTrash(hookPropObj, fullPath, _id)
-                        }
-                      >
+                        }>
                         <MdDelete />
                       </button>
                     </td>
-                    <button
+                   <td>
+                   <button
                       onClick={() => handelShowModal(fullPath)}
-                      className="text-2xl text-gray-500 "
-                    >
+                      className="text-2xl text-gray-500 ">
                       {
                         <MoreDropDown
                           fileName={name}
@@ -199,6 +216,7 @@ const FilesPage: React.FC = () => {
                         />
                       }
                     </button>
+                   </td>
                   </tr>
                 )
               )}
@@ -214,9 +232,15 @@ const FilesPage: React.FC = () => {
               <div
                 className="w-full"
                 onClick={() =>
-                  nodeClickHandler(file?.type, file?.fullPath, file?.thumbnail, file?.contentType, file?._id, file?.name)
-                }
-              >
+                  nodeClickHandler(
+                    file?.type,
+                    file?.fullPath,
+                    file?.thumbnail,
+                    file?.contentType,
+                    file?._id,
+                    file?.name
+                  )
+                }>
                 {file.contentType.startsWith("image/") ? (
                   <NodePreview
                     thumbnail={file.thumbnail}
@@ -254,9 +278,15 @@ const FilesPage: React.FC = () => {
               <div
                 className="w-full"
                 onClick={() =>
-                  nodeClickHandler(file?.type, file?.fullPath, file?.thumbnail, file?.contentType, file?._id, file?.name)
-                }
-              >
+                  nodeClickHandler(
+                    file?.type,
+                    file?.fullPath,
+                    file?.thumbnail,
+                    file?.contentType,
+                    file?._id,
+                    file?.name
+                  )
+                }>
                 {file.contentType.startsWith("image/") ? (
                   <NodePreview
                     thumbnail={file.thumbnail}

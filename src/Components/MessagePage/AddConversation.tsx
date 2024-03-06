@@ -66,9 +66,8 @@ const AddConversation = () => {
 
   return (
     <div>
-      {/* You can open the modal using document.getElementById('ID').showModal() method */}
       <button
-        className="flex w-full items-center justify-between px-3"
+        className="flex w-full items-center justify-between"
         onClick={() => {
           const modal = document.getElementById(
             "add-conversation"
@@ -78,8 +77,8 @@ const AddConversation = () => {
           }
         }}
       >
-        <h2 className="text-slate-300 font-medium text-xl">Add Conversation</h2>{" "}
-        <span className="text-xl font-semibold text-slate-300">
+        <h2 className="text-primary font-medium text-xl">Add Conversation</h2>{" "}
+        <span className="text-xl font-semibold text-primary">
           <MdAdd />
         </span>
       </button>
