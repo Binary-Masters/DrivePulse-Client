@@ -9,4 +9,38 @@ form input[type="submit"]{
   border:1px solid blue;   
 }
 
+.registration-bg{
+	background-color: #08072f;
+	background-image: radial-gradient(at 80% 90%, rgb(28, 104, 125) 0, transparent 30%), radial-gradient(at 10% 20%, rgb(24, 99, 120) 0, transparent 25%)
+}
+
+.registration-btn{
+  border-radius: .25rem;
+  text-transform: uppercase;
+  font-style: normal;
+  font-weight: 400;
+  padding-left: 25px;
+  padding-right: 25px;
+  color: #fff;
+  -webkit-clip-path: polygon(0 0,0 0,100% 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 100%);
+  clip-path: polygon(0 0,0 0,100% 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 100%);
+  height: 40px;
+  font-size: 18px;
+  line-height: 14px;
+  letter-spacing: 1px;
+  transition: .2s .1s;
+  background-image: linear-gradient(90deg,#383636,#16aae0);
+  border: 0 solid;
+  overflow: hidden;
+  z-index: 1;
+  width: 100%;
+}
+
+.registration-btn:hover {
+  cursor: pointer;
+  transition: all .3s ease-in;
+  padding-right: 30px;
+  padding-left: 30px;
+}
+
 
